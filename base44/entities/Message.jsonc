@@ -1,0 +1,47 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "ID Projet"
+    },
+    "sender_email": {
+      "type": "string",
+      "title": "Email exp\u00e9diteur"
+    },
+    "receiver_email": {
+      "type": "string",
+      "title": "Email destinataire"
+    },
+    "content": {
+      "type": "string",
+      "title": "Contenu"
+    },
+    "read": {
+      "type": "boolean",
+      "title": "Lu",
+      "default": false
+    },
+    "attachments": {
+      "type": "array",
+      "title": "Pi\u00e8ces jointes",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "project_id",
+    "sender_email",
+    "content"
+  ]
+}

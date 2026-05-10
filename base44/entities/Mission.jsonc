@@ -1,0 +1,79 @@
+{
+  "name": "Mission",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "ID Projet"
+    },
+    "agent_email": {
+      "type": "string",
+      "title": "Email agent"
+    },
+    "title": {
+      "type": "string",
+      "title": "Titre"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date"
+    },
+    "time": {
+      "type": "string",
+      "title": "Heure"
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "planifiee",
+        "en_cours",
+        "terminee",
+        "reportee"
+      ],
+      "default": "planifiee"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priorit\u00e9",
+      "enum": [
+        "basse",
+        "normale",
+        "haute",
+        "urgente"
+      ],
+      "default": "normale"
+    },
+    "address": {
+      "type": "string",
+      "title": "Adresse"
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    },
+    "report_id": {
+      "type": "string",
+      "title": "ID Rapport associ\u00e9"
+    }
+  },
+  "required": [
+    "project_id",
+    "title",
+    "date",
+    "agent_email"
+  ]
+}

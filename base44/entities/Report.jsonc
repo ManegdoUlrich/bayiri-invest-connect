@@ -1,0 +1,96 @@
+{
+  "name": "Report",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "ID Projet"
+    },
+    "agent_email": {
+      "type": "string",
+      "title": "Email agent"
+    },
+    "title": {
+      "type": "string",
+      "title": "Titre"
+    },
+    "content": {
+      "type": "string",
+      "title": "Contenu"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type",
+      "enum": [
+        "hebdomadaire",
+        "visite",
+        "incident",
+        "final"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "brouillon",
+        "soumis",
+        "valide"
+      ],
+      "default": "brouillon"
+    },
+    "photos": {
+      "type": "array",
+      "title": "Photos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "caption": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "checklist": {
+      "type": "array",
+      "title": "Checklist",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string"
+          },
+          "checked": {
+            "type": "boolean",
+            "default": false
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "latitude": {
+      "type": "number",
+      "title": "Latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "title": "Longitude"
+    },
+    "audio_notes": {
+      "type": "string",
+      "title": "Notes audio URL"
+    }
+  },
+  "required": [
+    "project_id",
+    "title",
+    "type"
+  ]
+}

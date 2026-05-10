@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/manegdoulrichdoamba/.claude/projects/ -name \"*.md\" 2>/dev/null | head -20)",
+      "Bash(ls \"/Users/manegdoulrichdoamba/Desktop/Projets/Entreprises/Bayiri Invest/Site/\")",
+      "Bash(sed -n '25,55p' \"/Users/manegdoulrichdoamba/Desktop/Projets/Entreprises/Bayiri Invest/Site/bayiri-invest-connect/src/pages/admin/AdminClients.jsx\")",
+      "Bash(sed -n '25,55p' \"/Users/manegdoulrichdoamba/Desktop/Projets/Entreprises/Bayiri Invest/Site/bayiri-invest-connect/src/pages/admin/AdminAgents.jsx\")",
+      "Bash(sed -n '35,65p' \"/Users/manegdoulrichdoamba/Desktop/Projets/Entreprises/Bayiri Invest/Site/bayiri-invest-connect/src/pages/agent/AgentPhotos.jsx\")",
+      "Bash(sed -n '35,65p' \"/Users/manegdoulrichdoamba/Desktop/Projets/Entreprises/Bayiri Invest/Site/bayiri-invest-connect/src/pages/agent/AgentReports.jsx\")",
+      "Bash(gh auth *)",
+      "Bash(npm --version)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

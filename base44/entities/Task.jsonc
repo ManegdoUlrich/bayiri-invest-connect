@@ -1,0 +1,65 @@
+{
+  "name": "Task",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "ID Projet"
+    },
+    "project_title": {
+      "type": "string",
+      "title": "Titre projet"
+    },
+    "agent_email": {
+      "type": "string",
+      "title": "Email agent"
+    },
+    "title": {
+      "type": "string",
+      "title": "Titre de la t\u00e2che"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priorit\u00e9",
+      "enum": [
+        "basse",
+        "normale",
+        "haute",
+        "urgente"
+      ],
+      "default": "normale"
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "a_faire",
+        "en_cours",
+        "terminee"
+      ],
+      "default": "a_faire"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date limite"
+    },
+    "completion_comment": {
+      "type": "string",
+      "title": "Commentaire de cl\u00f4ture"
+    },
+    "completion_date": {
+      "type": "string",
+      "title": "Date de cl\u00f4ture"
+    }
+  },
+  "required": [
+    "project_id",
+    "agent_email",
+    "title"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "name": "Payment",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "ID Projet"
+    },
+    "client_email": {
+      "type": "string",
+      "title": "Email client"
+    },
+    "subscription_type": {
+      "type": "string",
+      "title": "Type d'abonnement",
+      "enum": [
+        "mensuel_engagement",
+        "mensuel_sans_engagement",
+        "forfait"
+      ],
+      "default": "mensuel_sans_engagement"
+    },
+    "payment_method": {
+      "type": "string",
+      "title": "M\u00e9thode de paiement",
+      "enum": [
+        "carte",
+        "mobile_money"
+      ],
+      "default": "carte"
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "a_jour",
+        "en_attente_validation",
+        "en_retard",
+        "suspendu"
+      ],
+      "default": "a_jour"
+    },
+    "amount": {
+      "type": "number",
+      "title": "Montant (EUR)"
+    },
+    "next_due_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Prochaine \u00e9ch\u00e9ance"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date de d\u00e9but"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description / Notes"
+    }
+  },
+  "required": [
+    "client_email",
+    "subscription_type",
+    "status"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "title": "Email destinataire"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type",
+      "enum": [
+        "status_change",
+        "new_report",
+        "payment_due",
+        "signature_request",
+        "signature_done",
+        "milestone_validated"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "title": "Titre"
+    },
+    "message": {
+      "type": "string",
+      "title": "Message"
+    },
+    "project_id": {
+      "type": "string",
+      "title": "ID Projet"
+    },
+    "project_title": {
+      "type": "string",
+      "title": "Titre projet"
+    },
+    "read": {
+      "type": "boolean",
+      "title": "Lu",
+      "default": false
+    },
+    "email_sent": {
+      "type": "boolean",
+      "title": "Email envoy\u00e9",
+      "default": false
+    }
+  },
+  "required": [
+    "user_email",
+    "type",
+    "title",
+    "message"
+  ]
+}

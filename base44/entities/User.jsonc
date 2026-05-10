@@ -1,0 +1,63 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "client",
+        "agent"
+      ]
+    },
+    "phone": {
+      "type": "string",
+      "title": "T\u00e9l\u00e9phone"
+    },
+    "country": {
+      "type": "string",
+      "title": "Pays d'origine"
+    },
+    "city": {
+      "type": "string",
+      "title": "Ville"
+    },
+    "country_residence": {
+      "type": "string",
+      "title": "Pays de r\u00e9sidence"
+    },
+    "avatar": {
+      "type": "string",
+      "title": "Photo de profil"
+    },
+    "bio": {
+      "type": "string",
+      "title": "Bio"
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "title": "Onboarding termin\u00e9",
+      "default": false
+    },
+    "subscription_status": {
+      "type": "string",
+      "title": "Statut abonnement",
+      "enum": [
+        "actif",
+        "inactif",
+        "essai",
+        "suspendu"
+      ],
+      "default": "inactif"
+    },
+    "preferred_language": {
+      "type": "string",
+      "title": "Langue pr\u00e9f\u00e9r\u00e9e",
+      "enum": [
+        "fr",
+        "en"
+      ],
+      "default": "fr"
+    }
+  }
+}

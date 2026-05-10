@@ -1,0 +1,199 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Titre du projet"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type de projet",
+      "enum": [
+        "construction",
+        "terrain",
+        "commerce",
+        "representation",
+        "logistique",
+        "autre"
+      ]
+    },
+    "project_duration": {
+      "type": "string",
+      "title": "Dur\u00e9e du projet",
+      "enum": [
+        "ponctuel",
+        "long_terme"
+      ]
+    },
+    "subscription_type": {
+      "type": "string",
+      "title": "Type d'abonnement choisi",
+      "enum": [
+        "mensuel_engagement",
+        "mensuel_sans_engagement",
+        "forfait"
+      ]
+    },
+    "payment_method": {
+      "type": "string",
+      "title": "M\u00e9thode de paiement",
+      "enum": [
+        "carte",
+        "mobile_money"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "brouillon",
+        "soumis",
+        "en_attente",
+        "en_cours",
+        "pause",
+        "termine",
+        "annule"
+      ],
+      "default": "brouillon"
+    },
+    "progress": {
+      "type": "number",
+      "title": "Progression (%)",
+      "default": 0
+    },
+    "client_email": {
+      "type": "string",
+      "title": "Email client"
+    },
+    "agent_email": {
+      "type": "string",
+      "title": "Email agent"
+    },
+    "country": {
+      "type": "string",
+      "title": "Pays"
+    },
+    "city": {
+      "type": "string",
+      "title": "Ville"
+    },
+    "address": {
+      "type": "string",
+      "title": "Adresse"
+    },
+    "cover_image": {
+      "type": "string",
+      "title": "Image couverture"
+    },
+    "budget": {
+      "type": "number",
+      "title": "Budget estim\u00e9 (EUR)"
+    },
+    "amount_paid": {
+      "type": "number",
+      "title": "Montant pay\u00e9 (EUR)",
+      "default": 0
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date d\u00e9but"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date fin pr\u00e9vue"
+    },
+    "contract_content": {
+      "type": "string",
+      "title": "Contenu du contrat"
+    },
+    "signature_status": {
+      "type": "string",
+      "title": "Statut signature",
+      "enum": [
+        "non_demande",
+        "en_attente",
+        "signe"
+      ],
+      "default": "non_demande"
+    },
+    "signature_date": {
+      "type": "string",
+      "title": "Date de signature"
+    },
+    "signature_data": {
+      "type": "string",
+      "title": "Donn\u00e9es signature (base64)"
+    },
+    "signature_ip": {
+      "type": "string",
+      "title": "IP signataire"
+    },
+    "milestones": {
+      "type": "array",
+      "title": "Jalons",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "completed": {
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "photos": {
+      "type": "array",
+      "title": "Photos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "caption": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "title": "Tags",
+      "items": {
+        "type": "string"
+      }
+    },
+    "admin_notes": {
+      "type": "string",
+      "title": "Notes admin"
+    }
+  },
+  "required": [
+    "title",
+    "type",
+    "status",
+    "client_email"
+  ]
+}
