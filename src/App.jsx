@@ -27,6 +27,9 @@ import AgentPhotos from './pages/agent/AgentPhotos'
 import Onboarding from './pages/Onboarding'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
+import Register from './pages/Register'
+import CGU from './pages/CGU'
+import MentionsLegales from './pages/MentionsLegales'
 import Settings from './pages/Settings'
 import CookieBanner from './components/CookieBanner'
 
@@ -56,7 +59,10 @@ const AuthenticatedApp = () => {
     <Routes>
       {/* Pages publiques */}
       <Route path="/"       element={<Landing />} />
-      <Route path="/login"  element={<Login />} />
+      <Route path="/login"    element={<Login />} />
+      <Route path="/register"         element={<Register />} />
+      <Route path="/cgu"              element={<CGU />} />
+      <Route path="/mentions-legales" element={<MentionsLegales />} />
 
       {/* Onboarding (authentifié mais pas encore complet) */}
       <Route path="/onboarding" element={

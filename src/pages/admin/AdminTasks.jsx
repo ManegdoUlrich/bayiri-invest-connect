@@ -25,7 +25,7 @@ const statusConfig = {
   terminee: { label: "Terminée",  color: "bg-green-50 text-green-600 border-green-200",  icon: CheckCircle },
 };
 
-const empty = { project_id: "", project_title: "", agent_email: "", title: "", description: "", priority: "normale", status: "a_faire", due_date: "" };
+const empty = { projectId: "", agentId: "", title: "", description: "", priority: "normale", status: "a_faire", dueDate: "" };
 
 export default function AdminTasks() {
   const [tasks, setTasks] = useState([]);
@@ -53,7 +53,7 @@ export default function AdminTasks() {
 
   const filtered = tasks.filter(t => {
     const matchSearch = t.title?.toLowerCase().includes(search.toLowerCase()) ||
-      t.agent_email?.toLowerCase().includes(search.toLowerCase()) ||
+      t.agent?.fullName?.toLowerCase().includes(search.toLowerCase()) ||
       t.agentId?.toString().toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === "all" || t.status === filterStatus;
     return matchSearch && matchStatus;
@@ -63,8 +63,7 @@ export default function AdminTasks() {
   const openEdit = (t) => { setForm({ ...t }); setDialogOpen(true); };
 
   const handleProjectChange = (id) => {
-    const proj = projects.find(p => p.id === id);
-    setForm(f => ({ ...f, project_id: id, project_title: proj?.title || "" }));
+    setForm(f => ({ ...f, projectId: id }));
   };
 
   const save = async () => {
@@ -89,7 +88,7 @@ export default function AdminTasks() {
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" /></div>;
 
   const done = tasks.filter(t => t.status === "terminee").length;
-  const overdue = tasks.filter(t => t.status !== "terminee" && t.due_date && new Date(t.due_date) < new Date()).length;
+  const overdue = tasks.filter(t => t.status !== "terminee" && t.dueDate && new Date(t.dueDate) < new Date()).length;
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -122,7 +121,7 @@ export default function AdminTasks() {
         {filtered.map(task => {
           const sc = statusConfig[task.status] || statusConfig.a_faire;
           const pc = priorityConfig[task.priority] || priorityConfig.normale;
-          const isOverdue = task.status !== "terminee" && task.due_date && new Date(task.due_date) < new Date();
+          const isOverdue = task.status !== "terminee" && task.dueDate && new Date(task.dueDate) < new Date();
           const StatusIcon = sc.icon;
           return (
             <div key={task.id} className="bg-card rounded-xl border border-border/50 p-5 flex items-start gap-4 hover:shadow-md transition-shadow">
@@ -135,18 +134,18 @@ export default function AdminTasks() {
                 </div>
                 {task.description && <p className="text-sm text-muted-foreground">{task.description}</p>}
                 <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
-                  <span>Agent : <span className="font-medium text-foreground">{task.agent_email}</span></span>
-                  {task.project_title && <span>Projet : <span className="font-medium text-foreground">{task.project_title}</span></span>}
-                  {task.due_date && (
+                  <span>Agent : <span className="font-medium text-foreground">{task.agent?.fullName || task.agent?.email}</span></span>
+                  {task.project?.title && <span>Projet : <span className="font-medium text-foreground">{task.project?.title}</span></span>}
+                  {task.dueDate && (
                     <span className={`flex items-center gap-1 ${isOverdue ? "text-red-600" : ""}`}>
                       <Calendar className="w-3 h-3" />
-                      {new Date(task.due_date).toLocaleDateString("fr-FR")}
+                      {new Date(task.dueDate).toLocaleDateString("fr-FR")}
                     </span>
                   )}
                 </div>
-                {task.completion_comment && (
+                {task.completionComment && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-800">
-                    <span className="font-medium">Commentaire agent : </span>{task.completion_comment}
+                    <span className="font-medium">Commentaire agent : </span>{task.completionComment}
                   </div>
                 )}
               </div>
@@ -175,7 +174,7 @@ export default function AdminTasks() {
             </div>
             <div>
               <Label>Projet</Label>
-              <Select value={form.project_id} onValueChange={handleProjectChange}>
+              <Select value={form.projectId} onValueChange={handleProjectChange}>
                 <SelectTrigger><SelectValue placeholder="Sélectionner un projet" /></SelectTrigger>
                 <SelectContent>
                   {projects.map(p => <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>)}
@@ -184,10 +183,10 @@ export default function AdminTasks() {
             </div>
             <div>
               <Label>Agent assigné *</Label>
-              <Select value={form.agent_email} onValueChange={v => setForm(f => ({ ...f, agent_email: v }))}>
+              <Select value={form.agentId} onValueChange={v => setForm(f => ({ ...f, agentId: v }))}>
                 <SelectTrigger><SelectValue placeholder="Sélectionner un agent" /></SelectTrigger>
                 <SelectContent>
-                  {agents.map(a => <SelectItem key={a.id} value={a.email}>{a.fullName || a.email}</SelectItem>)}
+                  {agents.map(a => <SelectItem key={a.id} value={a.id}>{a.fullName || a.email}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -217,12 +216,12 @@ export default function AdminTasks() {
               </div>
               <div>
                 <Label>Date limite</Label>
-                <Input type="date" value={form.due_date} onChange={e => setForm(f => ({ ...f, due_date: e.target.value }))} />
+                <Input type="date" value={form.dueDate} onChange={e => setForm(f => ({ ...f, dueDate: e.target.value }))} />
               </div>
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={() => setDialogOpen(false)}>Annuler</Button>
-              <Button onClick={save} disabled={saving || !form.title || !form.agent_email}>{saving ? "Enregistrement..." : "Enregistrer"}</Button>
+              <Button onClick={save} disabled={saving || !form.title || !form.agentId}>{saving ? "Enregistrement..." : "Enregistrer"}</Button>
             </div>
           </div>
         </DialogContent>

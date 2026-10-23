@@ -23,6 +23,7 @@ export default function ClientDashboard() {
   useEffect(() => {
     Promise.all([projectsApi.list(), paymentsApi.list()])
       .then(([projs, pays]) => { setProjects(projs); setPayments(pays); })
+      .catch(err => console.error("Erreur de chargement du tableau de bord :", err))
       .finally(() => setLoading(false));
   }, []);
 

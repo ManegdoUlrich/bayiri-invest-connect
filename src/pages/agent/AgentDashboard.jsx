@@ -22,13 +22,18 @@ export default function AgentDashboard() {
 
   useEffect(() => {
     async function load() {
-      const [m, r] = await Promise.all([
-        missionsApi.list(),
-        reportsApi.list(),
-      ]);
-      setMissions(m);
-      setReports(r);
-      setLoading(false);
+      try {
+        const [m, r] = await Promise.all([
+          missionsApi.list(),
+          reportsApi.list(),
+        ]);
+        setMissions(m);
+        setReports(r);
+      } catch (err) {
+        console.error("Erreur de chargement du tableau de bord agent :", err);
+      } finally {
+        setLoading(false);
+      }
     }
     load();
   }, []);
@@ -42,7 +47,10 @@ export default function AgentDashboard() {
   }
 
   const today = new Date().toISOString().split("T")[0];
-  const todayMissions = missions.filter(m => m.date === today);
+  const todayMissions = missions.filter(m => {
+    const mDate = new Date(m.date).toISOString().split("T")[0];
+    return mDate === today;
+  });
   const pending = missions.filter(m => m.status === "planifiee");
   const completed = missions.filter(m => m.status === "terminee");
 

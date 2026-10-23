@@ -27,20 +27,28 @@ export default function Onboarding() {
 
   const update = (key, value) => setForm(prev => ({ ...prev, [key]: value }));
   const next = () => setStep(s => Math.min(s + 1, tx.steps.length - 1));
-  const prev = () => setStep(s => Math.max(s - 1, 0));
+  const prev = () => {
+    if (step === 0) { navigate('/login'); return; }
+    setStep(s => s - 1);
+  };
 
   const finish = async () => {
     setSaving(true);
-    await usersApi.update(user.id, {
-      fullName: `${form.first_name} ${form.last_name}`.trim(),
-      phone: form.phone,
-      countryResidence: form.country_residence,
-      country: form.country,
-      city: form.city,
-      onboardingComplete: true,
-    });
-    await refreshUser();
-    navigate("/dashboard");
+    try {
+      await usersApi.update(user.id, {
+        fullName: `${form.first_name} ${form.last_name}`.trim(),
+        phone: form.phone,
+        countryResidence: form.country_residence,
+        country: form.country,
+        city: form.city,
+        onboardingComplete: true,
+      });
+      await refreshUser();
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Erreur lors de la soumission de l'onboarding :", err);
+      setSaving(false);
+    }
   };
 
   return (
@@ -118,7 +126,7 @@ export default function Onboarding() {
                 <Select value={form.country} onValueChange={v => update("country", v)}>
                   <SelectTrigger><SelectValue placeholder={tx.select} /></SelectTrigger>
                   <SelectContent>
-                    {["Ouagadougou", "Bobo-Dioulasso", "Koudougou", "Ouahigouya", "Banfora", "Dédougou", "Kaya", "Tenkodogo", "Fada N'Gourma", "Autre"].map(c => (
+                    {["Burkina Faso", "Côte d'Ivoire", "Sénégal", "Mali", "Niger", "Togo", "Bénin", "Cameroun", "France", "Belgique", "Canada"].map(c => (
                       <SelectItem key={c} value={c}>{c}</SelectItem>
                     ))}
                   </SelectContent>
@@ -161,8 +169,8 @@ export default function Onboarding() {
 
         {/* Navigation */}
         <div className="flex items-center justify-between mt-6">
-          <Button variant="ghost" onClick={prev} disabled={step === 0}>
-            <ArrowLeft className="w-4 h-4 mr-2" /> {tx.prev}
+          <Button variant="ghost" onClick={prev}>
+            <ArrowLeft className="w-4 h-4 mr-2" /> {step === 0 ? "Retour" : tx.prev}
           </Button>
           {step < tx.steps.length - 1 ? (
             <Button onClick={next}>

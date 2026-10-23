@@ -9,14 +9,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Label } from "@/components/ui/label";
 import StatCard from "../../components/StatCard";
 
-const typeLabels = { abonnement_mensuel: "Abonnement mensuel", forfait: "Forfait" };
+const typeLabels = {
+  mensuel_engagement: "Mensuel engagement",
+  mensuel_sans_engagement: "Mensuel flexible",
+  forfait: "Forfait",
+};
 const statusConfig = {
-  a_jour: { label: "À jour", color: "bg-green-500/10 text-green-600 border-green-500/20" },
-  en_retard: { label: "En retard", color: "bg-red-500/10 text-red-600 border-red-500/20" },
-  suspendu: { label: "Suspendu", color: "bg-orange-500/10 text-orange-600 border-orange-500/20" },
+  a_jour:                { label: "À jour",              color: "bg-green-500/10 text-green-600 border-green-500/20" },
+  en_retard:             { label: "En retard",            color: "bg-red-500/10 text-red-600 border-red-500/20" },
+  suspendu:              { label: "Suspendu",             color: "bg-orange-500/10 text-orange-600 border-orange-500/20" },
+  en_attente_validation: { label: "En attente valid.",    color: "bg-yellow-500/10 text-yellow-700 border-yellow-500/20" },
 };
 
-const empty = { clientId: "", type: "abonnement_mensuel", status: "a_jour", amount: "", nextDueDate: "", description: "" };
+const empty = {
+  clientId: "", subscriptionType: "mensuel_engagement", paymentMethod: "carte",
+  status: "en_attente_validation", amount: "", nextDueDate: "", description: "",
+};
 
 export default function AdminPayments() {
   const [payments, setPayments] = useState([]);
@@ -41,6 +49,7 @@ export default function AdminPayments() {
   const save = async () => {
     setSaving(true);
     const data = { ...form, amount: form.amount ? parseFloat(form.amount) : undefined };
+    delete data.client; delete data.project; // strip joined objects before sending
     if (form.id) {
       const updated = await paymentsApi.update(form.id, data);
       setPayments(prev => prev.map(p => p.id === form.id ? updated : p));
@@ -54,7 +63,7 @@ export default function AdminPayments() {
 
   const remove = async (id) => {
     if (!confirm("Supprimer cet engagement ?")) return;
-    // NOTE: paymentsApi does not expose delete — remove locally only
+    await paymentsApi.delete(id);
     setPayments(prev => prev.filter(p => p.id !== id));
   };
 
@@ -96,11 +105,11 @@ export default function AdminPayments() {
                 const sc = statusConfig[p.status] || statusConfig.a_jour;
                 return (
                   <tr key={p.id} className="border-b border-border/30 hover:bg-muted/20 transition-colors">
-                    <td className="p-4 text-muted-foreground">{p.clientId}</td>
+                    <td className="p-4 text-muted-foreground">{p.client?.fullName || p.client?.email || p.clientId}</td>
                     <td className="p-4">
                       <span className="flex items-center gap-1.5">
-                        {p.type === "abonnement_mensuel" ? <Repeat className="w-4 h-4 text-primary" /> : <FileText className="w-4 h-4 text-secondary" />}
-                        {typeLabels[p.type]}
+                        {p.subscriptionType !== "forfait" ? <Repeat className="w-4 h-4 text-primary" /> : <FileText className="w-4 h-4 text-secondary" />}
+                        {typeLabels[p.subscriptionType] || p.subscriptionType}
                       </span>
                     </td>
                     <td className="p-4">
@@ -111,7 +120,7 @@ export default function AdminPayments() {
                     </td>
                     <td className="p-4 text-right font-heading font-bold">
                       {p.amount ? `${p.amount.toLocaleString("fr-FR")} €` : "—"}
-                      {p.type === "abonnement_mensuel" && p.amount && <span className="text-xs text-muted-foreground font-normal"> /mois</span>}
+                      {p.subscriptionType !== "forfait" && p.amount && <span className="text-xs text-muted-foreground font-normal"> /mois</span>}
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-2">
@@ -139,30 +148,43 @@ export default function AdminPayments() {
           <div className="space-y-4 pt-2">
             <div>
               <Label>ID client</Label>
-              <Input value={form.clientId} onChange={e => setForm(f => ({ ...f, clientId: e.target.value }))} placeholder="ID du client" />
+              <Input value={form.clientId} onChange={e => setForm(f => ({ ...f, clientId: e.target.value }))} placeholder="UUID du client" />
+              <p className="text-xs text-muted-foreground mt-1">Copiez l'ID depuis la liste des clients</p>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label>Type</Label>
-                <Select value={form.type} onValueChange={v => setForm(f => ({ ...f, type: v }))}>
+                <Label>Type d'abonnement</Label>
+                <Select value={form.subscriptionType} onValueChange={v => setForm(f => ({ ...f, subscriptionType: v }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="abonnement_mensuel">Abonnement mensuel</SelectItem>
+                    <SelectItem value="mensuel_engagement">Mensuel engagement</SelectItem>
+                    <SelectItem value="mensuel_sans_engagement">Mensuel flexible</SelectItem>
                     <SelectItem value="forfait">Forfait</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label>Statut</Label>
-                <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v }))}>
+                <Label>Moyen de paiement</Label>
+                <Select value={form.paymentMethod} onValueChange={v => setForm(f => ({ ...f, paymentMethod: v }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="a_jour">À jour</SelectItem>
-                    <SelectItem value="en_retard">En retard</SelectItem>
-                    <SelectItem value="suspendu">Suspendu</SelectItem>
+                    <SelectItem value="carte">Carte bancaire</SelectItem>
+                    <SelectItem value="mobile_money">Mobile Money</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+            <div>
+              <Label>Statut</Label>
+              <Select value={form.status} onValueChange={v => setForm(f => ({ ...f, status: v }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en_attente_validation">En attente validation</SelectItem>
+                  <SelectItem value="a_jour">À jour</SelectItem>
+                  <SelectItem value="en_retard">En retard</SelectItem>
+                  <SelectItem value="suspendu">Suspendu</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -173,6 +195,10 @@ export default function AdminPayments() {
                 <Label>Prochaine échéance</Label>
                 <Input type="date" value={form.nextDueDate} onChange={e => setForm(f => ({ ...f, nextDueDate: e.target.value }))} />
               </div>
+            </div>
+            <div>
+              <Label>ID projet <span className="text-muted-foreground">(optionnel)</span></Label>
+              <Input value={form.projectId || ""} onChange={e => setForm(f => ({ ...f, projectId: e.target.value || undefined }))} placeholder="UUID du projet" />
             </div>
             <div>
               <Label>Description / Notes</Label>

@@ -24,7 +24,7 @@ situé à ${project?.city || ""}${project?.country ? ", " + project.country : ""
 
 Type de projet : ${project?.type || ""}
 Budget prévu : ${project?.budget?.toLocaleString("fr-FR") || "À définir"} €
-${project?.subscription_type ? `Formule choisie : ${project.subscription_type === "mensuel_engagement" ? "Mensuel avec engagement" : project.subscription_type === "mensuel_sans_engagement" ? "Mensuel sans engagement" : "Forfait"}` : ""}
+${project?.subscriptionType ? `Formule choisie : ${project.subscriptionType === "mensuel_engagement" ? "Mensuel avec engagement" : project.subscriptionType === "mensuel_sans_engagement" ? "Mensuel sans engagement" : "Forfait"}` : ""}
 
 PRESTATIONS INCLUSES :
 1. Identification et vérification des prestataires locaux
@@ -45,7 +45,7 @@ ENGAGEMENTS DU MANDANT (Client) :
 — Coopération dans les décisions importantes du projet
 
 DURÉE :
-Du ${project?.start_date || "date de début"} au ${project?.end_date || "date de fin prévue"}
+Du ${project?.startDate || "date de début"} au ${project?.endDate || "date de fin prévue"}
 
 DISPOSITIONS LÉGALES :
 La signature électronique du présent contrat a valeur juridique contraignante conformément au Règlement eIDAS (UE) n°910/2014 et à la législation applicable. La date, l'heure et l'adresse IP du signataire sont enregistrées et conservées comme preuve d'engagement.`.trim();
@@ -57,7 +57,7 @@ export default function ContractSignModal({ project, open, onClose, onSigned }) 
   const [certInfo, setCertInfo] = useState(null);
   const [agreed, setAgreed] = useState(false);
 
-  const contractText = project?.contract_content || defaultContract(project);
+  const contractText = project?.contractContent || defaultContract(project);
 
   const handleSign = async (signatureDataUrl) => {
     setSigning(true);
@@ -77,9 +77,9 @@ export default function ContractSignModal({ project, open, onClose, onSigned }) 
       });
 
       setCertInfo({
-        signature_date: updated.signatureDate,
-        signature_ip:   updated.signatureIp,
-        signature_url:  updated.signatureUrl,
+        signatureDate: updated.signatureDate,
+        signatureIp:   updated.signatureIp,
+        signatureUrl:  updated.signatureUrl,
       });
       setStep("done");
       onSigned?.({ ...project, ...updated });
@@ -150,14 +150,14 @@ export default function ContractSignModal({ project, open, onClose, onSigned }) 
                     <Calendar className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
                     <div>
                       <p className="text-xs text-muted-foreground">Date et heure de signature</p>
-                      <p className="font-semibold">{new Date(certInfo.signature_date).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "medium"})}</p>
+                      <p className="font-semibold">{new Date(certInfo.signatureDate).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "medium"})}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 p-3 bg-white rounded-xl border border-green-500/20">
                     <Globe className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
                     <div>
                       <p className="text-xs text-muted-foreground">Adresse IP du signataire</p>
-                      <p className="font-semibold font-mono">{certInfo.signature_ip}</p>
+                      <p className="font-semibold font-mono">{certInfo.signatureIp}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 p-3 bg-white rounded-xl border border-green-500/20">
@@ -176,11 +176,11 @@ export default function ContractSignModal({ project, open, onClose, onSigned }) 
                   </div>
                 </div>
                 {/* Signature preview */}
-                {certInfo.signature_url && (
+                {certInfo.signatureUrl && (
                   <div>
                     <p className="text-xs text-muted-foreground mb-2">Signature apposée</p>
                     <div className="bg-white rounded-xl border border-green-500/20 p-3 flex justify-center">
-                      <img src={certInfo.signature_url} alt="Signature" className="max-h-20 object-contain" />
+                      <img src={certInfo.signatureUrl} alt="Signature" className="max-h-20 object-contain" />
                     </div>
                   </div>
                 )}

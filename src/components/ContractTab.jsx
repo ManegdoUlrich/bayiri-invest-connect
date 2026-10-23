@@ -18,7 +18,7 @@ situé à ${project?.city || ""}${project?.country ? ", " + project.country : ""
 
 Type de projet : ${project?.type || ""}
 Budget prévu : ${project?.budget?.toLocaleString("fr-FR") || "À définir"} €
-${project?.subscription_type ? `Formule choisie : ${project.subscription_type === "mensuel_engagement" ? "Mensuel avec engagement" : project.subscription_type === "mensuel_sans_engagement" ? "Mensuel sans engagement" : "Forfait"}` : ""}
+${project?.subscriptionType ? `Formule choisie : ${project.subscriptionType === "mensuel_engagement" ? "Mensuel avec engagement" : project.subscriptionType === "mensuel_sans_engagement" ? "Mensuel sans engagement" : "Forfait"}` : ""}
 
 PRESTATIONS INCLUSES :
 1. Identification et vérification des prestataires locaux
@@ -39,16 +39,16 @@ ENGAGEMENTS DU MANDANT (Client) :
 — Coopération dans les décisions importantes du projet
 
 DURÉE :
-Du ${project?.start_date || "date de début"} au ${project?.end_date || "date de fin prévue"}
+Du ${project?.startDate ? new Date(project.startDate).toLocaleDateString("fr-FR") : "date de début"} au ${project?.endDate ? new Date(project.endDate).toLocaleDateString("fr-FR") : "date de fin prévue"}
 
 DISPOSITIONS LÉGALES :
 La signature électronique du présent contrat a valeur juridique contraignante conformément au Règlement eIDAS (UE) n°910/2014 et à la législation applicable.`.trim();
 
 export default function ContractTab({ project, onSign }) {
-  const contractText = project?.contract_content || defaultContract(project);
-  const isSigned = project?.signature_status === "signe";
-  const isPending = project?.signature_status === "en_attente";
-  const isNotRequested = !project?.signature_status || project?.signature_status === "non_demande";
+  const contractText = project?.contractContent || defaultContract(project);
+  const isSigned = project?.signatureStatus === "signe";
+  const isPending = project?.signatureStatus === "en_attente";
+  const isNotRequested = !project?.signatureStatus || project?.signatureStatus === "non_demande";
 
   return (
     <div className="space-y-6">
@@ -59,7 +59,7 @@ export default function ContractTab({ project, onSign }) {
           <div>
             <p className="font-semibold text-green-700 text-sm">Contrat signé</p>
             <p className="text-xs text-green-600">
-              Signé le {new Date(project.signature_date).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "medium" })}
+              Signé le {new Date(project.signatureDate).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "medium" })}
             </p>
           </div>
           <Badge className="ml-auto bg-green-500 text-white">Signé</Badge>
@@ -118,7 +118,7 @@ export default function ContractTab({ project, onSign }) {
               <div>
                 <p className="text-xs text-muted-foreground mb-0.5">Date et heure de signature</p>
                 <p className="font-semibold text-sm">
-                  {new Date(project.signature_date).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "medium" })}
+                  {new Date(project.signatureDate).toLocaleString("fr-FR", { dateStyle: "long", timeStyle: "medium" })}
                 </p>
               </div>
             </div>
@@ -126,14 +126,14 @@ export default function ContractTab({ project, onSign }) {
               <Globe className="w-4 h-4 text-primary mt-0.5 shrink-0" />
               <div>
                 <p className="text-xs text-muted-foreground mb-0.5">Adresse IP signataire</p>
-                <p className="font-semibold text-sm font-mono">{project.signature_ip || "Enregistrée"}</p>
+                <p className="font-semibold text-sm font-mono">{project.signatureIp || "Enregistrée"}</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-xl">
               <User className="w-4 h-4 text-primary mt-0.5 shrink-0" />
               <div>
                 <p className="text-xs text-muted-foreground mb-0.5">Signataire</p>
-                <p className="font-semibold text-sm">{project.client_email}</p>
+                <p className="font-semibold text-sm">{project.client?.email || "—"}</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-xl">
@@ -145,11 +145,11 @@ export default function ContractTab({ project, onSign }) {
             </div>
           </div>
           {/* Signature image */}
-          {project.signature_data && (
+          {project.signatureUrl && (
             <div className="px-5 pb-5">
               <p className="text-xs text-muted-foreground mb-2">Signature manuscrite numérisée</p>
               <div className="border border-green-500/20 rounded-xl p-4 bg-white flex justify-center">
-                <img src={project.signature_data} alt="Signature" className="max-h-24 object-contain" />
+                <img src={project.signatureUrl} alt="Signature" className="max-h-24 object-contain" />
               </div>
             </div>
           )}

@@ -4,7 +4,7 @@ import { projectsApi } from "@/api/projects";
 import { reportsApi } from "@/api/reports";
 import { paymentsApi } from "@/api/payments";
 import { useAuth } from "@/lib/AuthContext";
-import { ArrowLeft, MapPin, Calendar, CreditCard, Image, MessageCircle, FileText, PenLine, CheckCircle, Shield, Globe, Hash, User } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, CreditCard, Image, MessageCircle, FileText, PenLine, CheckCircle, Shield, Globe, Hash, User, Camera, Mic, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -14,6 +14,7 @@ import PhotoGallery from "../components/PhotoGallery";
 import ChatBox from "../components/ChatBox";
 import ContractSignModal from "../components/ContractSignModal";
 import ContractTab from "../components/ContractTab";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const statusLabels = {
   en_attente: "En attente", en_cours: "En cours", pause: "En pause", termine: "Terminé", annule: "Annulé",
@@ -27,6 +28,7 @@ export default function ProjectDetail() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showContract, setShowContract] = useState(false);
+  const [reportDetail, setReportDetail] = useState(null);
 
   useEffect(() => {
     async function load() {
@@ -124,7 +126,7 @@ export default function ProjectDetail() {
       {project.signatureStatus === "signe" && (
         <div className="bg-green-500/5 border border-green-500/20 rounded-2xl p-4 flex items-center gap-3">
           <CheckCircle className="w-5 h-5 text-green-600" />
-          <p className="text-sm text-green-700 font-medium">Contrat signé le {new Date(project.signature_date).toLocaleDateString("fr-FR")}</p>
+          <p className="text-sm text-green-700 font-medium">Contrat signé le {new Date(project.signatureDate).toLocaleDateString("fr-FR")}</p>
         </div>
       )}
 
@@ -152,17 +154,27 @@ export default function ProjectDetail() {
               <div className="text-center py-8 text-muted-foreground text-sm">Aucun rapport disponible.</div>
             ) : (
               reports.map((report) => (
-                <div key={report.id} className="bg-card rounded-xl border border-border/50 p-5 hover:shadow-md transition-shadow">
+                <div
+                  key={report.id}
+                  className="bg-card rounded-xl border border-border/50 p-5 hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={async () => {
+                    try { setReportDetail(await reportsApi.get(report.id)); }
+                    catch { setReportDetail(report); }
+                  }}
+                >
                   <div className="flex items-start justify-between">
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <h4 className="font-semibold">{report.title}</h4>
-                      <p className="text-sm text-muted-foreground mt-1">{report.content?.slice(0, 150)}...</p>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{report.content}</p>
+                      <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground flex-wrap">
+                        <span>{new Date(report.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</span>
+                        {report._count?.photos > 0 && <span className="flex items-center gap-1"><Camera className="w-3 h-3" />{report._count.photos}</span>}
+                        {report._count?.checklistItems > 0 && <span className="flex items-center gap-1"><CheckSquare className="w-3 h-3" />{report._count.checklistItems}</span>}
+                        {report.audioNotesUrl && <span className="flex items-center gap-1"><Mic className="w-3 h-3" />Audio</span>}
+                      </div>
                     </div>
-                    <Badge variant="outline">{report.type}</Badge>
+                    <Badge variant="outline" className="ml-3 shrink-0">{report.type}</Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-3">
-                    {new Date(report.created_date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
-                  </p>
                 </div>
               ))
             )}
@@ -179,13 +191,13 @@ export default function ProjectDetail() {
                   <div>
                     <p className="font-semibold">{pay.description || pay.type}</p>
                     <p className="text-sm text-muted-foreground">
-                      {pay.due_date ? new Date(pay.due_date).toLocaleDateString("fr-FR") : ""}
+                      {pay.nextDueDate ? new Date(pay.nextDueDate).toLocaleDateString("fr-FR") : ""}
                     </p>
                   </div>
                   <div className="text-right">
                     <p className="font-heading font-bold text-lg">{pay.amount?.toLocaleString("fr-FR")} €</p>
-                    <Badge variant={pay.status === "paye" ? "default" : "outline"} className={pay.status === "paye" ? "bg-green-500" : ""}>
-                      {pay.status === "paye" ? "Payé" : pay.status === "en_attente" ? "En attente" : pay.status}
+                    <Badge variant={pay.status === "a_jour" ? "default" : "outline"} className={pay.status === "a_jour" ? "bg-green-500" : ""}>
+                      {pay.status === "a_jour" ? "À jour" : pay.status === "en_attente_validation" ? "En attente" : pay.status === "en_retard" ? "En retard" : pay.status}
                     </Badge>
                   </div>
                 </div>
@@ -209,6 +221,69 @@ export default function ProjectDetail() {
         onClose={() => setShowContract(false)}
         onSigned={(updated) => setProject(updated)}
       />
+
+      {/* Détail rapport */}
+      <Dialog open={!!reportDetail} onOpenChange={() => setReportDetail(null)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          {reportDetail && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="font-heading">{reportDetail.title}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 mt-2">
+                <div className="flex items-center gap-2 flex-wrap text-xs text-muted-foreground">
+                  <Badge variant="outline">{reportDetail.type}</Badge>
+                  <span>{new Date(reportDetail.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</span>
+                  {reportDetail.latitude && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{reportDetail.latitude.toFixed(4)}, {reportDetail.longitude?.toFixed(4)}</span>}
+                </div>
+                {reportDetail.content && (
+                  <div className="bg-muted/30 rounded-xl p-4 text-sm whitespace-pre-wrap">{reportDetail.content}</div>
+                )}
+                {reportDetail.checklistItems?.length > 0 && (
+                  <div>
+                    <p className="font-semibold text-sm mb-2 flex items-center gap-2">
+                      <CheckSquare className="w-4 h-4 text-primary" /> Checklist
+                      <span className="text-xs font-normal text-muted-foreground">
+                        ({reportDetail.checklistItems.filter(c => c.checked).length}/{reportDetail.checklistItems.length} validés)
+                      </span>
+                    </p>
+                    <div className="space-y-1.5">
+                      {reportDetail.checklistItems.map(c => (
+                        <div key={c.id} className={`flex items-start gap-3 rounded-lg px-3 py-2 text-sm ${c.checked ? "bg-green-500/5 border border-green-500/20" : "bg-muted/30 border border-border/50"}`}>
+                          <span className={`mt-0.5 font-bold ${c.checked ? "text-green-600" : "text-muted-foreground"}`}>{c.checked ? "✓" : "○"}</span>
+                          <div>
+                            <span className={c.checked ? "line-through text-muted-foreground" : ""}>{c.item}</span>
+                            {c.note && <p className="text-xs text-muted-foreground mt-0.5">{c.note}</p>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {reportDetail.photos?.length > 0 && (
+                  <div>
+                    <p className="font-semibold text-sm mb-2 flex items-center gap-2"><Camera className="w-4 h-4 text-primary" /> Photos ({reportDetail.photos.length})</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {reportDetail.photos.map(ph => (
+                        <div key={ph.id} className="relative aspect-square rounded-xl overflow-hidden">
+                          <img src={ph.url} alt={ph.caption || ""} className="w-full h-full object-cover" />
+                          {ph.caption && <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1.5 truncate">{ph.caption}</div>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {reportDetail.audioNotesUrl && (
+                  <div>
+                    <p className="font-semibold text-sm mb-2 flex items-center gap-2"><Mic className="w-4 h-4 text-primary" /> Note audio</p>
+                    <audio src={reportDetail.audioNotesUrl} controls className="w-full" />
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

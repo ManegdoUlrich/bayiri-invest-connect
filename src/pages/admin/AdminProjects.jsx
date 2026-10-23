@@ -16,8 +16,9 @@ const statusColors = { soumis: "bg-blue-100 text-blue-700 border-blue-200", en_a
 const subLabels = { mensuel_engagement: "Mensuel engagement", mensuel_sans_engagement: "Mensuel flexible", forfait: "Forfait" };
 
 const emptyForm = {
-  title: "", description: "", type: "construction", status: "en_attente", client_email: "", agent_email: "",
-  country: "", city: "", budget: "", start_date: "", end_date: "", progress: 0,
+  title: "", description: "", type: "construction", status: "en_attente", clientId: "", agentId: "",
+  country: "", city: "", budget: "", startDate: "", endDate: "", progress: 0,
+  amountPaid: "", adminNotes: "", tags: [],
 };
 
 export default function AdminProjects() {
@@ -48,20 +49,31 @@ export default function AdminProjects() {
 
   const openNew = () => { setForm(emptyForm); setEditId(null); setShowForm(true); };
   const openEdit = (p) => {
-    setForm({ ...emptyForm, ...p, budget: p.budget?.toString() || "" });
+    setForm({
+      ...emptyForm, ...p,
+      budget:     p.budget?.toString()     || "",
+      amountPaid: p.amountPaid?.toString() || "",
+      tags:       p.tags || [],
+      adminNotes: p.adminNotes || "",
+    });
     setEditId(p.id);
     setShowForm(true);
   };
 
   const save = async () => {
     setSaving(true);
-    const data = { ...form, budget: form.budget ? parseFloat(form.budget) : undefined, progress: parseInt(form.progress) || 0 };
+    const data = {
+      ...form,
+      budget:     form.budget     ? parseFloat(form.budget)     : undefined,
+      amountPaid: form.amountPaid ? parseFloat(form.amountPaid) : undefined,
+      progress:   parseInt(form.progress) || 0,
+    };
     if (editId) {
       const oldProject = projects.find(p => p.id === editId);
       await projectsApi.update(editId, data);
       setProjects(prev => prev.map(p => p.id === editId ? { ...p, ...data } : p));
       // Send notification if status changed
-      if (oldProject?.status !== data.status && data.client_email) {
+      if (oldProject?.status !== data.status && data.clientId) {
         await sendNotification({
           userId: data.clientId,
           type: "status_change",
@@ -132,15 +144,30 @@ export default function AdminProjects() {
                 <tr key={p.id} className="border-b border-border/30 hover:bg-muted/20 transition-colors">
                   <td className="p-4">
                     <p className="font-semibold">{p.title}</p>
-                    <p className="text-muted-foreground text-xs">{p.city}, {p.country}</p>
+                    <p className="text-muted-foreground text-xs">{p.city}{p.country ? `, ${p.country}` : ""}</p>
+                    {p.tags?.length > 0 && (
+                      <div className="flex gap-1 mt-1 flex-wrap">
+                        {p.tags.map(t => (
+                          <span key={t} className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{t}</span>
+                        ))}
+                      </div>
+                    )}
                   </td>
-                  <td className="p-4 text-muted-foreground">{p.client?.email}</td>
-                  <td className="p-4 text-muted-foreground">{p.agent?.email || "Non assigné"}</td>
+                  <td className="p-4 text-muted-foreground">{p.client?.fullName || p.client?.email || "—"}</td>
+                  <td className="p-4 text-muted-foreground">{p.agent?.fullName || p.agent?.email || "Non assigné"}</td>
                   <td className="p-4">
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${statusColors[p.status] || statusColors.brouillon}`}>{statusLabels[p.status] || p.status}</span>
                     {p.subscriptionType && <p className="text-xs text-muted-foreground mt-1">{subLabels[p.subscriptionType]}</p>}
                   </td>
-                  <td className="p-4 font-medium">{p.budget?.toLocaleString("fr-FR")} €</td>
+                  <td className="p-4">
+                    <p className="font-medium">{p.budget ? `${p.budget.toLocaleString("fr-FR")} €` : "—"}</p>
+                    {p.amountPaid > 0 && (
+                      <p className="text-xs text-green-600 mt-0.5">Perçu : {p.amountPaid.toLocaleString("fr-FR")} €</p>
+                    )}
+                    {p.adminNotes && (
+                      <p className="text-xs text-orange-600 mt-0.5 max-w-[180px] truncate" title={p.adminNotes}>📌 {p.adminNotes}</p>
+                    )}
+                  </td>
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       {/* Signature request button */}
@@ -208,15 +235,15 @@ export default function AdminProjects() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div><Label>Client</Label>
-                <Select value={form.client_email} onValueChange={v => setForm(p => ({ ...p, client_email: v }))}>
+                <Select value={form.clientId} onValueChange={v => setForm(p => ({ ...p, clientId: v }))}>
                   <SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger>
-                  <SelectContent>{clients.map(c => <SelectItem key={c.id} value={c.email}>{c.fullName || c.email}</SelectItem>)}</SelectContent>
+                  <SelectContent>{clients.map(c => <SelectItem key={c.id} value={c.id}>{c.fullName || c.email}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
-                <div><Label>Agent</Label>
-                <Select value={form.agent_email} onValueChange={v => setForm(p => ({ ...p, agent_email: v }))}>
+              <div><Label>Agent</Label>
+                <Select value={form.agentId} onValueChange={v => setForm(p => ({ ...p, agentId: v }))}>
                   <SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger>
-                  <SelectContent>{agents.map(a => <SelectItem key={a.id} value={a.email}>{a.fullName || a.email}</SelectItem>)}</SelectContent>
+                  <SelectContent>{agents.map(a => <SelectItem key={a.id} value={a.id}>{a.fullName || a.email}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
             </div>
@@ -229,10 +256,42 @@ export default function AdminProjects() {
               <div><Label>Progression (%)</Label><Input type="number" min="0" max="100" value={form.progress} onChange={e => setForm(p => ({ ...p, progress: e.target.value }))} /></div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div><Label>Date début</Label><Input type="date" value={form.start_date} onChange={e => setForm(p => ({ ...p, start_date: e.target.value }))} /></div>
-              <div><Label>Date fin</Label><Input type="date" value={form.end_date} onChange={e => setForm(p => ({ ...p, end_date: e.target.value }))} /></div>
+              <div><Label>Date début</Label><Input type="date" value={form.startDate} onChange={e => setForm(p => ({ ...p, startDate: e.target.value }))} /></div>
+              <div><Label>Date fin</Label><Input type="date" value={form.endDate} onChange={e => setForm(p => ({ ...p, endDate: e.target.value }))} /></div>
             </div>
-            <Button onClick={save} disabled={saving || !form.title || !form.client_email} className="w-full">
+
+            {/* Champs admin avancés */}
+            <div className="border-t border-border/50 pt-4 space-y-3">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Suivi financier & interne</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Montant perçu (€)</Label>
+                  <Input type="number" placeholder="0" value={form.amountPaid} onChange={e => setForm(p => ({ ...p, amountPaid: e.target.value }))} />
+                </div>
+                <div>
+                  <Label>Tags <span className="text-muted-foreground font-normal">(séparés par virgule)</span></Label>
+                  <Input
+                    placeholder="urgent, vip, suivi-hebdo"
+                    value={form.tags?.join(", ") || ""}
+                    onChange={e => setForm(p => ({
+                      ...p,
+                      tags: e.target.value.split(",").map(t => t.trim()).filter(Boolean),
+                    }))}
+                  />
+                </div>
+              </div>
+              <div>
+                <Label>Notes internes <span className="text-muted-foreground font-normal">(non visibles par le client)</span></Label>
+                <Textarea
+                  rows={3}
+                  placeholder="Observations, points de vigilance, contacts locaux..."
+                  value={form.adminNotes}
+                  onChange={e => setForm(p => ({ ...p, adminNotes: e.target.value }))}
+                />
+              </div>
+            </div>
+
+            <Button onClick={save} disabled={saving || !form.title || !form.clientId} className="w-full">
               {saving ? "Enregistrement..." : editId ? "Mettre à jour" : "Créer le projet"}
             </Button>
           </div>

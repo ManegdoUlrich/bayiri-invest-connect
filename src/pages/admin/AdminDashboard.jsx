@@ -24,15 +24,15 @@ export default function AdminDashboard() {
 
       const clients = users.filter(u => u.role === "client");
       const agents = users.filter(u => u.role === "agent");
-      const totalRevenue = payments.filter(p => p.status === "paye").reduce((s, p) => s + (p.amount || 0), 0);
+      const totalRevenue = payments.filter(p => p.status === "a_jour").reduce((s, p) => s + (p.amount || 0), 0);
 
       const byType = {};
       projects.forEach(p => { byType[p.type] = (byType[p.type] || 0) + 1; });
       const typeData = Object.entries(byType).map(([name, value]) => ({ name, value }));
 
       const byMonth = {};
-      payments.filter(p => p.status === "paye").forEach(p => {
-        const month = p.paid_date?.slice(0, 7) || p.created_date?.slice(0, 7) || "N/A";
+      payments.filter(p => p.status === "a_jour").forEach(p => {
+        const month = p.paidAt?.slice(0, 7) || p.createdAt?.slice(0, 7) || "N/A";
         byMonth[month] = (byMonth[month] || 0) + (p.amount || 0);
       });
       const revenueData = Object.entries(byMonth).sort().slice(-6).map(([month, amount]) => ({

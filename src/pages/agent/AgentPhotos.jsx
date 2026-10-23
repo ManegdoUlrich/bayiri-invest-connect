@@ -84,7 +84,7 @@ export default function AgentPhotos() {
         userId: project.clientId,
         type: "new_report",
         title: "Nouvelles photos du terrain",
-        message: `${uploaded.length} nouvelle(s) photo(s) ont été ajoutées à votre projet "${project.title}".`,
+        message: `${photos.length} nouvelle(s) photo(s) ont été ajoutées à votre projet "${project.title}".`,
         projectId: selectedProjectId,
         projectTitle: project.title,
       });

@@ -90,10 +90,16 @@ export default function Login() {
 
         <p className="text-center text-sm text-muted-foreground">
           Pas encore de compte ?{' '}
-          <Link to="/" className="text-primary hover:underline">
-            Contactez-nous
+          <Link to="/register" className="text-primary hover:underline">
+            Créer un compte
           </Link>
         </p>
+
+        <div className="flex justify-center gap-4 text-xs text-muted-foreground/60">
+          <Link to="/cgu" className="hover:text-muted-foreground transition-colors">CGU</Link>
+          <span>·</span>
+          <Link to="/mentions-legales" className="hover:text-muted-foreground transition-colors">Mentions légales</Link>
+        </div>
       </div>
     </div>
   )

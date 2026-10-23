@@ -20,7 +20,7 @@ const statusColors = {
 };
 
 export default function ProjectCard({ project, linkPrefix = "/projects" }) {
-  const coverImage = project.cover_image || project.photos?.[0]?.url || 
+  const coverImage = project.coverImageUrl || project.photos?.[0]?.url ||
     "https://images.unsplash.com/photo-1541123603104-512919d6a96c?w=600&h=400&fit=crop";
 
   return (
@@ -51,10 +51,10 @@ export default function ProjectCard({ project, linkPrefix = "/projects" }) {
                 {project.city}, {project.country}
               </span>
             )}
-            {project.start_date && (
+            {project.startDate && (
               <span className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
-                {new Date(project.start_date).toLocaleDateString("fr-FR", { month: "short", year: "numeric" })}
+                {new Date(project.startDate).toLocaleDateString("fr-FR", { month: "short", year: "numeric" })}
               </span>
             )}
           </div>

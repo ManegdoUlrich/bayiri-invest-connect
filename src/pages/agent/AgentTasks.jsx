@@ -38,15 +38,14 @@ export default function AgentTasks() {
 
   const openComplete = (task) => {
     setSelected(task);
-    setComment(task.completion_comment || "");
+    setComment(task.completionComment || "");
   };
 
   const markDone = async () => {
     setSaving(true);
     const updated = await tasksApi.update(selected.id, {
       status: "terminee",
-      completion_comment: comment,
-      completion_date: new Date().toISOString(),
+      completionComment: comment,
     });
     setTasks(prev => prev.map(t => t.id === selected.id ? updated : t));
     setSaving(false);
@@ -62,7 +61,7 @@ export default function AgentTasks() {
 
   const done = tasks.filter(t => t.status === "terminee").length;
   const pending = tasks.filter(t => t.status !== "terminee").length;
-  const overdue = tasks.filter(t => t.status !== "terminee" && t.due_date && new Date(t.due_date) < new Date()).length;
+  const overdue = tasks.filter(t => t.status !== "terminee" && t.dueDate && new Date(t.dueDate) < new Date()).length;
 
   const statuses = ["all", "a_faire", "en_cours", "terminee"];
   const statusLabels = { all: "Toutes", a_faire: "À faire", en_cours: "En cours", terminee: "Terminées" };
@@ -94,7 +93,7 @@ export default function AgentTasks() {
         {filtered.length === 0 && <div className="text-center py-12 text-muted-foreground">Aucune tâche.</div>}
         {filtered.map(task => {
           const pc = priorityConfig[task.priority] || priorityConfig.normale;
-          const isOverdue = task.status !== "terminee" && task.due_date && new Date(task.due_date) < new Date();
+          const isOverdue = task.status !== "terminee" && task.dueDate && new Date(task.dueDate) < new Date();
           const isDone = task.status === "terminee";
           return (
             <div key={task.id} className={`bg-card rounded-xl border p-5 space-y-3 transition-shadow hover:shadow-md ${isDone ? "border-green-200 opacity-80" : isOverdue ? "border-red-200" : "border-border/50"}`}>
@@ -108,11 +107,11 @@ export default function AgentTasks() {
                   </div>
                   {task.description && <p className="text-sm text-muted-foreground">{task.description}</p>}
                   <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
-                    {task.project_title && <span>Projet : <span className="font-medium text-foreground">{task.project_title}</span></span>}
-                    {task.due_date && (
+                    {task.project?.title && <span>Projet : <span className="font-medium text-foreground">{task.project?.title}</span></span>}
+                    {task.dueDate && (
                       <span className={`flex items-center gap-1 ${isOverdue ? "text-red-600 font-medium" : ""}`}>
                         <Calendar className="w-3 h-3" />
-                        {new Date(task.due_date).toLocaleDateString("fr-FR")}
+                        {new Date(task.dueDate).toLocaleDateString("fr-FR")}
                       </span>
                     )}
                   </div>
@@ -130,10 +129,10 @@ export default function AgentTasks() {
                   </div>
                 )}
               </div>
-              {task.completion_comment && (
+              {task.completionComment && (
                 <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-800 flex items-start gap-2">
                   <MessageSquare className="w-4 h-4 shrink-0 mt-0.5" />
-                  <span>{task.completion_comment}</span>
+                  <span>{task.completionComment}</span>
                 </div>
               )}
             </div>

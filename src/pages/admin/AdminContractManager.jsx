@@ -30,13 +30,13 @@ export default function AdminContractManager() {
 
   const openEdit = (project) => {
     setEditProject(project);
-    setContractText(project.contract_content || "");
+    setContractText(project.contractContent || "");
   };
 
   const saveContract = async () => {
     setSaving(true);
-    await projectsApi.update(editProject.id, { contract_content: contractText });
-    setProjects(prev => prev.map(p => p.id === editProject.id ? { ...p, contract_content: contractText } : p));
+    await projectsApi.update(editProject.id, { contractContent: contractText });
+    setProjects(prev => prev.map(p => p.id === editProject.id ? { ...p, contractContent: contractText } : p));
     setSaving(false);
     setEditProject(null);
   };
@@ -101,7 +101,7 @@ export default function AdminContractManager() {
                       </Badge>
                     </td>
                     <td className="p-4 text-muted-foreground text-xs">
-                      {project.signature_date ? new Date(project.signature_date).toLocaleString("fr-FR") : "—"}
+                      {project.signatureDate ? new Date(project.signatureDate).toLocaleString("fr-FR") : "—"}
                     </td>
                     <td className="p-4">
                       <div className="flex items-center justify-end gap-1">
@@ -154,14 +154,14 @@ export default function AdminContractManager() {
           <DialogHeader>
             <DialogTitle className="font-heading">Signature enregistrée</DialogTitle>
           </DialogHeader>
-          {viewSig?.signature_data && (
+          {viewSig?.signatureUrl && (
             <div className="space-y-4">
               <div className="border rounded-xl overflow-hidden bg-white p-2">
-                <img src={viewSig.signature_data} alt="Signature" className="w-full" />
+                <img src={viewSig.signatureUrl} alt="Signature" className="w-full" />
               </div>
               <div className="text-sm space-y-1 text-muted-foreground">
                 <p><span className="font-medium text-foreground">Signataire :</span> {viewSig.client?.email}</p>
-                <p><span className="font-medium text-foreground">Date :</span> {new Date(viewSig.signature_date).toLocaleString("fr-FR")}</p>
+                <p><span className="font-medium text-foreground">Date :</span> {new Date(viewSig.signatureDate).toLocaleString("fr-FR")}</p>
               </div>
               <Badge className="bg-green-500 w-fit">
                 <CheckCircle className="w-3 h-3 mr-1.5" /> Signature valide

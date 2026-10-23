@@ -29,23 +29,27 @@ export default function AgentMissions() {
   }, []);
 
   const updateStatus = async (mission, newStatus) => {
-    await missionsApi.update(mission.id, { status: newStatus });
-    setMissions(prev => prev.map(m => m.id === mission.id ? { ...m, status: newStatus } : m));
-    setSelected(null);
+    try {
+      await missionsApi.update(mission.id, { status: newStatus });
+      setMissions(prev => prev.map(m => m.id === mission.id ? { ...m, status: newStatus } : m));
+      setSelected(null);
 
-    // Notify client when a mission/milestone is completed
-    if (newStatus === "terminee" && mission.projectId) {
-      const project = await projectsApi.get(mission.projectId);
-      if (project?.client?.email) {
-        await sendNotification({
-          userId: project.clientId,
-          type: "milestone_validated",
-          title: "Étape clé validée sur votre projet",
-          message: `Une étape clé a été validée par votre agent sur le terrain : "${mission.title}".`,
-          projectId: mission.projectId,
-          projectTitle: project.title,
-        });
+      // Notify client when a mission/milestone is completed
+      if (newStatus === "terminee" && mission.projectId) {
+        const project = await projectsApi.get(mission.projectId);
+        if (project?.client?.email) {
+          await sendNotification({
+            userId: project.clientId,
+            type: "milestone_validated",
+            title: "Étape clé validée sur votre projet",
+            message: `Une étape clé a été validée par votre agent sur le terrain : "${mission.title}".`,
+            projectId: mission.projectId,
+            projectTitle: project.title,
+          });
+        }
       }
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour du statut de la mission :", err);
     }
   };
 

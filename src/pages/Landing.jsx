@@ -374,10 +374,12 @@ export default function Landing() {
             className="h-10 object-contain brightness-200"
           />
           <p className="text-sm text-center">{tx.footer}</p>
-          <div className="flex gap-6 text-sm">
+          <div className="flex flex-wrap gap-6 text-sm">
             <a href="#solutions" className="hover:text-white transition-colors">{tx.nav.solutions}</a>
             <a href="#avis" className="hover:text-white transition-colors">{tx.nav.reviews}</a>
             <Link to="/dashboard" className="hover:text-white transition-colors">{tx.nav.login}</Link>
+            <Link to="/cgu" className="hover:text-white transition-colors">CGU</Link>
+            <Link to="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link>
           </div>
         </div>
       </footer>
