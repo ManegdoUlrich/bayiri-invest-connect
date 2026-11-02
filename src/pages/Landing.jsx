@@ -238,31 +238,31 @@ export default function Landing() {
         {/* Gradient bas pour transition douce */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, hsl(15,22%,7%), transparent)" }} />
 
-        {/* Contenu */}
-        <div style={{ position: "relative", ...WRAP, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: 160, paddingBottom: 80 }}>
+        {/* Contenu — aligné à gauche, 50% de largeur max */}
+        <div style={{ position: "relative", ...WRAP, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", paddingTop: 140, paddingBottom: 80 }}>
           {/* Badge Trustpilot */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 36 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
             <div style={{ display: "flex", gap: 2 }}>
-              {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 14, height: 14, fill: "#00b67a", color: "#00b67a" }} />)}
+              {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 13, height: 13, fill: "#00b67a", color: "#00b67a" }} />)}
             </div>
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", fontWeight: 500, letterSpacing: "0.01em" }}>
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", fontWeight: 500, letterSpacing: "0.01em" }}>
               {tx.hero.trustpilot}
             </span>
           </div>
 
-          {/* Titre massif — style Qonto */}
+          {/* Titre — taille modérée, aligné à gauche */}
           <h1 style={{
             fontFamily: "var(--font-heading)", fontWeight: 400,
-            fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",
-            lineHeight: 1.0, letterSpacing: "-0.025em",
-            margin: "0 0 28px 0", maxWidth: 760,
+            fontSize: "clamp(2.6rem, 4.5vw, 4.2rem)",
+            lineHeight: 1.05, letterSpacing: "-0.02em",
+            margin: "0 0 24px 0", maxWidth: 580, textAlign: "left",
           }}>
             {tx.hero.line1}<br />
             <span style={{ color: "hsl(38,72%,60%)" }}>{tx.hero.line2}</span><br />
             {tx.hero.line3}
           </h1>
 
-          <p style={{ fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(255,255,255,0.58)", maxWidth: 620, lineHeight: 1.7, margin: "0 0 44px 0" }}>
+          <p style={{ fontSize: "clamp(14px, 1.4vw, 17px)", color: "rgba(255,255,255,0.55)", maxWidth: 520, lineHeight: 1.72, margin: "0 0 40px 0", textAlign: "left" }}>
             {tx.hero.subtitle}
           </p>
 
@@ -316,7 +316,7 @@ export default function Landing() {
       {/* ── Features ─────────────────────────────────────────── */}
       <section id="solutions" style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64, maxWidth: 560, lineHeight: 1.12, whiteSpace: "pre-line" }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 56, maxWidth: 520, lineHeight: 1.15, whiteSpace: "pre-line" }}>
             {tx.featuresTitle}
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
@@ -342,7 +342,7 @@ export default function Landing() {
       {/* ── How it works ─────────────────────────────────────── */}
       <section id="comment" style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64, lineHeight: 1.12, whiteSpace: "pre-line" }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 56, lineHeight: 1.15, whiteSpace: "pre-line" }}>
             {tx.howTitle}
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40 }}>
@@ -367,7 +367,7 @@ export default function Landing() {
       <section style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 72, alignItems: "center" }}>
           <div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 36, lineHeight: 1.12, whiteSpace: "pre-line" }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 32, lineHeight: 1.15, whiteSpace: "pre-line" }}>
               {tx.platformTitle}
             </h2>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px 0", display: "flex", flexDirection: "column", gap: 14 }}>
@@ -448,7 +448,7 @@ export default function Landing() {
       {/* ── Testimonials ─────────────────────────────────────── */}
       <section id="avis" style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64 }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 48 }}>
             {tx.testimonialsTitle}
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
@@ -478,7 +478,7 @@ export default function Landing() {
         <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 64, alignItems: "start" }}>
           <div>
             <p style={{ fontSize: 12, fontWeight: 600, color: "hsl(var(--primary))", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 2.8rem)", letterSpacing: "-0.02em", marginBottom: 20, lineHeight: 1.12 }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 18, lineHeight: 1.15 }}>
               {lang === "fr" ? "Une question ?\nNous sommes là." : "A question?\nWe're here."}
             </h2>
             <p style={{ fontSize: 16, lineHeight: 1.75, color: "hsl(var(--muted-foreground))", marginBottom: 32 }}>
@@ -531,7 +531,7 @@ export default function Landing() {
       <section style={{ background: "hsl(15,22%,8%)", color: "white", paddingTop: 120, paddingBottom: 120, textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, hsl(38,65%,42%,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative", maxWidth: 600, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2.5rem, 5vw, 4.5rem)", letterSpacing: "-0.025em", marginBottom: 20, lineHeight: 1.05 }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3.2rem)", letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.1 }}>
             {tx.finalCta}
           </h2>
           <p style={{ fontSize: 17, color: "rgba(255,255,255,0.5)", marginBottom: 44, lineHeight: 1.65 }}>{tx.finalCtaSub}</p>
