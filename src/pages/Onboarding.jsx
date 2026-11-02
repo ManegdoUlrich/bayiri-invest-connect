@@ -126,7 +126,7 @@ export default function Onboarding() {
                 <Select value={form.country} onValueChange={v => update("country", v)}>
                   <SelectTrigger><SelectValue placeholder={tx.select} /></SelectTrigger>
                   <SelectContent>
-                    {["Burkina Faso", "Côte d'Ivoire", "Sénégal", "Mali", "Niger", "Togo", "Bénin", "Cameroun", "France", "Belgique", "Canada"].map(c => (
+                    {["Burkina Faso"].map(c => (
                       <SelectItem key={c} value={c}>{c}</SelectItem>
                     ))}
                   </SelectContent>
