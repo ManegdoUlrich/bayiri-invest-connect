@@ -7,7 +7,14 @@ const HERO_IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcV
 
 const t = {
   fr: {
-    nav: { login: "Se connecter", start: "Ouvrir un compte" },
+    nav: {
+      solutions: "Solutions",
+      howItWorks: "Comment ça marche",
+      testimonials: "Témoignages",
+      contact: "Nous contacter",
+      login: "Se connecter",
+      start: "Ouvrir un compte",
+    },
     hero: {
       trustpilot: "4,8 sur 5 · Trustpilot",
       line1: "Investissez",
@@ -57,7 +64,14 @@ const t = {
     footer: "© 2026 Bayiri Invest — Tous droits réservés.",
   },
   en: {
-    nav: { login: "Log in", start: "Open an account" },
+    nav: {
+      solutions: "Solutions",
+      howItWorks: "How it works",
+      testimonials: "Testimonials",
+      contact: "Contact us",
+      login: "Log in",
+      start: "Open an account",
+    },
     hero: {
       trustpilot: "4.8 out of 5 · Trustpilot",
       line1: "Invest",
@@ -136,30 +150,61 @@ export default function Landing() {
         borderBottom: scrolled ? "1px solid hsl(var(--border)/0.5)" : "none",
         transition: "background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease",
       }}>
-        <div style={{ ...WRAP, height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ ...WRAP, height: 68, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
+          {/* Logo */}
           <img
             src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png"
             alt="Bayiri Invest"
-            style={{ height: 38, objectFit: "contain", filter: scrolled ? "none" : "brightness(10)" }}
+            style={{ height: 38, objectFit: "contain", flexShrink: 0, filter: scrolled ? "none" : "brightness(10)" }}
           />
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+
+          {/* Liens de navigation centraux */}
+          <nav style={{ display: "flex", alignItems: "center", gap: 4, flex: 1, justifyContent: "center" }}>
+            {[
+              { label: tx.nav.solutions, href: "#solutions" },
+              { label: tx.nav.howItWorks, href: "#comment" },
+              { label: tx.nav.testimonials, href: "#avis" },
+              { label: tx.nav.contact, href: "#contact" },
+            ].map(link => (
+              <a key={link.href} href={link.href} style={{
+                fontSize: 14, fontWeight: 500, padding: "7px 14px", borderRadius: 6,
+                color: scrolled ? "hsl(var(--foreground)/0.8)" : "rgba(255,255,255,0.8)",
+                textDecoration: "none", transition: "color 0.2s, background 0.2s",
+                whiteSpace: "nowrap",
+              }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = scrolled ? "hsl(var(--foreground))" : "white";
+                  e.currentTarget.style.background = scrolled ? "hsl(var(--muted))" : "rgba(255,255,255,0.08)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = scrolled ? "hsl(var(--foreground)/0.8)" : "rgba(255,255,255,0.8)";
+                  e.currentTarget.style.background = "transparent";
+                }}>
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Actions droites */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
             <button onClick={() => switchLang(lang === "fr" ? "en" : "fr")}
               style={{
-                fontSize: 13, fontWeight: 500, padding: "6px 12px", borderRadius: 6,
-                border: "none", cursor: "pointer",
-                background: scrolled ? "hsl(var(--muted))" : "rgba(255,255,255,0.12)",
-                color: scrolled ? "hsl(var(--muted-foreground))" : "rgba(255,255,255,0.85)",
-                transition: "background 0.3s, color 0.3s",
+                fontSize: 12, fontWeight: 600, padding: "5px 10px", borderRadius: 6,
+                border: `1px solid ${scrolled ? "hsl(var(--border))" : "rgba(255,255,255,0.2)"}`,
+                cursor: "pointer",
+                background: "transparent",
+                color: scrolled ? "hsl(var(--muted-foreground))" : "rgba(255,255,255,0.7)",
+                letterSpacing: "0.05em", transition: "all 0.2s",
               }}>
               {lang === "fr" ? "EN" : "FR"}
             </button>
             <Link to="/dashboard">
               <button style={{
                 fontSize: 14, fontWeight: 500, padding: "8px 18px", borderRadius: 8,
-                border: `1px solid ${scrolled ? "hsl(var(--border))" : "rgba(255,255,255,0.3)"}`,
+                border: `1px solid ${scrolled ? "hsl(var(--border))" : "rgba(255,255,255,0.25)"}`,
                 background: "transparent",
                 color: scrolled ? "hsl(var(--foreground))" : "rgba(255,255,255,0.9)",
-                cursor: "pointer", transition: "all 0.3s",
+                cursor: "pointer", transition: "all 0.2s", whiteSpace: "nowrap",
               }}>
                 {tx.nav.login}
               </button>
@@ -168,7 +213,7 @@ export default function Landing() {
               <button style={{
                 fontSize: 14, fontWeight: 600, padding: "8px 20px", borderRadius: 8,
                 background: "hsl(38,65%,52%)", color: "hsl(15,25%,12%)",
-                border: "none", cursor: "pointer", transition: "opacity 0.15s",
+                border: "none", cursor: "pointer", transition: "opacity 0.15s", whiteSpace: "nowrap",
               }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
                 onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
@@ -217,7 +262,7 @@ export default function Landing() {
             {tx.hero.line3}
           </h1>
 
-          <p style={{ fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(255,255,255,0.58)", maxWidth: 480, lineHeight: 1.7, margin: "0 0 44px 0" }}>
+          <p style={{ fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(255,255,255,0.58)", maxWidth: 620, lineHeight: 1.7, margin: "0 0 44px 0" }}>
             {tx.hero.subtitle}
           </p>
 
@@ -269,7 +314,7 @@ export default function Landing() {
       </section>
 
       {/* ── Features ─────────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
+      <section id="solutions" style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
           <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64, maxWidth: 560, lineHeight: 1.12, whiteSpace: "pre-line" }}>
             {tx.featuresTitle}
@@ -343,17 +388,65 @@ export default function Landing() {
             </Link>
           </div>
           <div>
-            <img
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=620&fit=crop"
-              alt="Plateforme Bayiri Invest"
-              style={{ width: "100%", borderRadius: 16, boxShadow: "var(--shadow-xl)", border: "1px solid hsl(var(--border)/0.4)", display: "block" }}
-            />
+            {/* Mockup plateforme — dashboard illustratif */}
+            <div style={{ position: "relative" }}>
+              <div style={{
+                background: "hsl(153,50%,14%)",
+                borderRadius: 16,
+                padding: 24,
+                boxShadow: "var(--shadow-xl)",
+                border: "1px solid hsl(153,30%,20%)",
+              }}>
+                {/* Barre de titre du dashboard */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
+                  <div style={{ display: "flex", gap: 5 }}>
+                    {["#ff5f57","#febc2e","#28c840"].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />)}
+                  </div>
+                  <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.07)" }} />
+                </div>
+                {/* Lignes du dashboard */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
+                  {[
+                    { label: "Projets actifs", val: "3", clr: "hsl(38,65%,58%)" },
+                    { label: "Documents", val: "12", clr: "hsl(153,42%,42%)" },
+                    { label: "Photos terrain", val: "47", clr: "hsl(12,62%,48%)" },
+                  ].map(s => (
+                    <div key={s.label} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "14px 16px" }}>
+                      <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.label}</p>
+                      <p style={{ fontFamily: "var(--font-heading)", fontSize: 26, color: s.clr, margin: 0, lineHeight: 1 }}>{s.val}</p>
+                    </div>
+                  ))}
+                </div>
+                {/* Progress bar suivi de chantier */}
+                <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "16px 18px", marginBottom: 12 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Villa — Ouagadougou Nord</span>
+                    <span style={{ fontSize: 12, color: "hsl(38,65%,58%)", fontWeight: 700 }}>68%</span>
+                  </div>
+                  <div style={{ height: 6, background: "rgba(255,255,255,0.08)", borderRadius: 3, overflow: "hidden" }}>
+                    <div style={{ width: "68%", height: "100%", background: "linear-gradient(to right, hsl(38,65%,42%), hsl(38,72%,58%))", borderRadius: 3 }} />
+                  </div>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", margin: "8px 0 0" }}>Dernière mise à jour: il y a 2 jours</p>
+                </div>
+                {/* Liste notifications */}
+                {[
+                  { icon: "📸", text: "3 nouvelles photos — Fondation coulée", time: "14h32" },
+                  { icon: "📋", text: "Rapport hebdomadaire disponible", time: "Hier" },
+                ].map(n => (
+                  <div key={n.text} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                    <span style={{ fontSize: 16 }}>{n.icon}</span>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: 0, flex: 1 }}>{n.text}</p>
+                    <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>{n.time}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
+      <section id="avis" style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
           <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64 }}>
             {tx.testimonialsTitle}
@@ -376,6 +469,60 @@ export default function Landing() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Contact ──────────────────────────────────────────── */}
+      <section id="contact" style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 64, alignItems: "start" }}>
+          <div>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "hsl(var(--primary))", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 2.8rem)", letterSpacing: "-0.02em", marginBottom: 20, lineHeight: 1.12 }}>
+              {lang === "fr" ? "Une question ?\nNous sommes là." : "A question?\nWe're here."}
+            </h2>
+            <p style={{ fontSize: 16, lineHeight: 1.75, color: "hsl(var(--muted-foreground))", marginBottom: 32 }}>
+              {lang === "fr"
+                ? "Notre équipe est disponible pour répondre à toutes vos questions sur l'investissement au Burkina Faso."
+                : "Our team is available to answer all your questions about investing in Burkina Faso."}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {[
+                { icon: "✉️", label: lang === "fr" ? "Email" : "Email", val: "contact@bayiri-invest.com" },
+                { icon: "📱", label: "WhatsApp", val: "+226 XX XX XX XX" },
+                { icon: "🏢", label: lang === "fr" ? "Bureau" : "Office", val: "Ouagadougou, Burkina Faso" },
+              ].map(c => (
+                <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <span style={{ fontSize: 20, flexShrink: 0 }}>{c.icon}</span>
+                  <div>
+                    <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "0 0 2px", fontWeight: 500 }}>{c.label}</p>
+                    <p style={{ fontSize: 14, color: "hsl(var(--foreground))", fontWeight: 600, margin: 0 }}>{c.val}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 16, padding: 32, boxShadow: "var(--shadow-md)" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {[
+                { label: lang === "fr" ? "Nom complet" : "Full name", type: "text", placeholder: lang === "fr" ? "Votre nom" : "Your name" },
+                { label: "Email", type: "email", placeholder: lang === "fr" ? "votre@email.com" : "your@email.com" },
+                { label: lang === "fr" ? "Votre message" : "Your message", type: "textarea", placeholder: lang === "fr" ? "Décrivez votre projet..." : "Describe your project..." },
+              ].map(f => (
+                <div key={f.label}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "hsl(var(--foreground))", marginBottom: 8 }}>{f.label}</label>
+                  {f.type === "textarea"
+                    ? <textarea rows={4} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid hsl(var(--border))", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "hsl(var(--foreground))", background: "hsl(var(--background))", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+                    : <input type={f.type} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid hsl(var(--border))", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "hsl(var(--foreground))", background: "hsl(var(--background))", outline: "none", boxSizing: "border-box" }} />
+                  }
+                </div>
+              ))}
+              <button style={{ padding: "12px 24px", borderRadius: 8, background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer" }}
+                onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
+                onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
+                {lang === "fr" ? "Envoyer le message" : "Send message"}
+              </button>
+            </div>
           </div>
         </div>
       </section>
