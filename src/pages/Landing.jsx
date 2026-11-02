@@ -233,57 +233,71 @@ export default function Landing() {
           backgroundSize: "cover", backgroundPosition: "center",
           opacity: 0.28,
         }} />
-        {/* Gradient directionnel — gauche opaque, droite transparente */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(110deg, hsl(15,22%,7%) 40%, rgba(15,8,5,0.55) 100%)" }} />
+        {/* Gradient directionnel — 50% gauche opaque, droite transparente */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, hsl(15,22%,7%) 0%, hsl(15,22%,7%) 45%, rgba(15,8,5,0.3) 100%)" }} />
         {/* Gradient bas pour transition douce */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, hsl(15,22%,7%), transparent)" }} />
 
-        {/* Contenu — aligné à gauche, 50% de largeur max */}
-        <div style={{ position: "relative", ...WRAP, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", paddingTop: 140, paddingBottom: 80 }}>
-          {/* Badge Trustpilot */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
-            <div style={{ display: "flex", gap: 2 }}>
-              {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 13, height: 13, fill: "#00b67a", color: "#00b67a" }} />)}
+        {/* Contenu — grille 2 colonnes : texte à gauche, visuel à droite */}
+        <div style={{
+          position: "relative",
+          flex: 1,
+          paddingLeft: G, paddingRight: G,
+          paddingTop: 140, paddingBottom: 80,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          alignItems: "center",
+          gap: 40,
+        }}>
+          {/* Colonne gauche — tout le contenu textuel */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            {/* Badge Trustpilot */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
+              <div style={{ display: "flex", gap: 2 }}>
+                {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 13, height: 13, fill: "#00b67a", color: "#00b67a" }} />)}
+              </div>
+              <span style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", fontWeight: 500, letterSpacing: "0.01em" }}>
+                {tx.hero.trustpilot}
+              </span>
             </div>
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", fontWeight: 500, letterSpacing: "0.01em" }}>
-              {tx.hero.trustpilot}
-            </span>
+
+            {/* Titre — 2 lignes */}
+            <h1 style={{
+              fontFamily: "var(--font-heading)", fontWeight: 400,
+              fontSize: "clamp(2.4rem, 3.8vw, 3.8rem)",
+              lineHeight: 1.08, letterSpacing: "-0.02em",
+              margin: "0 0 22px 0", textAlign: "left",
+            }}>
+              {tx.hero.line1} <span style={{ color: "hsl(38,72%,60%)" }}>{tx.hero.line2}</span><br />
+              {tx.hero.line3}
+            </h1>
+
+            <p style={{ fontSize: "clamp(14px, 1.25vw, 16px)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: "0 0 38px 0", textAlign: "left" }}>
+              {tx.hero.subtitle}
+            </p>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              <Link to="/onboarding">
+                <button
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 8, background: "hsl(38,65%,52%)", color: "hsl(15,25%,12%)", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
+                  onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
+                  {tx.hero.cta} <ArrowRight style={{ width: 17, height: 17 }} />
+                </button>
+              </Link>
+              <a href="#comment">
+                <button
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.88)", fontSize: 15, fontWeight: 600, cursor: "pointer" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.13)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}>
+                  {tx.hero.ctaSub}
+                </button>
+              </a>
+            </div>
           </div>
 
-          {/* Titre — taille modérée, aligné à gauche */}
-          <h1 style={{
-            fontFamily: "var(--font-heading)", fontWeight: 400,
-            fontSize: "clamp(2.6rem, 4.5vw, 4.2rem)",
-            lineHeight: 1.05, letterSpacing: "-0.02em",
-            margin: "0 0 24px 0", maxWidth: 580, textAlign: "left",
-          }}>
-            {tx.hero.line1}<br />
-            <span style={{ color: "hsl(38,72%,60%)" }}>{tx.hero.line2}</span><br />
-            {tx.hero.line3}
-          </h1>
-
-          <p style={{ fontSize: "clamp(14px, 1.4vw, 17px)", color: "rgba(255,255,255,0.55)", maxWidth: 520, lineHeight: 1.72, margin: "0 0 40px 0", textAlign: "left" }}>
-            {tx.hero.subtitle}
-          </p>
-
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-            <Link to="/onboarding">
-              <button
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 8, background: "hsl(38,65%,52%)", color: "hsl(15,25%,12%)", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}
-                onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
-                onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
-                {tx.hero.cta} <ArrowRight style={{ width: 17, height: 17 }} />
-              </button>
-            </Link>
-            <a href="#comment">
-              <button
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.88)", fontSize: 15, fontWeight: 600, cursor: "pointer" }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.13)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}>
-                {tx.hero.ctaSub}
-              </button>
-            </a>
-          </div>
+          {/* Colonne droite — vide, laisse le visuel de fond apparaître */}
+          <div />
         </div>
 
         {/* ── Barre de confiance — style Qonto ──────────────── */}
