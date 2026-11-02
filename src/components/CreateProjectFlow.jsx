@@ -121,15 +121,29 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         {done ? (
-          <div className="py-10 text-center space-y-4">
+          <div className="py-8 text-center space-y-5">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-2xl font-heading font-bold">Demande envoyée !</h2>
-            <p className="text-muted-foreground max-w-sm mx-auto">
-              Votre projet a été soumis. Notre équipe vous recontactera sous 48h pour organiser le suivi et rendre le projet officiel.
-            </p>
-            <Button onClick={handleClose} className="mt-2">Fermer</Button>
+            <div>
+              <h2 className="text-2xl font-heading font-bold">Dossier soumis !</h2>
+              <p className="text-muted-foreground text-sm mt-1">Votre demande a bien été enregistrée.</p>
+            </div>
+            <div className="bg-muted/40 rounded-xl p-4 text-left space-y-3 text-sm">
+              <div className="flex items-start gap-3">
+                <span className="text-lg">📋</span>
+                <p><span className="font-medium text-foreground">Traitement du dossier</span><br /><span className="text-muted-foreground">Notre équipe va étudier votre projet et préparer une proposition de suivi adaptée.</span></p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-lg">🔔</span>
+                <p><span className="font-medium text-foreground">Notification sous 48h</span><br /><span className="text-muted-foreground">Vous recevrez une notification dès que votre dossier aura été pris en charge.</span></p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-lg">📱</span>
+                <p><span className="font-medium text-foreground">Suivi en temps réel</span><br /><span className="text-muted-foreground">Une fois validé, vous pourrez suivre l'avancement de votre projet depuis votre tableau de bord.</span></p>
+              </div>
+            </div>
+            <Button onClick={handleClose} className="w-full mt-2">Retour au tableau de bord</Button>
           </div>
         ) : (
           <>
