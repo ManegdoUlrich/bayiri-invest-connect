@@ -1,26 +1,28 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "@/lib/LangContext";
-import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, ChevronRight } from "lucide-react";
+import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, ChevronRight, Users, Handshake, Flag } from "lucide-react";
+
+const HERO_IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261102_231909_7e626f56-7232-44de-b0c2-bcc0bc859ec0.png";
 
 const t = {
   fr: {
     nav: { login: "Se connecter", start: "Ouvrir un compte" },
     hero: {
+      trustpilot: "4,8 sur 5 · Trustpilot",
       line1: "Investissez",
       line2: "au pays",
       line3: "en confiance.",
       subtitle: "Bayiri Invest accompagne la diaspora africaine dans ses projets immobiliers et commerciaux. Agents certifiés sur le terrain, suivi temps réel, contrats sécurisés.",
       cta: "Démarrer mon projet",
-      trust: "4,8 sur 5",
-      trustLabel: "Trustpilot",
+      ctaSub: "Comment ça marche",
     },
     trust: [
-      { value: "500+", label: "Clients accompagnés" },
-      { value: "3", label: "Villes couvvertes" },
-      { value: "98%", label: "Satisfaction client" },
-      { value: "8 ans", label: "D'expérience terrain" },
+      { label: "Entreprise 100% Burkinabè", desc: "Fondée, gérée et ancrée au Burkina Faso" },
+      { label: "Burkina & Diaspora réunis", desc: "Une équipe jeune, locale et internationale" },
+      { label: "Réseau de partenaires solide", desc: "Artisans, notaires, architectes et banques" },
     ],
-    featuresTitle: "Tout ce dont vous avez besoin, au même endroit.",
+    featuresTitle: "Tout ce dont vous avez besoin,\nau même endroit.",
     features: [
       { icon: MapPin, title: "Agent local dédié", desc: "Un représentant certifié sur le terrain pour défendre vos intérêts et coordonner chaque intervenant." },
       { icon: Building2, title: "Suivi de chantier", desc: "Photos géolocalisées, rapports hebdomadaires et mises à jour en temps réel directement sur votre tableau de bord." },
@@ -57,21 +59,20 @@ const t = {
   en: {
     nav: { login: "Log in", start: "Open an account" },
     hero: {
+      trustpilot: "4.8 out of 5 · Trustpilot",
       line1: "Invest",
       line2: "back home",
       line3: "with confidence.",
       subtitle: "Bayiri Invest guides the African diaspora through real estate and commercial projects. Certified local agents, real-time tracking, secure contracts.",
       cta: "Start my project",
-      trust: "4.8 out of 5",
-      trustLabel: "Trustpilot",
+      ctaSub: "How it works",
     },
     trust: [
-      { value: "500+", label: "Clients supported" },
-      { value: "3", label: "Cities covered" },
-      { value: "98%", label: "Client satisfaction" },
-      { value: "8 yrs", label: "Field experience" },
+      { label: "100% Burkinabè company", desc: "Founded, operated and rooted in Burkina Faso" },
+      { label: "Burkina & Diaspora together", desc: "A young, local and international team" },
+      { label: "Strong partner network", desc: "Builders, notaries, architects and banks" },
     ],
-    featuresTitle: "Everything you need, in one place.",
+    featuresTitle: "Everything you need,\nin one place.",
     features: [
       { icon: MapPin, title: "Dedicated local agent", desc: "A certified representative on the ground to defend your interests and coordinate every party." },
       { icon: Building2, title: "Construction tracking", desc: "Geolocated photos, weekly reports and real-time updates directly on your dashboard." },
@@ -107,61 +108,66 @@ const t = {
   },
 };
 
-// Styles as constants to keep JSX clean
-const S = {
-  btnPrimary: {
-    display: "inline-flex", alignItems: "center", gap: "8px",
-    padding: "12px 24px", borderRadius: "8px",
-    background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))",
-    fontSize: "14px", fontWeight: 600, cursor: "pointer", border: "none",
-    transition: "opacity 0.15s",
-  },
-  btnGold: {
-    display: "inline-flex", alignItems: "center", gap: "8px",
-    padding: "12px 24px", borderRadius: "8px",
-    background: "hsl(38,65%,52%)", color: "hsl(15,25%,12%)",
-    fontSize: "14px", fontWeight: 600, cursor: "pointer", border: "none",
-    transition: "opacity 0.15s",
-  },
-  btnGhost: {
-    display: "inline-flex", alignItems: "center", gap: "8px",
-    padding: "12px 24px", borderRadius: "8px",
-    background: "transparent",
-    border: "1px solid rgba(255,255,255,0.25)",
-    color: "rgba(255,255,255,0.85)",
-    fontSize: "14px", fontWeight: 600, cursor: "pointer",
-    transition: "background 0.15s",
-  },
-};
+const TRUST_ICONS = [Flag, Users, Handshake];
 
 export default function Landing() {
   const { lang, setLang: switchLang } = useLang();
   const tx = t[lang];
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div style={{ background: "hsl(var(--background))", color: "hsl(var(--foreground))", fontFamily: "var(--font-body)" }}>
 
-      {/* ── Navbar ───────────────────────────────────────────── */}
+      {/* ── Navbar — transparente sur le hero ───────────────── */}
       <header style={{
-        position: "sticky", top: 0, zIndex: 50,
-        background: "hsla(var(--background)/0.88)", backdropFilter: "blur(16px)",
-        borderBottom: "1px solid hsl(var(--border)/0.6)",
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        background: scrolled ? "hsla(var(--background)/0.92)" : "transparent",
+        backdropFilter: scrolled ? "blur(16px)" : "none",
+        borderBottom: scrolled ? "1px solid hsl(var(--border)/0.5)" : "none",
+        transition: "background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease",
       }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <img src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png" alt="Bayiri Invest" style={{ height: 40, objectFit: "contain" }} />
-
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <img
+            src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png"
+            alt="Bayiri Invest"
+            style={{ height: 38, objectFit: "contain", filter: scrolled ? "none" : "brightness(10)" }}
+          />
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <button onClick={() => switchLang(lang === "fr" ? "en" : "fr")}
-              style={{ fontSize: 13, fontWeight: 500, padding: "6px 12px", borderRadius: 6, border: "none", cursor: "pointer", background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+              style={{
+                fontSize: 13, fontWeight: 500, padding: "6px 12px", borderRadius: 6,
+                border: "none", cursor: "pointer",
+                background: scrolled ? "hsl(var(--muted))" : "rgba(255,255,255,0.12)",
+                color: scrolled ? "hsl(var(--muted-foreground))" : "rgba(255,255,255,0.85)",
+                transition: "background 0.3s, color 0.3s",
+              }}>
               {lang === "fr" ? "EN" : "FR"}
             </button>
             <Link to="/dashboard">
-              <button style={{ fontSize: 14, fontWeight: 500, padding: "8px 16px", borderRadius: 8, border: "1px solid hsl(var(--border))", background: "transparent", color: "hsl(var(--foreground))", cursor: "pointer" }}>
+              <button style={{
+                fontSize: 14, fontWeight: 500, padding: "8px 18px", borderRadius: 8,
+                border: `1px solid ${scrolled ? "hsl(var(--border))" : "rgba(255,255,255,0.3)"}`,
+                background: "transparent",
+                color: scrolled ? "hsl(var(--foreground))" : "rgba(255,255,255,0.9)",
+                cursor: "pointer", transition: "all 0.3s",
+              }}>
                 {tx.nav.login}
               </button>
             </Link>
             <Link to="/onboarding">
-              <button style={{ ...S.btnPrimary, padding: "8px 20px" }}>
+              <button style={{
+                fontSize: 14, fontWeight: 600, padding: "8px 20px", borderRadius: 8,
+                background: "hsl(38,65%,52%)", color: "hsl(15,25%,12%)",
+                border: "none", cursor: "pointer", transition: "opacity 0.15s",
+              }}
+                onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
+                onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
                 {tx.nav.start}
               </button>
             </Link>
@@ -170,89 +176,111 @@ export default function Landing() {
       </header>
 
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section style={{ position: "relative", overflow: "hidden", background: "hsl(15,22%,9%)", color: "white", minHeight: "90vh", display: "flex", flexDirection: "column" }}>
-        {/* Background image */}
+      <section style={{ position: "relative", overflow: "hidden", background: "hsl(15,22%,7%)", color: "white", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        {/* Photo de fond — vue aérienne Ouagadougou */}
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: "url('https://images.unsplash.com/photo-1541123603104-512919d6a96c?w=1600&fit=crop')",
-          backgroundSize: "cover", backgroundPosition: "center right",
-          opacity: 0.18,
+          backgroundImage: `url('${HERO_IMG}')`,
+          backgroundSize: "cover", backgroundPosition: "center",
+          opacity: 0.28,
         }} />
-        {/* Gradient overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, hsl(15,22%,8%) 45%, transparent 100%)" }} />
+        {/* Gradient directionnel — gauche opaque, droite transparente */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(110deg, hsl(15,22%,7%) 40%, rgba(15,8,5,0.55) 100%)" }} />
+        {/* Gradient bas pour transition douce */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, hsl(15,22%,7%), transparent)" }} />
 
-        <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "80px 24px 60px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          {/* Trustpilot badge */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 40 }}>
+        {/* Contenu */}
+        <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 32px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: 160, paddingBottom: 80 }}>
+          {/* Badge Trustpilot */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 36 }}>
             <div style={{ display: "flex", gap: 2 }}>
               {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 14, height: 14, fill: "#00b67a", color: "#00b67a" }} />)}
             </div>
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
-              {tx.hero.trust} · {tx.hero.trustLabel}
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", fontWeight: 500, letterSpacing: "0.01em" }}>
+              {tx.hero.trustpilot}
             </span>
           </div>
 
-          {/* Big title — Qonto style: each phrase on its own line */}
-          <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(3rem, 7vw, 6rem)", lineHeight: 1.05, letterSpacing: "-0.02em", marginBottom: 32, maxWidth: 700 }}>
+          {/* Titre massif — style Qonto */}
+          <h1 style={{
+            fontFamily: "var(--font-heading)", fontWeight: 400,
+            fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)",
+            lineHeight: 1.0, letterSpacing: "-0.025em",
+            margin: "0 0 28px 0", maxWidth: 760,
+          }}>
             {tx.hero.line1}<br />
-            <span style={{ color: "hsl(38,72%,62%)" }}>{tx.hero.line2}</span><br />
+            <span style={{ color: "hsl(38,72%,60%)" }}>{tx.hero.line2}</span><br />
             {tx.hero.line3}
           </h1>
 
-          <p style={{ fontSize: "clamp(15px, 2vw, 18px)", color: "rgba(255,255,255,0.62)", maxWidth: 520, lineHeight: 1.65, marginBottom: 40 }}>
+          <p style={{ fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(255,255,255,0.58)", maxWidth: 480, lineHeight: 1.7, margin: "0 0 44px 0" }}>
             {tx.hero.subtitle}
           </p>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
             <Link to="/onboarding">
-              <button style={{ ...S.btnGold, padding: "14px 32px", fontSize: 15 }}
+              <button
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 8, background: "hsl(38,65%,52%)", color: "hsl(15,25%,12%)", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
                 onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
-                {tx.hero.cta} <ArrowRight style={{ width: 16, height: 16 }} />
+                {tx.hero.cta} <ArrowRight style={{ width: 17, height: 17 }} />
               </button>
             </Link>
             <a href="#comment">
-              <button style={{ ...S.btnGhost, padding: "14px 32px", fontSize: 15 }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                Comment ça marche
+              <button
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.88)", fontSize: 15, fontWeight: 600, cursor: "pointer" }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.13)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}>
+                {tx.hero.ctaSub}
               </button>
             </a>
           </div>
         </div>
 
-        {/* Stats bar */}
-        <div style={{ position: "relative", borderTop: "1px solid rgba(255,255,255,0.08)", background: "rgba(0,0,0,0.25)", backdropFilter: "blur(8px)" }}>
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px 24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "16px 32px", textAlign: "center" }}>
-            {tx.trust.map(s => (
-              <div key={s.label}>
-                <p style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 400, color: "hsl(38,72%,62%)", lineHeight: 1.1 }}>{s.value}</p>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.label}</p>
-              </div>
-            ))}
+        {/* ── Barre de confiance — style Qonto ──────────────── */}
+        <div style={{ position: "relative", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+            {tx.trust.map((item, i) => {
+              const Icon = TRUST_ICONS[i];
+              return (
+                <div key={item.label} style={{
+                  display: "flex", alignItems: "center", gap: 16,
+                  padding: "28px 24px",
+                  borderRight: i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none",
+                }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Icon style={{ width: 18, height: 18, color: "hsl(38,65%,58%)" }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.92)", margin: "0 0 3px 0", lineHeight: 1.3 }}>{item.label}</p>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.42)", margin: 0, lineHeight: 1.4 }}>{item.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ── Features ─────────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--background))", padding: "96px 24px" }}>
+      <section style={{ background: "hsl(var(--background))", padding: "100px 32px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.015em", marginBottom: 64, maxWidth: 600, lineHeight: 1.15 }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64, maxWidth: 560, lineHeight: 1.12, whiteSpace: "pre-line" }}>
             {tx.featuresTitle}
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
             {tx.features.map(f => {
               const Icon = f.icon;
               return (
-                <div key={f.title} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 12, padding: "32px 28px", boxShadow: "var(--shadow-sm)", transition: "box-shadow 0.2s, transform 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "var(--shadow-md)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "var(--shadow-sm)"; e.currentTarget.style.transform = "translateY(0)"; }}
-                >
+                <div key={f.title}
+                  style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 14, padding: "32px 28px", boxShadow: "var(--shadow-sm)", transition: "box-shadow 0.2s, transform 0.2s", cursor: "default" }}
+                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "var(--shadow-md)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "var(--shadow-sm)"; e.currentTarget.style.transform = "translateY(0)"; }}>
                   <div style={{ width: 44, height: 44, borderRadius: 10, background: "hsl(var(--primary)/0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                    <Icon style={{ width: 22, height: 22, color: "hsl(var(--primary))" }} />
+                    <Icon style={{ width: 21, height: 21, color: "hsl(var(--primary))" }} />
                   </div>
-                  <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.2rem", marginBottom: 10, color: "hsl(var(--foreground))" }}>{f.title}</h3>
-                  <p style={{ fontSize: 14, lineHeight: 1.7, color: "hsl(var(--muted-foreground))" }}>{f.desc}</p>
+                  <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.15rem", marginBottom: 10, color: "hsl(var(--foreground))", lineHeight: 1.2 }}>{f.title}</h3>
+                  <p style={{ fontSize: 14, lineHeight: 1.72, color: "hsl(var(--muted-foreground))", margin: 0 }}>{f.desc}</p>
                 </div>
               );
             })}
@@ -261,23 +289,23 @@ export default function Landing() {
       </section>
 
       {/* ── How it works ─────────────────────────────────────── */}
-      <section id="comment" style={{ background: "hsl(var(--muted))", padding: "96px 24px" }}>
+      <section id="comment" style={{ background: "hsl(var(--muted))", padding: "100px 32px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.015em", marginBottom: 64, lineHeight: 1.15, whiteSpace: "pre-line" }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64, lineHeight: 1.12, whiteSpace: "pre-line" }}>
             {tx.howTitle}
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 32 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40 }}>
             {tx.steps.map((step, i) => (
-              <div key={step.num} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "hsl(var(--primary))", letterSpacing: "0.08em" }}>{step.num}</span>
+              <div key={step.num}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "hsl(var(--primary))", letterSpacing: "0.1em" }}>{step.num}</span>
                   {i < tx.steps.length - 1 && <div style={{ flex: 1, height: 1, background: "hsl(var(--border))" }} />}
                 </div>
-                <div style={{ width: 40, height: 40, borderRadius: "50%", background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
                   <ChevronRight style={{ width: 18, height: 18 }} />
                 </div>
-                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.1rem", color: "hsl(var(--foreground))" }}>{step.title}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.65, color: "hsl(var(--muted-foreground))" }}>{step.desc}</p>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.1rem", color: "hsl(var(--foreground))", marginBottom: 10 }}>{step.title}</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.65, color: "hsl(var(--muted-foreground))", margin: 0 }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -285,58 +313,59 @@ export default function Landing() {
       </section>
 
       {/* ── Platform ─────────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--background))", padding: "96px 24px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+      <section style={{ background: "hsl(var(--background))", padding: "100px 32px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 72, alignItems: "center" }}>
           <div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.015em", marginBottom: 40, lineHeight: 1.15, whiteSpace: "pre-line" }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 36, lineHeight: 1.12, whiteSpace: "pre-line" }}>
               {tx.platformTitle}
             </h2>
-            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px 0", display: "flex", flexDirection: "column", gap: 16 }}>
+            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px 0", display: "flex", flexDirection: "column", gap: 14 }}>
               {tx.platformFeatures.map(f => (
                 <li key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15, color: "hsl(var(--foreground))" }}>
-                  <CheckCircle style={{ width: 18, height: 18, color: "hsl(var(--secondary))", flexShrink: 0 }} />
+                  <CheckCircle style={{ width: 17, height: 17, color: "hsl(var(--secondary))", flexShrink: 0 }} />
                   {f}
                 </li>
               ))}
             </ul>
             <Link to="/dashboard">
-              <button style={{ ...S.btnPrimary }}
+              <button
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 8, background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer" }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
                 onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
-                {tx.platformCta} <ArrowRight style={{ width: 16, height: 16 }} />
+                {tx.platformCta} <ArrowRight style={{ width: 15, height: 15 }} />
               </button>
             </Link>
           </div>
           <div>
             <img
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=560&fit=crop"
-              alt="Dashboard"
-              style={{ width: "100%", borderRadius: 16, boxShadow: "var(--shadow-xl)", border: "1px solid hsl(var(--border)/0.4)" }}
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=620&fit=crop"
+              alt="Plateforme Bayiri Invest"
+              style={{ width: "100%", borderRadius: 16, boxShadow: "var(--shadow-xl)", border: "1px solid hsl(var(--border)/0.4)", display: "block" }}
             />
           </div>
         </div>
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--muted))", padding: "96px 24px" }}>
+      <section style={{ background: "hsl(var(--muted))", padding: "100px 32px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.015em", marginBottom: 64 }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64 }}>
             {tx.testimonialsTitle}
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
             {tx.testimonials.map(t => (
-              <div key={t.name} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 12, padding: "32px 28px", boxShadow: "var(--shadow-sm)", display: "flex", flexDirection: "column", gap: 20 }}>
+              <div key={t.name} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 14, padding: "32px 28px", boxShadow: "var(--shadow-sm)", display: "flex", flexDirection: "column", gap: 18 }}>
                 <div style={{ display: "flex", gap: 3 }}>
-                  {[...Array(t.stars)].map((_, i) => <Star key={i} style={{ width: 14, height: 14, fill: "hsl(38,75%,52%)", color: "hsl(38,75%,52%)" }} />)}
+                  {[...Array(t.stars)].map((_, i) => <Star key={i} style={{ width: 14, height: 14, fill: "hsl(38,72%,52%)", color: "hsl(38,72%,52%)" }} />)}
                 </div>
-                <p style={{ fontSize: 15, lineHeight: 1.7, color: "hsl(var(--foreground))", fontStyle: "italic", flex: 1 }}>"{t.text}"</p>
+                <p style={{ fontSize: 15, lineHeight: 1.72, color: "hsl(var(--foreground))", fontStyle: "italic", flex: 1, margin: 0 }}>"{t.text}"</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: "hsl(var(--primary)/0.12)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600, fontSize: 14, color: "hsl(var(--primary))", flexShrink: 0 }}>
+                  <div style={{ width: 38, height: 38, borderRadius: "50%", background: "hsl(var(--primary)/0.12)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 14, color: "hsl(var(--primary))", flexShrink: 0 }}>
                     {t.name.charAt(0)}
                   </div>
                   <div>
-                    <p style={{ fontWeight: 600, fontSize: 14, color: "hsl(var(--foreground))" }}>{t.name}</p>
-                    <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>{t.origin}</p>
+                    <p style={{ fontWeight: 600, fontSize: 14, color: "hsl(var(--foreground))", margin: "0 0 2px 0" }}>{t.name}</p>
+                    <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: 0 }}>{t.origin}</p>
                   </div>
                 </div>
               </div>
@@ -345,15 +374,17 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Final CTA ────────────────────────────────────────── */}
-      <section style={{ background: "hsl(15,22%,9%)", color: "white", padding: "96px 24px", textAlign: "center" }}>
-        <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2.5rem, 5vw, 4rem)", letterSpacing: "-0.02em", marginBottom: 20, lineHeight: 1.1 }}>
+      {/* ── CTA final ────────────────────────────────────────── */}
+      <section style={{ background: "hsl(15,22%,8%)", color: "white", padding: "120px 32px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, hsl(38,65%,42%,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "relative", maxWidth: 600, margin: "0 auto" }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2.5rem, 5vw, 4.5rem)", letterSpacing: "-0.025em", marginBottom: 20, lineHeight: 1.05 }}>
             {tx.finalCta}
           </h2>
-          <p style={{ fontSize: 16, color: "rgba(255,255,255,0.55)", marginBottom: 40, lineHeight: 1.65 }}>{tx.finalCtaSub}</p>
+          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.5)", marginBottom: 44, lineHeight: 1.65 }}>{tx.finalCtaSub}</p>
           <Link to="/onboarding">
-            <button style={{ ...S.btnGold, padding: "16px 40px", fontSize: 16 }}
+            <button
+              style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 44px", borderRadius: 8, background: "hsl(38,65%,52%)", color: "hsl(15,25%,12%)", fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer" }}
               onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
               onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
               {tx.finalCtaBtn} <ArrowRight style={{ width: 18, height: 18 }} />
@@ -363,14 +394,22 @@ export default function Landing() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────── */}
-      <footer style={{ background: "hsl(15,20%,7%)", color: "rgba(255,255,255,0.4)", padding: "40px 24px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
-          <img src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png" alt="Bayiri Invest" style={{ height: 36, objectFit: "contain", filter: "brightness(1.6)" }} />
-          <p style={{ fontSize: 13 }}>{tx.footer}</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px 24px", fontSize: 13 }}>
-            <Link to="/dashboard" style={{ color: "inherit", textDecoration: "none" }} onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.4)"}>{tx.nav.login}</Link>
-            <Link to="/cgu" style={{ color: "inherit", textDecoration: "none" }} onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.4)"}>CGU</Link>
-            <Link to="/mentions-legales" style={{ color: "inherit", textDecoration: "none" }} onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.4)"}>Mentions légales</Link>
+      <footer style={{ background: "hsl(15,18%,5%)", color: "rgba(255,255,255,0.35)", padding: "36px 32px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
+          <img src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png" alt="Bayiri Invest" style={{ height: 34, objectFit: "contain", filter: "brightness(1.5)" }} />
+          <p style={{ fontSize: 13, margin: 0 }}>{tx.footer}</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px", fontSize: 13 }}>
+            {[
+              { to: "/dashboard", label: tx.nav.login },
+              { to: "/cgu", label: "CGU" },
+              { to: "/mentions-legales", label: "Mentions légales" },
+            ].map(l => (
+              <Link key={l.to} to={l.to} style={{ color: "inherit", textDecoration: "none" }}
+                onMouseEnter={e => e.target.style.color = "rgba(255,255,255,0.8)"}
+                onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.35)"}>
+                {l.label}
+              </Link>
+            ))}
             <button onClick={() => switchLang(lang === "fr" ? "en" : "fr")} style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", fontSize: 13, padding: 0 }}>
               {lang === "fr" ? "EN" : "FR"}
             </button>
