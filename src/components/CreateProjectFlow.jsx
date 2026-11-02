@@ -90,7 +90,7 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
         title: form.title,
         description: form.description,
         type: form.type,
-        project_duration: form.project_duration,
+        projectDuration: form.project_duration,
         subscriptionType: form.subscription_type,
         paymentMethod: form.payment_method,
         city: form.city,
