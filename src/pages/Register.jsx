@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/AuthContext'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Mail } from 'lucide-react'
 
 export default function Register() {
   const { register, isAuthenticated, user } = useAuth()
@@ -12,6 +12,8 @@ export default function Register() {
   const [form, setForm]     = useState({ fullName: '', email: '', password: '', confirm: '' })
   const [error, setError]   = useState(null)
   const [loading, setLoading] = useState(false)
+  const [confirmed, setConfirmed] = useState(false)
+  const [registeredEmail, setRegisteredEmail] = useState('')
 
   if (isAuthenticated && user) {
     const dest = user.role === 'admin' ? '/admin'
@@ -35,7 +37,8 @@ export default function Register() {
     setLoading(true)
     try {
       await register(form.email, form.password, form.fullName)
-      navigate('/onboarding', { replace: true })
+      setRegisteredEmail(form.email)
+      setConfirmed(true)
     } catch (err) {
       setError(err.message || 'Une erreur est survenue')
     } finally {
@@ -44,6 +47,31 @@ export default function Register() {
   }
 
   const set = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }))
+
+  if (confirmed) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="w-full max-w-sm text-center space-y-6">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+            <Mail className="w-8 h-8 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-heading font-bold">Compte créé !</h2>
+            <p className="text-muted-foreground mt-2 text-sm">
+              Un email de confirmation a été envoyé à
+            </p>
+            <p className="font-medium text-foreground mt-1">{registeredEmail}</p>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Vérifiez votre boîte de réception (et vos spams). Vous pouvez continuer sans confirmer votre email.
+          </p>
+          <Button className="w-full" onClick={() => navigate('/onboarding', { replace: true })}>
+            Continuer la configuration →
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">

@@ -13,13 +13,40 @@ import {
   Building2, MapPin, TrendingUp, Shield, Truck, HelpCircle
 } from "lucide-react";
 
-const projectTypes = [
-  { v: "construction", label: "Construction", icon: Building2 },
-  { v: "terrain", label: "Terrain / Foncier", icon: MapPin },
-  { v: "commerce", label: "Commerce", icon: TrendingUp },
-  { v: "representation", label: "Représentation", icon: Shield },
-  { v: "logistique", label: "Logistique", icon: Truck },
-  { v: "autre", label: "Autre", icon: HelpCircle },
+const EUR_TO_XOF = 655.957;
+const EUR_TO_USD = 1.08;
+
+function toEur(amount, currency) {
+  if (!amount) return 0;
+  const n = parseFloat(amount);
+  if (currency === "EUR") return n;
+  if (currency === "XOF") return n / EUR_TO_XOF;
+  if (currency === "USD") return n / EUR_TO_USD;
+  return n;
+}
+
+function formatXOF(eur) {
+  return Math.round(eur * EUR_TO_XOF).toLocaleString("fr-FR") + " FCFA";
+}
+function formatUSD(eur) {
+  return (eur * EUR_TO_USD).toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " $";
+}
+function formatEUR(eur) {
+  return eur.toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " €";
+}
+
+const PONCTUEL_TYPES = [
+  { v: "terrain",        label: "Achat de terrain",           icon: MapPin },
+  { v: "logistique",     label: "Logistique ponctuelle",      icon: Truck },
+  { v: "representation", label: "Représentation ponctuelle",  icon: Shield },
+  { v: "autre",          label: "Autre prestation ponctuelle",icon: HelpCircle },
+];
+
+const LONG_TERME_TYPES = [
+  { v: "construction",   label: "Construction",               icon: Building2 },
+  { v: "logistique",     label: "Logistique de long terme",   icon: Truck },
+  { v: "commerce",       label: "Commerce",                   icon: TrendingUp },
+  { v: "autre",          label: "Autre prestation de long terme", icon: HelpCircle },
 ];
 
 const STEPS = ["Type de projet", "Abonnement", "Détails", "Récapitulatif"];
@@ -37,11 +64,15 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
     city: "",
     country: "Burkina Faso",
     budget: "",
+    budget_currency: "EUR",
   });
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState(null);
 
   const update = (k, v) => setForm(p => ({ ...p, [k]: v }));
+
+  const projectTypes = form.project_duration === "ponctuel" ? PONCTUEL_TYPES : LONG_TERME_TYPES;
 
   const canNext = () => {
     if (step === 0) return form.project_duration && form.type;
@@ -52,29 +83,39 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
 
   const submit = async () => {
     setSaving(true);
-    await projectsApi.create({
-      title: form.title,
-      description: form.description,
-      type: form.type,
-      project_duration: form.project_duration,
-      subscriptionType: form.subscription_type,
-      paymentMethod: form.payment_method,
-      city: form.city,
-      country: form.country,
-      budget: form.budget ? Number(form.budget) : undefined,
-      status: "soumis",
-    });
-    setSaving(false);
-    setDone(true);
-    if (onCreated) onCreated();
+    setError(null);
+    try {
+      const budgetEur = form.budget ? toEur(form.budget, form.budget_currency) : undefined;
+      await projectsApi.create({
+        title: form.title,
+        description: form.description,
+        type: form.type,
+        project_duration: form.project_duration,
+        subscriptionType: form.subscription_type,
+        paymentMethod: form.payment_method,
+        city: form.city,
+        country: form.country,
+        budget: budgetEur ? Math.round(budgetEur) : undefined,
+        status: "soumis",
+      });
+      setDone(true);
+      if (onCreated) onCreated();
+    } catch (err) {
+      setError(err.message || "Une erreur est survenue. Veuillez réessayer.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleClose = () => {
     setStep(0);
-    setForm({ project_duration: "", type: "", subscription_type: "", payment_method: "", title: "", description: "", city: "", country: "Burkina Faso", budget: "" });
+    setForm({ project_duration: "", type: "", subscription_type: "", payment_method: "", title: "", description: "", city: "", country: "Burkina Faso", budget: "", budget_currency: "EUR" });
     setDone(false);
+    setError(null);
     onClose();
   };
+
+  const budgetEur = toEur(form.budget, form.budget_currency);
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -94,7 +135,6 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
           <>
             <DialogHeader>
               <DialogTitle className="font-heading">Nouveau projet</DialogTitle>
-              {/* Progress */}
               <div className="flex items-center gap-2 pt-3">
                 {STEPS.map((s, i) => (
                   <div key={s} className="flex-1 flex flex-col items-center gap-1">
@@ -114,14 +154,14 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
                     <Label className="mb-3 block text-base font-semibold">Quelle est la durée de votre projet ?</Label>
                     <div className="grid grid-cols-2 gap-3">
                       {[
-                        { v: "ponctuel", label: "Prestation ponctuelle", icon: Zap, desc: "Un besoin précis, une mission ciblée." },
-                        { v: "long_terme", label: "Projet long terme", icon: Calendar, desc: "Suivi continu sur plusieurs mois." },
+                        { v: "ponctuel",   label: "Prestation ponctuelle", icon: Zap,      desc: "Un besoin précis, une mission ciblée." },
+                        { v: "long_terme", label: "Projet long terme",     icon: Calendar, desc: "Suivi continu sur plusieurs mois." },
                       ].map(opt => {
                         const Icon = opt.icon;
                         return (
                           <button
                             key={opt.v}
-                            onClick={() => update("project_duration", opt.v)}
+                            onClick={() => { update("project_duration", opt.v); update("type", ""); }}
                             className={`p-5 rounded-xl border-2 text-left transition-all ${form.project_duration === opt.v ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"}`}
                           >
                             <Icon className="w-6 h-6 mb-2 text-primary" />
@@ -132,24 +172,27 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
                       })}
                     </div>
                   </div>
-                  <div>
-                    <Label className="mb-3 block text-base font-semibold">Type de projet</Label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {projectTypes.map(opt => {
-                        const Icon = opt.icon;
-                        return (
-                          <button
-                            key={opt.v}
-                            onClick={() => update("type", opt.v)}
-                            className={`p-4 rounded-xl border-2 text-center transition-all ${form.type === opt.v ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"}`}
-                          >
-                            <Icon className="w-5 h-5 mx-auto mb-1.5 text-primary" />
-                            <p className="text-xs font-medium">{opt.label}</p>
-                          </button>
-                        );
-                      })}
+
+                  {form.project_duration && (
+                    <div>
+                      <Label className="mb-3 block text-base font-semibold">Type de projet</Label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {projectTypes.map(opt => {
+                          const Icon = opt.icon;
+                          return (
+                            <button
+                              key={opt.v + opt.label}
+                              onClick={() => update("type", opt.v)}
+                              className={`p-4 rounded-xl border-2 text-left transition-all ${form.type === opt.v ? "border-primary bg-primary/5" : "border-border hover:border-primary/40"}`}
+                            >
+                              <Icon className="w-5 h-5 mb-1.5 text-primary" />
+                              <p className="text-xs font-medium">{opt.label}</p>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               )}
 
@@ -219,7 +262,6 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
                     </div>
                   </div>
 
-                  {/* Payment method */}
                   {form.subscription_type && (
                     <div>
                       <Label className="mb-3 block text-base font-semibold">Mode de paiement</Label>
@@ -232,8 +274,8 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
                       ) : (
                         <div className="grid grid-cols-2 gap-3">
                           {[
-                            { v: "carte", label: "Carte bancaire", sub: "Prélèvement automatique", icon: CreditCard },
-                            { v: "mobile_money", label: "Mobile Money", sub: "Virement à valider manuellement", icon: Smartphone },
+                            { v: "carte",        label: "Carte bancaire", sub: "Prélèvement automatique",      icon: CreditCard },
+                            { v: "mobile_money", label: "Mobile Money",   sub: "Virement à valider manuellement", icon: Smartphone },
                           ].map(m => {
                             const Icon = m.icon;
                             return (
@@ -273,19 +315,61 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
                       value={form.description}
                       onChange={e => update("description", e.target.value)}
                       placeholder="Décrivez votre projet en détail : superficie, matériaux souhaités, contraintes particulières..."
-                      rows={5}
+                      rows={4}
                       className="mt-1"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label>Ville / Localité</Label>
-                      <Input value={form.city} onChange={e => update("city", e.target.value)} placeholder="Ex: Ouagadougou" className="mt-1" />
+                  <div>
+                    <Label>Ville / Localité</Label>
+                    <Input value={form.city} onChange={e => update("city", e.target.value)} placeholder="Ex: Ouagadougou" className="mt-1" />
+                  </div>
+
+                  {/* Budget multi-devises */}
+                  <div>
+                    <Label>Budget estimé</Label>
+                    <div className="mt-1 flex gap-2">
+                      <div className="flex rounded-lg border border-input overflow-hidden flex-1">
+                        <input
+                          type="number"
+                          value={form.budget}
+                          onChange={e => update("budget", e.target.value)}
+                          placeholder="Ex: 25 000"
+                          className="flex-1 px-3 py-2 text-sm bg-background outline-none min-w-0"
+                        />
+                        <div className="flex border-l border-input">
+                          {["EUR", "XOF", "USD"].map(c => (
+                            <button
+                              key={c}
+                              type="button"
+                              onClick={() => update("budget_currency", c)}
+                              className={`px-3 py-2 text-xs font-semibold transition-colors ${form.budget_currency === c ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}
+                            >
+                              {c}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <Label>Budget estimé (EUR)</Label>
-                      <Input value={form.budget} type="number" onChange={e => update("budget", e.target.value)} placeholder="Ex: 25000" className="mt-1" />
-                    </div>
+
+                    {form.budget && budgetEur > 0 && (
+                      <div className="mt-2 flex gap-3 flex-wrap">
+                        {form.budget_currency !== "EUR" && (
+                          <span className="text-xs bg-muted px-2.5 py-1 rounded-full text-muted-foreground">
+                            ≈ {formatEUR(budgetEur)}
+                          </span>
+                        )}
+                        {form.budget_currency !== "XOF" && (
+                          <span className="text-xs bg-muted px-2.5 py-1 rounded-full text-muted-foreground">
+                            ≈ {formatXOF(budgetEur)}
+                          </span>
+                        )}
+                        {form.budget_currency !== "USD" && (
+                          <span className="text-xs bg-muted px-2.5 py-1 rounded-full text-muted-foreground">
+                            ≈ {formatUSD(budgetEur)}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -295,29 +379,45 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
                 <div className="space-y-4">
                   <div className="bg-muted/30 rounded-xl p-5 space-y-3 text-sm">
                     {[
-                      { label: "Projet", value: form.title },
-                      { label: "Type", value: projectTypes.find(p => p.v === form.type)?.label },
-                      { label: "Durée", value: form.project_duration === "ponctuel" ? "Prestation ponctuelle" : "Long terme" },
-                      { label: "Formule", value: form.subscription_type === "mensuel_engagement" ? "Mensuel avec engagement" : form.subscription_type === "mensuel_sans_engagement" ? "Mensuel sans engagement" : "Forfait" },
-                      { label: "Paiement", value: form.payment_method === "carte" ? "Carte bancaire" : "Mobile Money" },
+                      { label: "Projet",       value: form.title },
+                      { label: "Type",         value: projectTypes.find(p => p.v === form.type)?.label },
+                      { label: "Durée",        value: form.project_duration === "ponctuel" ? "Prestation ponctuelle" : "Long terme" },
+                      { label: "Formule",      value: form.subscription_type === "mensuel_engagement" ? "Mensuel avec engagement" : form.subscription_type === "mensuel_sans_engagement" ? "Mensuel sans engagement" : "Forfait" },
+                      { label: "Paiement",     value: form.payment_method === "carte" ? "Carte bancaire" : "Mobile Money" },
                       { label: "Localisation", value: [form.city, form.country].filter(Boolean).join(", ") },
-                      { label: "Budget estimé", value: form.budget ? `${Number(form.budget).toLocaleString("fr-FR")} €` : "Non précisé" },
                     ].map(row => (
                       <div key={row.label} className="flex justify-between">
                         <span className="text-muted-foreground">{row.label}</span>
                         <span className="font-medium text-right">{row.value || "—"}</span>
                       </div>
                     ))}
+
+                    {form.budget && budgetEur > 0 && (
+                      <div className="flex justify-between items-start">
+                        <span className="text-muted-foreground">Budget estimé</span>
+                        <div className="text-right space-y-0.5">
+                          <p className="font-semibold">{formatEUR(budgetEur)}</p>
+                          <p className="text-xs text-muted-foreground">{formatXOF(budgetEur)}</p>
+                          <p className="text-xs text-muted-foreground">{formatUSD(budgetEur)}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
+
                   {form.description && (
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Description</p>
                       <p className="text-sm">{form.description}</p>
                     </div>
                   )}
+
                   <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
                     <strong>Prochaine étape :</strong> Après soumission, notre équipe vous contactera sous 48h pour valider les détails et lancer officiellement le suivi de votre projet.
                   </div>
+
+                  {error && (
+                    <p className="text-sm text-destructive bg-destructive/10 rounded-lg px-3 py-2">{error}</p>
+                  )}
                 </div>
               )}
             </div>
@@ -332,7 +432,7 @@ export default function CreateProjectFlow({ open, onClose, onCreated }) {
                   Suivant <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               ) : (
-                <Button onClick={submit} disabled={saving || !canNext()}>
+                <Button onClick={submit} disabled={saving}>
                   {saving ? "Envoi en cours..." : "Soumettre le projet"}
                 </Button>
               )}

@@ -17,8 +17,11 @@ export default function Onboarding() {
   const tx = translations[lang].onboarding;
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
+  const nameParts = (user?.fullName || "").trim().split(/\s+/);
   const [form, setForm] = useState({
-    first_name: "", last_name: "", profession: "",
+    first_name: nameParts[0] || "",
+    last_name: nameParts.slice(1).join(" ") || "",
+    profession: "",
     phone: "", country_residence: "", country: "", city: "",
     project_type: "construction", project_description: "", budget_range: "",
   });
