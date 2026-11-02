@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { projectsApi } from "@/api/projects";
 import { usersApi } from "@/api/users";
-import { Plus, Search, Edit, Trash2, PenLine, CheckCircle, ChevronRight } from "lucide-react";
+import { Plus, Search, Edit, Trash2, PenLine, CheckCircle, ChevronRight, FileText, CreditCard, BarChart3, Inbox } from "lucide-react";
 import { sendNotification, notifMessages } from "@/lib/notifications";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,18 +10,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-// Pipeline principal : ordre affiché dans le stepper
-const PIPELINE = [
-  { value: "soumis",           label: "Soumis",          short: "Soumis" },
-  { value: "accepte",          label: "Accepté",         short: "Accepté" },
-  { value: "prise_de_contact", label: "Prise de contact",short: "Contact" },
-  { value: "contrat",          label: "Contrat",         short: "Contrat" },
-  { value: "paiement",         label: "Paiement",        short: "Paiement" },
-  { value: "reporting",        label: "Reporting",       short: "Reporting" },
-  { value: "termine",          label: "Terminé",         short: "Terminé" },
+// Phase 1 : pipeline commercial (soumission → paiement)
+const PIPELINE_COMMERCIAL = [
+  { value: "soumis",           label: "Soumis",           short: "Soumis" },
+  { value: "accepte",          label: "Accepté",          short: "Accepté" },
+  { value: "prise_de_contact", label: "Prise de contact", short: "Contact" },
+  { value: "contrat",          label: "Contrat",          short: "Contrat" },
+  { value: "paiement",         label: "Paiement",         short: "Paiement" },
 ];
 
-const PIPELINE_VALUES = PIPELINE.map(s => s.value);
+// Phase 2 : suivi post-signature
+const PIPELINE_REPORTING = [
+  { value: "reporting", label: "Reporting", short: "Reporting" },
+  { value: "termine",   label: "Terminé",   short: "Terminé" },
+];
+
+const COMMERCIAL_VALUES = PIPELINE_COMMERCIAL.map(s => s.value);
+const REPORTING_VALUES  = PIPELINE_REPORTING.map(s => s.value);
 
 const statusLabels = {
   brouillon:        "Brouillon",
@@ -65,26 +70,23 @@ const emptyForm = {
   amountPaid: "", adminNotes: "", tags: [],
 };
 
-function ProjectPipeline({ status }) {
-  const pipelineIdx = PIPELINE_VALUES.indexOf(status);
-  const inPipeline = pipelineIdx >= 0;
-
-  if (!inPipeline) return null;
-
+function PipelineStepper({ status, pipeline }) {
+  const idx = pipeline.findIndex(s => s.value === status);
+  if (idx < 0) return null;
   return (
-    <div className="flex items-center gap-0 overflow-x-auto pb-1">
-      {PIPELINE.map((step, idx) => {
-        const done = idx < pipelineIdx;
-        const active = idx === pipelineIdx;
+    <div className="flex items-center gap-0">
+      {pipeline.map((step, i) => {
+        const done   = i < idx;
+        const active = i === idx;
         return (
           <div key={step.value} className="flex items-center">
-            <div className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-medium whitespace-nowrap transition-colors
+            <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium whitespace-nowrap
               ${active ? "bg-primary text-primary-foreground" : done ? "bg-primary/15 text-primary" : "bg-muted/50 text-muted-foreground"}`}>
               {done && <CheckCircle className="w-3 h-3 shrink-0" />}
               {step.short}
             </div>
-            {idx < PIPELINE.length - 1 && (
-              <ChevronRight className={`w-3 h-3 shrink-0 ${done ? "text-primary/60" : "text-muted-foreground/40"}`} />
+            {i < pipeline.length - 1 && (
+              <ChevronRight className={`w-3 h-3 shrink-0 ${done ? "text-primary/50" : "text-muted-foreground/30"}`} />
             )}
           </div>
         );
@@ -93,15 +95,97 @@ function ProjectPipeline({ status }) {
   );
 }
 
+function ProjectTable({ projects, onEdit, onRemove, onRequestSignature }) {
+  return (
+    <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border/50 bg-muted/30">
+              <th className="text-left p-4 font-medium">Projet</th>
+              <th className="text-left p-4 font-medium">Client</th>
+              <th className="text-left p-4 font-medium">Agent</th>
+              <th className="text-left p-4 font-medium">Statut / Avancement</th>
+              <th className="text-left p-4 font-medium">Budget</th>
+              <th className="text-right p-4 font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {projects.length === 0 && (
+              <tr><td colSpan={6} className="p-8 text-center text-muted-foreground">Aucun projet dans cette catégorie</td></tr>
+            )}
+            {projects.map(p => {
+              const pipeline = COMMERCIAL_VALUES.includes(p.status) ? PIPELINE_COMMERCIAL
+                : REPORTING_VALUES.includes(p.status) ? PIPELINE_REPORTING : null;
+              return (
+                <tr key={p.id} className="border-b border-border/30 hover:bg-muted/20 transition-colors">
+                  <td className="p-4">
+                    <p className="font-semibold">{p.title}</p>
+                    <p className="text-muted-foreground text-xs">{p.city}{p.country ? `, ${p.country}` : ""}</p>
+                    {p.tags?.length > 0 && (
+                      <div className="flex gap-1 mt-1 flex-wrap">
+                        {p.tags.map(t => <span key={t} className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{t}</span>)}
+                      </div>
+                    )}
+                  </td>
+                  <td className="p-4 text-muted-foreground">{p.client?.fullName || p.client?.email || "—"}</td>
+                  <td className="p-4 text-muted-foreground">{p.agent?.fullName || p.agent?.email || "Non assigné"}</td>
+                  <td className="p-4 min-w-[260px]">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${statusColors[p.status] || statusColors.brouillon}`}>
+                        {statusLabels[p.status] || p.status}
+                      </span>
+                      {p.subscriptionType && <span className="text-xs text-muted-foreground">{subLabels[p.subscriptionType]}</span>}
+                    </div>
+                    {pipeline && <PipelineStepper status={p.status} pipeline={pipeline} />}
+                  </td>
+                  <td className="p-4">
+                    <p className="font-medium">{p.budget ? `${p.budget.toLocaleString("fr-FR")} €` : "—"}</p>
+                    {p.amountPaid > 0 && <p className="text-xs text-green-600 mt-0.5">Perçu : {p.amountPaid.toLocaleString("fr-FR")} €</p>}
+                    {p.adminNotes && <p className="text-xs text-orange-600 mt-0.5 max-w-[180px] truncate" title={p.adminNotes}>📌 {p.adminNotes}</p>}
+                  </td>
+                  <td className="p-4 text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      {p.status === "contrat" && (!p.signatureStatus || p.signatureStatus === "non_demande") && (
+                        <Button variant="ghost" size="sm" className="text-xs gap-1 text-primary" onClick={() => onRequestSignature(p)}>
+                          <PenLine className="w-3.5 h-3.5" /> Signer
+                        </Button>
+                      )}
+                      {p.signatureStatus === "signe" && (
+                        <span className="text-green-600 flex items-center gap-1 text-xs mr-1">
+                          <CheckCircle className="w-4 h-4" /> Signé
+                        </span>
+                      )}
+                      <Button variant="ghost" size="icon" onClick={() => onEdit(p)}><Edit className="w-4 h-4" /></Button>
+                      <Button variant="ghost" size="icon" onClick={() => onRemove(p.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+const TABS = [
+  { id: "pipeline",   label: "Pipeline commercial", icon: Inbox,      desc: "Soumis → Accepté → Contact → Contrat → Paiement" },
+  { id: "reporting",  label: "Reporting",           icon: BarChart3,  desc: "Projets en cours de reporting ou terminés" },
+  { id: "autres",     label: "Autres",              icon: FileText,   desc: "Brouillons, en attente, en cours, annulés" },
+];
+
 export default function AdminProjects() {
-  const [projects, setProjects] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState(emptyForm);
-  const [editId, setEditId] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const [projects, setProjects]   = useState([]);
+  const [users, setUsers]         = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [search, setSearch]       = useState("");
+  const [activeTab, setActiveTab] = useState("pipeline");
+  const [showForm, setShowForm]   = useState(false);
+  const [form, setForm]           = useState(emptyForm);
+  const [editId, setEditId]       = useState(null);
+  const [saving, setSaving]       = useState(false);
   const [saveError, setSaveError] = useState("");
 
   useEffect(() => {
@@ -118,17 +202,11 @@ export default function AdminProjects() {
   }, []);
 
   const clients = users.filter(u => u.role === "client");
-  const agents = users.filter(u => u.role === "agent");
+  const agents  = users.filter(u => u.role === "agent");
 
-  const openNew = () => { setForm(emptyForm); setEditId(null); setSaveError(""); setShowForm(true); };
+  const openNew  = () => { setForm(emptyForm); setEditId(null); setSaveError(""); setShowForm(true); };
   const openEdit = (p) => {
-    setForm({
-      ...emptyForm, ...p,
-      budget:     p.budget?.toString()     || "",
-      amountPaid: p.amountPaid?.toString() || "",
-      tags:       p.tags || [],
-      adminNotes: p.adminNotes || "",
-    });
+    setForm({ ...emptyForm, ...p, budget: p.budget?.toString() || "", amountPaid: p.amountPaid?.toString() || "", tags: p.tags || [], adminNotes: p.adminNotes || "" });
     setEditId(p.id);
     setSaveError("");
     setShowForm(true);
@@ -145,18 +223,11 @@ export default function AdminProjects() {
         progress:   parseInt(form.progress) || 0,
       };
       if (editId) {
-        const oldProject = projects.find(p => p.id === editId);
+        const old = projects.find(p => p.id === editId);
         await projectsApi.update(editId, data);
         setProjects(prev => prev.map(p => p.id === editId ? { ...p, ...data } : p));
-        if (oldProject?.status !== data.status && data.clientId) {
-          await sendNotification({
-            userId: data.clientId,
-            type: "status_change",
-            title: "Statut de projet mis à jour",
-            message: notifMessages.status_change(data.status),
-            projectId: editId,
-            projectTitle: data.title,
-          });
+        if (old?.status !== data.status && data.clientId) {
+          await sendNotification({ userId: data.clientId, type: "status_change", title: "Statut de projet mis à jour", message: notifMessages.status_change(data.status), projectId: editId, projectTitle: data.title });
         }
       } else {
         const created = await projectsApi.create(data);
@@ -179,19 +250,19 @@ export default function AdminProjects() {
   const requestSignature = async (project) => {
     await projectsApi.update(project.id, { signatureStatus: "en_attente" });
     setProjects(prev => prev.map(p => p.id === project.id ? { ...p, signatureStatus: "en_attente" } : p));
-    await sendNotification({
-      userId: project.clientId,
-      type: "signature_request",
-      title: "Signature de contrat requise",
-      message: `Votre contrat pour le projet « ${project.title} » est prêt à signer.`,
-      projectId: project.id,
-      projectTitle: project.title,
-    });
+    await sendNotification({ userId: project.clientId, type: "signature_request", title: "Signature de contrat requise", message: `Votre contrat pour le projet « ${project.title} » est prêt à signer.`, projectId: project.id, projectTitle: project.title });
   };
 
-  const filtered = projects.filter(p =>
-    !search || p.title?.toLowerCase().includes(search.toLowerCase()) || p.client?.email?.toLowerCase().includes(search.toLowerCase())
-  );
+  const searchFilter = (p) => !search
+    || p.title?.toLowerCase().includes(search.toLowerCase())
+    || p.client?.email?.toLowerCase().includes(search.toLowerCase())
+    || p.client?.fullName?.toLowerCase().includes(search.toLowerCase());
+
+  const pipelineProjects  = projects.filter(p => COMMERCIAL_VALUES.includes(p.status) && searchFilter(p));
+  const reportingProjects = projects.filter(p => REPORTING_VALUES.includes(p.status)  && searchFilter(p));
+  const autresProjects    = projects.filter(p => !COMMERCIAL_VALUES.includes(p.status) && !REPORTING_VALUES.includes(p.status) && searchFilter(p));
+
+  const counts = { pipeline: pipelineProjects.length, reporting: reportingProjects.length, autres: autresProjects.length };
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
@@ -201,118 +272,113 @@ export default function AdminProjects() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-heading font-bold">Gestion des projets</h1>
         <Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />Nouveau projet</Button>
       </div>
 
-      {/* Légende pipeline */}
-      <div className="bg-card rounded-xl border border-border/50 p-4">
-        <p className="text-xs text-muted-foreground font-medium mb-3 uppercase tracking-wide">Pipeline de traitement</p>
-        <div className="flex items-center gap-0 flex-wrap gap-y-2">
-          {PIPELINE.map((step, idx) => (
-            <div key={step.value} className="flex items-center">
-              <span className="text-xs bg-muted px-2 py-0.5 rounded text-muted-foreground">{step.label}</span>
-              {idx < PIPELINE.length - 1 && <ChevronRight className="w-3 h-3 text-muted-foreground/40" />}
-            </div>
-          ))}
-        </div>
-      </div>
-
+      {/* Barre de recherche */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input placeholder="Rechercher un projet ou client..." value={search} onChange={e => setSearch(e.target.value)} className="pl-10" />
       </div>
 
-      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border/50 bg-muted/30">
-                <th className="text-left p-4 font-medium">Projet</th>
-                <th className="text-left p-4 font-medium">Client</th>
-                <th className="text-left p-4 font-medium">Agent</th>
-                <th className="text-left p-4 font-medium">Statut / Avancement</th>
-                <th className="text-left p-4 font-medium">Budget</th>
-                <th className="text-right p-4 font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="p-8 text-center text-muted-foreground">Aucun projet trouvé</td>
-                </tr>
-              )}
-              {filtered.map(p => (
-                <tr key={p.id} className="border-b border-border/30 hover:bg-muted/20 transition-colors">
-                  <td className="p-4">
-                    <p className="font-semibold">{p.title}</p>
-                    <p className="text-muted-foreground text-xs">{p.city}{p.country ? `, ${p.country}` : ""}</p>
-                    {p.tags?.length > 0 && (
-                      <div className="flex gap-1 mt-1 flex-wrap">
-                        {p.tags.map(t => (
-                          <span key={t} className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{t}</span>
-                        ))}
-                      </div>
-                    )}
-                  </td>
-                  <td className="p-4 text-muted-foreground">{p.client?.fullName || p.client?.email || "—"}</td>
-                  <td className="p-4 text-muted-foreground">{p.agent?.fullName || p.agent?.email || "Non assigné"}</td>
-                  <td className="p-4 min-w-[260px]">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${statusColors[p.status] || statusColors.brouillon}`}>
-                        {statusLabels[p.status] || p.status}
-                      </span>
-                      {p.subscriptionType && (
-                        <span className="text-xs text-muted-foreground">{subLabels[p.subscriptionType]}</span>
-                      )}
-                    </div>
-                    <ProjectPipeline status={p.status} />
-                  </td>
-                  <td className="p-4">
-                    <p className="font-medium">{p.budget ? `${p.budget.toLocaleString("fr-FR")} €` : "—"}</p>
-                    {p.amountPaid > 0 && (
-                      <p className="text-xs text-green-600 mt-0.5">Perçu : {p.amountPaid.toLocaleString("fr-FR")} €</p>
-                    )}
-                    {p.adminNotes && (
-                      <p className="text-xs text-orange-600 mt-0.5 max-w-[180px] truncate" title={p.adminNotes}>📌 {p.adminNotes}</p>
-                    )}
-                  </td>
-                  <td className="p-4 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      {(p.status === "contrat" && (!p.signatureStatus || p.signatureStatus === "non_demande")) ? (
-                        <Button variant="ghost" size="sm" className="text-xs gap-1 text-primary" title="Demander la signature" onClick={() => requestSignature(p)}>
-                          <PenLine className="w-3.5 h-3.5" /> Signer
-                        </Button>
-                      ) : p.signatureStatus === "signe" ? (
-                        <span className="text-green-600 flex items-center gap-1 text-xs mr-1">
-                          <CheckCircle className="w-4 h-4" /> Signé
-                        </span>
-                      ) : null}
-                      <Button variant="ghost" size="icon" onClick={() => openEdit(p)}><Edit className="w-4 h-4" /></Button>
-                      <Button variant="ghost" size="icon" onClick={() => remove(p.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Onglets */}
+      <div className="border-b border-border/50">
+        <div className="flex gap-1">
+          {TABS.map(tab => {
+            const Icon = tab.icon;
+            const active = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${active ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+              >
+                <Icon className="w-4 h-4" />
+                {tab.label}
+                <span className={`text-xs px-1.5 py-0.5 rounded-full ${active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"}`}>
+                  {counts[tab.id]}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
+      {/* Contenu de l'onglet actif */}
+      {activeTab === "pipeline" && (
+        <div className="space-y-4">
+          {/* Pipeline legend */}
+          <div className="bg-card rounded-xl border border-border/50 p-4">
+            <p className="text-xs text-muted-foreground font-semibold mb-2 uppercase tracking-wide">Étapes du pipeline commercial</p>
+            <div className="flex items-center gap-0 flex-wrap gap-y-1">
+              {PIPELINE_COMMERCIAL.map((step, idx) => (
+                <div key={step.value} className="flex items-center">
+                  <span className="text-xs bg-muted px-2 py-0.5 rounded text-muted-foreground">{step.label}</span>
+                  {idx < PIPELINE_COMMERCIAL.length - 1 && <ChevronRight className="w-3 h-3 text-muted-foreground/40" />}
+                </div>
+              ))}
+            </div>
+          </div>
+          <ProjectTable projects={pipelineProjects} onEdit={openEdit} onRemove={remove} onRequestSignature={requestSignature} />
+        </div>
+      )}
+
+      {activeTab === "reporting" && (
+        <div className="space-y-4">
+          {/* Stats rapides */}
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-card rounded-xl border border-border/50 p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <FileText className="w-4 h-4 text-purple-500" />
+                <p className="text-xs text-muted-foreground font-medium">Contrats signés</p>
+              </div>
+              <p className="text-2xl font-bold">{projects.filter(p => p.signatureStatus === "signe").length}</p>
+            </div>
+            <div className="bg-card rounded-xl border border-border/50 p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <CreditCard className="w-4 h-4 text-amber-500" />
+                <p className="text-xs text-muted-foreground font-medium">Paiements reçus (total)</p>
+              </div>
+              <p className="text-2xl font-bold">
+                {projects.reduce((sum, p) => sum + (p.amountPaid || 0), 0).toLocaleString("fr-FR")} €
+              </p>
+            </div>
+            <div className="bg-card rounded-xl border border-border/50 p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <BarChart3 className="w-4 h-4 text-cyan-500" />
+                <p className="text-xs text-muted-foreground font-medium">En reporting</p>
+              </div>
+              <p className="text-2xl font-bold">{projects.filter(p => p.status === "reporting").length}</p>
+            </div>
+          </div>
+          <ProjectTable projects={reportingProjects} onEdit={openEdit} onRemove={remove} onRequestSignature={requestSignature} />
+        </div>
+      )}
+
+      {activeTab === "autres" && (
+        <ProjectTable projects={autresProjects} onEdit={openEdit} onRemove={remove} onRequestSignature={requestSignature} />
+      )}
+
+      {/* Formulaire modal */}
       <Dialog open={showForm} onOpenChange={(open) => { if (!saving) { setShowForm(open); setSaveError(""); } }}>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-heading">{editId ? "Modifier le projet" : "Nouveau projet"}</DialogTitle>
           </DialogHeader>
 
-          {/* Pipeline stepper dans le formulaire */}
-          {editId && PIPELINE_VALUES.includes(form.status) && (
-            <div className="bg-muted/30 rounded-lg p-3 overflow-x-auto">
-              <p className="text-xs text-muted-foreground mb-2">Avancement du dossier</p>
-              <ProjectPipeline status={form.status} />
-            </div>
-          )}
+          {editId && (() => {
+            const pipeline = COMMERCIAL_VALUES.includes(form.status) ? PIPELINE_COMMERCIAL
+              : REPORTING_VALUES.includes(form.status) ? PIPELINE_REPORTING : null;
+            return pipeline ? (
+              <div className="bg-muted/30 rounded-lg p-3 overflow-x-auto">
+                <p className="text-xs text-muted-foreground mb-1.5">Avancement du dossier</p>
+                <PipelineStepper status={form.status} pipeline={pipeline} />
+              </div>
+            ) : null;
+          })()}
 
           <div className="space-y-4">
             <div><Label>Titre</Label><Input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} /></div>
@@ -320,7 +386,7 @@ export default function AdminProjects() {
 
             {form.subscriptionType && (
               <div className="bg-muted/30 rounded-lg p-3 text-sm">
-                <span className="text-muted-foreground">Abonnement demandé :</span> <span className="font-medium">{subLabels[form.subscriptionType]}</span>
+                <span className="text-muted-foreground">Abonnement :</span> <span className="font-medium">{subLabels[form.subscriptionType]}</span>
                 {form.paymentMethod && <> · <span className="font-medium">{form.paymentMethod === "carte" ? "Carte bancaire" : "Mobile Money"}</span></>}
               </div>
             )}
@@ -396,24 +462,12 @@ export default function AdminProjects() {
                 </div>
                 <div>
                   <Label>Tags <span className="text-muted-foreground font-normal">(séparés par virgule)</span></Label>
-                  <Input
-                    placeholder="urgent, vip, suivi-hebdo"
-                    value={form.tags?.join(", ") || ""}
-                    onChange={e => setForm(p => ({
-                      ...p,
-                      tags: e.target.value.split(",").map(t => t.trim()).filter(Boolean),
-                    }))}
-                  />
+                  <Input placeholder="urgent, vip" value={form.tags?.join(", ") || ""} onChange={e => setForm(p => ({ ...p, tags: e.target.value.split(",").map(t => t.trim()).filter(Boolean) }))} />
                 </div>
               </div>
               <div>
                 <Label>Notes internes <span className="text-muted-foreground font-normal">(non visibles par le client)</span></Label>
-                <Textarea
-                  rows={3}
-                  placeholder="Observations, points de vigilance, contacts locaux..."
-                  value={form.adminNotes}
-                  onChange={e => setForm(p => ({ ...p, adminNotes: e.target.value }))}
-                />
+                <Textarea rows={3} placeholder="Observations, points de vigilance..." value={form.adminNotes} onChange={e => setForm(p => ({ ...p, adminNotes: e.target.value }))} />
               </div>
             </div>
 
