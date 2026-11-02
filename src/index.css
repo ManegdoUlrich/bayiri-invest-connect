@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+/* ── Terres Profondes — Design System ──────────────────────────────────────
+   Gloock (serif display) · Plus Jakarta Sans (interface) · DM Mono (data)
+   Latérite · Or Sahelien · Forêt Profonde · Ivoire
+   ──────────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Gloock&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,90 +11,246 @@
 
 @layer base {
   :root {
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
+    /* ── Typography ─────────────────────────────────────────── */
+    --font-heading: 'Gloock', Georgia, serif;
+    --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono:    'DM Mono', 'Courier New', monospace;
 
-    --background: 36 50% 97%;
-    --foreground: 210 20% 22%;
-    --card: 0 0% 100%;
-    --card-foreground: 210 20% 22%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 20% 22%;
-    --primary: 0 65% 30%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 145 45% 42%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 10% 94%;
-    --muted-foreground: 210 10% 50%;
-    --accent: 0 20% 93%;
-    --accent-foreground: 210 20% 22%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 10% 88%;
-    --input: 0 10% 88%;
-    --ring: 0 65% 30%;
-    --chart-1: 25 62% 55%;
-    --chart-2: 145 55% 50%;
-    --chart-3: 36 55% 70%;
-    --chart-4: 160 40% 50%;
-    --chart-5: 340 50% 60%;
-    --radius: 0.75rem;
+    /* ── Surfaces ───────────────────────────────────────────── */
+    --background:          38 32% 96%;          /* Ivoire chaud */
+    --foreground:          15 25% 16%;          /* Terre Noire chaude */
 
-    --sidebar-background: 0 55% 22%;
-    --sidebar-foreground: 0 0% 97%;
-    --sidebar-primary: 0 65% 38%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 50% 28%;
-    --sidebar-accent-foreground: 0 0% 97%;
-    --sidebar-border: 0 40% 30%;
-    --sidebar-ring: 0 65% 30%;
+    --card:                36 20% 99%;          /* Blanc ivoire */
+    --card-foreground:     15 25% 16%;
+
+    --popover:             36 20% 99%;
+    --popover-foreground:  15 25% 16%;
+
+    /* ── Brand ──────────────────────────────────────────────── */
+    --primary:             12 62% 28%;          /* Latérite profonde */
+    --primary-foreground:  36 40% 98%;
+
+    --secondary:           153 45% 22%;         /* Forêt profonde */
+    --secondary-foreground:36 40% 98%;
+
+    /* ── Gold accent (custom, non-shadcn) ───────────────────── */
+    --gold:                38 65% 42%;
+    --gold-light:          40 72% 65%;
+    --gold-muted:          38 35% 88%;
+
+    /* ── Neutrals ───────────────────────────────────────────── */
+    --muted:               34 18% 92%;
+    --muted-foreground:    20 14% 52%;
+
+    --accent:              35 22% 91%;
+    --accent-foreground:   15 25% 22%;
+
+    --border:              28 14% 87%;
+    --input:               28 14% 87%;
+    --ring:                12 62% 28%;
+
+    /* ── Status ─────────────────────────────────────────────── */
+    --destructive:         0 68% 46%;
+    --destructive-foreground: 36 40% 98%;
+
+    /* ── Charts ─────────────────────────────────────────────── */
+    --chart-1:             12 62% 52%;          /* Latérite claire */
+    --chart-2:             153 42% 38%;         /* Forêt moyenne */
+    --chart-3:             38 65% 52%;          /* Or Sahelien */
+    --chart-4:             200 50% 42%;         /* Ciel Sahel */
+    --chart-5:             330 48% 52%;         /* Hibiscus */
+
+    /* ── Radius ─────────────────────────────────────────────── */
+    --radius: 0.625rem;                         /* 10px — moins bubbly */
+
+    /* ── Shadows (warm-tinted) ──────────────────────────────── */
+    --shadow-sm:  0 1px 2px hsla(12,30%,12%,0.04), 0 1px 4px hsla(12,30%,12%,0.06);
+    --shadow-md:  0 4px 12px hsla(12,30%,12%,0.08), 0 2px 4px hsla(12,30%,12%,0.06);
+    --shadow-lg:  0 12px 32px hsla(12,30%,12%,0.12), 0 4px 8px hsla(12,30%,12%,0.08);
+    --shadow-xl:  0 20px 48px hsla(12,30%,12%,0.16), 0 8px 16px hsla(12,30%,12%,0.10);
+
+    /* ── Sidebar — Forêt Profonde ───────────────────────────── */
+    --sidebar-background:           153 50% 14%;
+    --sidebar-foreground:           36 40% 94%;
+    --sidebar-primary:              153 45% 24%;
+    --sidebar-primary-foreground:   36 40% 96%;
+    --sidebar-accent:               153 42% 20%;
+    --sidebar-accent-foreground:    36 40% 94%;
+    --sidebar-border:               153 30% 20%;
+    --sidebar-ring:                 38 65% 42%;
   }
 
   .dark {
-    --background: 210 29% 12%;
-    --foreground: 36 30% 92%;
-    --card: 210 25% 16%;
-    --card-foreground: 36 30% 92%;
-    --popover: 210 25% 16%;
-    --popover-foreground: 36 30% 92%;
-    --primary: 0 65% 38%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 145 40% 35%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 210 20% 20%;
-    --muted-foreground: 36 20% 60%;
-    --accent: 210 20% 22%;
-    --accent-foreground: 36 30% 92%;
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 20% 24%;
-    --input: 210 20% 24%;
-    --ring: 0 65% 38%;
-    --chart-1: 25 60% 53%;
-    --chart-2: 145 47% 35%;
-    --chart-3: 36 55% 70%;
-    --chart-4: 160 40% 45%;
-    --chart-5: 340 50% 55%;
+    /* ── Surfaces dark ──────────────────────────────────────── */
+    --background:          15 22% 9%;           /* Terre Noire profonde */
+    --foreground:          38 28% 90%;          /* Ivoire foncé */
 
-    --sidebar-background: 0 50% 14%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 65% 38%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 45% 20%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 35% 22%;
-    --sidebar-ring: 0 65% 38%;
+    --card:                15 20% 13%;
+    --card-foreground:     38 28% 90%;
+
+    --popover:             15 20% 13%;
+    --popover-foreground:  38 28% 90%;
+
+    /* ── Brand dark ─────────────────────────────────────────── */
+    --primary:             12 58% 40%;          /* Latérite éclairée */
+    --primary-foreground:  36 40% 98%;
+
+    --secondary:           153 42% 30%;
+    --secondary-foreground:36 40% 98%;
+
+    --gold:                38 60% 52%;
+    --gold-light:          40 68% 68%;
+    --gold-muted:          38 25% 22%;
+
+    /* ── Neutrals dark ──────────────────────────────────────── */
+    --muted:               15 16% 18%;
+    --muted-foreground:    32 16% 56%;
+
+    --accent:              15 18% 20%;
+    --accent-foreground:   38 28% 88%;
+
+    --border:              15 16% 22%;
+    --input:               15 16% 22%;
+    --ring:                12 58% 40%;
+
+    /* ── Status dark ────────────────────────────────────────── */
+    --destructive:         0 58% 32%;
+    --destructive-foreground: 36 40% 98%;
+
+    /* ── Charts dark ────────────────────────────────────────── */
+    --chart-1:             12 58% 50%;
+    --chart-2:             153 40% 38%;
+    --chart-3:             38 60% 52%;
+    --chart-4:             200 45% 42%;
+    --chart-5:             330 45% 50%;
+
+    /* ── Shadows dark ───────────────────────────────────────── */
+    --shadow-sm:  0 1px 2px hsla(0,0%,0%,0.18), 0 1px 4px hsla(0,0%,0%,0.12);
+    --shadow-md:  0 4px 12px hsla(0,0%,0%,0.24), 0 2px 4px hsla(0,0%,0%,0.16);
+    --shadow-lg:  0 12px 32px hsla(0,0%,0%,0.32), 0 4px 8px hsla(0,0%,0%,0.20);
+    --shadow-xl:  0 20px 48px hsla(0,0%,0%,0.40), 0 8px 16px hsla(0,0%,0%,0.24);
+
+    /* ── Sidebar dark ───────────────────────────────────────── */
+    --sidebar-background:           153 45% 9%;
+    --sidebar-foreground:           36 38% 90%;
+    --sidebar-primary:              153 40% 18%;
+    --sidebar-primary-foreground:   36 38% 96%;
+    --sidebar-accent:               153 35% 14%;
+    --sidebar-accent-foreground:    36 38% 90%;
+    --sidebar-border:               153 25% 16%;
+    --sidebar-ring:                 38 60% 52%;
   }
 }
 
+/* ── Base styles ──────────────────────────────────────────────────────────── */
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
     @apply bg-background text-foreground font-body;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
   }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  /* Tabular numbers for data */
+  [data-tabular], .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+  }
+
+  /* Selection color */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.15);
+    color: hsl(var(--foreground));
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.4);
+  }
+}
+
+/* ── Component utilities ──────────────────────────────────────────────────── */
+@layer components {
+
+  /* Elevated card with warm shadow */
+  .card-elevated {
+    @apply bg-card rounded-xl border border-border/40;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .card-elevated:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  /* Section label (caps, tracked) */
+  .label-caps {
+    @apply text-xs font-semibold text-muted-foreground uppercase;
+    letter-spacing: 0.1em;
+    font-family: var(--font-body);
+  }
+
+  /* Gold accent text */
+  .text-gold {
+    color: hsl(var(--gold));
+  }
+
+  /* Stat number (tabular, heading) */
+  .stat-value {
+    font-family: var(--font-heading);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  /* Focus ring */
+  .focus-ring {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+@layer utilities {
+  .animate-in-up {
+    animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in-fade {
+    animation: fadeIn 0.25s ease both;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 }

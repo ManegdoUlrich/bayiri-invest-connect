@@ -66,32 +66,38 @@ export default function Layout() {
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-sidebar flex flex-col
+        fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-sidebar flex flex-col
         transition-transform duration-300 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
-        <div className="p-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white">
-              <span className="text-xl font-bold text-primary">B</span>
+        {/* Gold accent bar top */}
+        <div className="h-0.5 bg-[hsl(var(--sidebar-ring))] w-full" />
+
+        {/* Logo */}
+        <div className="px-5 pt-5 pb-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[hsl(var(--sidebar-ring))/0.15] border border-[hsl(var(--sidebar-ring))/0.30]">
+              <span className="text-base font-heading font-normal text-[hsl(var(--sidebar-ring))]">B</span>
             </div>
             <div>
-              <h1 className="text-lg font-heading font-bold text-sidebar-foreground">Bayiri</h1>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-sidebar-foreground/50">Invest</p>
+              <h1 className="text-base font-heading font-normal text-sidebar-foreground leading-none">Bayiri</h1>
+              <p className="text-[9px] uppercase tracking-[0.25em] text-[hsl(var(--sidebar-ring))/0.7] mt-0.5">Invest Connect</p>
             </div>
           </Link>
-          <button className="lg:hidden text-sidebar-foreground" onClick={() => setSidebarOpen(false)}>
-            <X className="w-5 h-5" />
+          <button className="lg:hidden text-sidebar-foreground/60 hover:text-sidebar-foreground transition-colors" onClick={() => setSidebarOpen(false)}>
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="px-6 mb-4">
-          <Badge variant="outline" className="text-[10px] uppercase tracking-wider border-sidebar-border text-sidebar-foreground/60">
+        {/* Role badge */}
+        <div className="px-5 mb-4">
+          <span className="inline-flex items-center text-[9px] uppercase tracking-[0.18em] text-sidebar-foreground/40 font-semibold">
             {role === "client" ? txNav.client : role === "agent" ? txNav.agent : txNav.admin}
-          </Badge>
+          </span>
         </div>
 
-        <nav className="flex-1 px-3 space-y-1 overflow-y-auto">
+        {/* Nav */}
+        <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
           {items.map((item) => {
             const active = isActive(item.path);
             return (
@@ -100,39 +106,40 @@ export default function Layout() {
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
                 className={`
-                  flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200
+                  flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150
                   ${active
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-lg shadow-sidebar-primary/20"
-                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    ? "bg-[hsl(var(--sidebar-ring))/0.14] text-[hsl(var(--sidebar-ring))] font-semibold"
+                    : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground font-medium"
                   }
                 `}
               >
-                <item.icon className="w-5 h-5 shrink-0" />
+                <item.icon className={`w-4 h-4 shrink-0 ${active ? "text-[hsl(var(--sidebar-ring))]" : "text-sidebar-foreground/40"}`} />
                 <span>{item.label}</span>
-                {active && <ChevronRight className="w-4 h-4 ml-auto" />}
+                {active && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[hsl(var(--sidebar-ring))]" />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-sidebar-border">
-          <div className="flex items-center gap-3 px-3 py-2">
-            <Avatar className="w-9 h-9">
+        {/* User footer */}
+        <div className="px-3 py-4 border-t border-sidebar-border/60">
+          <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-sidebar-accent transition-colors group">
+            <Avatar className="w-8 h-8">
               {user?.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.fullName} />}
-              <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-xs">
+              <AvatarFallback className="bg-[hsl(var(--sidebar-ring))/0.15] text-[hsl(var(--sidebar-ring))] text-xs font-semibold">
                 {initials}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-sidebar-foreground truncate">{user?.fullName || "..."}</p>
-              <p className="text-xs text-sidebar-foreground/50 truncate">{user?.email}</p>
+              <p className="text-xs font-semibold text-sidebar-foreground truncate">{user?.fullName || "..."}</p>
+              <p className="text-[10px] text-sidebar-foreground/40 truncate">{user?.email}</p>
             </div>
             <button
               onClick={logout}
               title={txNav.logout}
-              className="text-sidebar-foreground/40 hover:text-sidebar-foreground transition-colors"
+              className="text-sidebar-foreground/30 hover:text-sidebar-foreground/80 transition-colors"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
