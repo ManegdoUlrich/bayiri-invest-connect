@@ -110,6 +110,10 @@ const t = {
 
 const TRUST_ICONS = [Flag, Users, Handshake];
 
+// Gutter uniforme pour toute la page
+const G = "clamp(20px, 5vw, 60px)";
+const WRAP = { maxWidth: 1200, margin: "0 auto", paddingLeft: G, paddingRight: G };
+
 export default function Landing() {
   const { lang, setLang: switchLang } = useLang();
   const tx = t[lang];
@@ -132,7 +136,7 @@ export default function Landing() {
         borderBottom: scrolled ? "1px solid hsl(var(--border)/0.5)" : "none",
         transition: "background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease",
       }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ ...WRAP, height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <img
             src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png"
             alt="Bayiri Invest"
@@ -190,7 +194,7 @@ export default function Landing() {
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, hsl(15,22%,7%), transparent)" }} />
 
         {/* Contenu */}
-        <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 32px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: 160, paddingBottom: 80 }}>
+        <div style={{ position: "relative", ...WRAP, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: 160, paddingBottom: 80 }}>
           {/* Badge Trustpilot */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 36 }}>
             <div style={{ display: "flex", gap: 2 }}>
@@ -239,21 +243,23 @@ export default function Landing() {
 
         {/* ── Barre de confiance — style Qonto ──────────────── */}
         <div style={{ position: "relative", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+          <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
             {tx.trust.map((item, i) => {
               const Icon = TRUST_ICONS[i];
               return (
                 <div key={item.label} style={{
-                  display: "flex", alignItems: "center", gap: 16,
-                  padding: "28px 24px",
+                  display: "flex", alignItems: "center", gap: 14,
+                  paddingTop: 24, paddingBottom: 24,
+                  paddingRight: i < 2 ? 24 : 0,
+                  paddingLeft: i > 0 ? 24 : 0,
                   borderRight: i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none",
                 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <Icon style={{ width: 18, height: 18, color: "hsl(38,65%,58%)" }} />
+                  <div style={{ width: 38, height: 38, borderRadius: 9, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Icon style={{ width: 17, height: 17, color: "hsl(38,65%,58%)" }} />
                   </div>
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.92)", margin: "0 0 3px 0", lineHeight: 1.3 }}>{item.label}</p>
-                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.42)", margin: 0, lineHeight: 1.4 }}>{item.desc}</p>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.92)", margin: "0 0 2px 0", lineHeight: 1.3 }}>{item.label}</p>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", margin: 0, lineHeight: 1.4 }}>{item.desc}</p>
                   </div>
                 </div>
               );
@@ -263,8 +269,8 @@ export default function Landing() {
       </section>
 
       {/* ── Features ─────────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--background))", padding: "100px 32px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <section style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ ...WRAP }}>
           <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64, maxWidth: 560, lineHeight: 1.12, whiteSpace: "pre-line" }}>
             {tx.featuresTitle}
           </h2>
@@ -289,8 +295,8 @@ export default function Landing() {
       </section>
 
       {/* ── How it works ─────────────────────────────────────── */}
-      <section id="comment" style={{ background: "hsl(var(--muted))", padding: "100px 32px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <section id="comment" style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ ...WRAP }}>
           <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64, lineHeight: 1.12, whiteSpace: "pre-line" }}>
             {tx.howTitle}
           </h2>
@@ -313,8 +319,8 @@ export default function Landing() {
       </section>
 
       {/* ── Platform ─────────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--background))", padding: "100px 32px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 72, alignItems: "center" }}>
+      <section style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 72, alignItems: "center" }}>
           <div>
             <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 36, lineHeight: 1.12, whiteSpace: "pre-line" }}>
               {tx.platformTitle}
@@ -347,8 +353,8 @@ export default function Landing() {
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--muted))", padding: "100px 32px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <section style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ ...WRAP }}>
           <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2rem, 3.5vw, 3rem)", letterSpacing: "-0.02em", marginBottom: 64 }}>
             {tx.testimonialsTitle}
           </h2>
@@ -375,7 +381,7 @@ export default function Landing() {
       </section>
 
       {/* ── CTA final ────────────────────────────────────────── */}
-      <section style={{ background: "hsl(15,22%,8%)", color: "white", padding: "120px 32px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <section style={{ background: "hsl(15,22%,8%)", color: "white", paddingTop: 120, paddingBottom: 120, textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, hsl(38,65%,42%,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative", maxWidth: 600, margin: "0 auto" }}>
           <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(2.5rem, 5vw, 4.5rem)", letterSpacing: "-0.025em", marginBottom: 20, lineHeight: 1.05 }}>
@@ -394,8 +400,8 @@ export default function Landing() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────── */}
-      <footer style={{ background: "hsl(15,18%,5%)", color: "rgba(255,255,255,0.35)", padding: "36px 32px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
+      <footer style={{ background: "hsl(15,18%,5%)", color: "rgba(255,255,255,0.35)", paddingTop: 36, paddingBottom: 36 }}>
+        <div style={{ ...WRAP, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
           <img src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png" alt="Bayiri Invest" style={{ height: 34, objectFit: "contain", filter: "brightness(1.5)" }} />
           <p style={{ fontSize: 13, margin: 0 }}>{tx.footer}</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px", fontSize: 13 }}>
