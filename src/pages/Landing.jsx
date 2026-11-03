@@ -5,6 +5,12 @@ import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, C
 
 const HERO_IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261102_231909_7e626f56-7232-44de-b0c2-bcc0bc859ec0.png";
 
+const USE_CASE_IMGS = [
+  "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261103_000728_30219a73-4744-4f98-95c5-9b0e80de814e.png",
+  "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261103_000734_03d71880-ae8e-4345-a44a-4fbda008d0cd.png",
+  "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261103_000740_7e4d3b3e-dc52-409d-a3e1-b180f26069ad.png",
+];
+
 const t = {
   fr: {
     nav: {
@@ -371,6 +377,53 @@ export default function Landing() {
                 </div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.1rem", color: "hsl(var(--foreground))", marginBottom: 10 }}>{step.title}</h3>
                 <p style={{ fontSize: 14, lineHeight: 1.65, color: "hsl(var(--muted-foreground))", margin: 0 }}>{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Use cases — 3 grandes cartes photo style Qonto ──── */}
+      <section style={{ background: "hsl(15,22%,7%)", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ paddingLeft: G, paddingRight: G }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, maxWidth: 1200, margin: "0 auto 48px" }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", color: "white", lineHeight: 1.15, margin: 0 }}>
+              {lang === "fr" ? "Vos projets,\nconcrétisés." : "Your projects,\nrealized."}
+            </h2>
+            <Link to="/onboarding" style={{ textDecoration: "none", flexShrink: 0 }}>
+              <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
+                {lang === "fr" ? "Démarrer" : "Get started"} <ArrowRight style={{ width: 14, height: 14 }} />
+              </button>
+            </Link>
+          </div>
+
+          {/* 3 cartes photo */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, maxWidth: 1200, margin: "0 auto" }}>
+            {[
+              { img: USE_CASE_IMGS[0], label: lang === "fr" ? "Construction" : "Construction", desc: lang === "fr" ? "Immobilier résidentiel & commercial" : "Residential & commercial real estate" },
+              { img: USE_CASE_IMGS[1], label: lang === "fr" ? "Commerce" : "Business", desc: lang === "fr" ? "Boutiques, restaurants, PME" : "Shops, restaurants, SMEs" },
+              { img: USE_CASE_IMGS[2], label: lang === "fr" ? "Diaspora" : "Diaspora", desc: lang === "fr" ? "Investir depuis l'étranger" : "Investing from abroad" },
+            ].map((card, i) => (
+              <div key={i} style={{
+                position: "relative",
+                borderRadius: 16,
+                overflow: "hidden",
+                aspectRatio: "3/4",
+                cursor: "pointer",
+              }}
+                onMouseEnter={e => e.currentTarget.querySelector('.card-overlay').style.opacity = "1"}
+                onMouseLeave={e => e.currentTarget.querySelector('.card-overlay').style.opacity = "0"}
+              >
+                <img src={card.img} alt={card.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                {/* Gradient permanent bas */}
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,8,5,0.85) 0%, rgba(15,8,5,0.2) 50%, transparent 100%)" }} />
+                {/* Texte bas */}
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "28px 24px" }}>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: "hsl(38,65%,58%)", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 6px" }}>{card.label}</p>
+                  <p style={{ fontFamily: "var(--font-heading)", fontSize: "1.25rem", color: "white", margin: 0, lineHeight: 1.2 }}>{card.desc}</p>
+                </div>
+                {/* Overlay hover */}
+                <div className="card-overlay" style={{ position: "absolute", inset: 0, background: "rgba(38,65%,42%,0.08)", borderRadius: 16, border: "2px solid hsl(38,65%,52%)", opacity: 0, transition: "opacity 0.25s" }} />
               </div>
             ))}
           </div>
