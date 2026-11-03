@@ -12,7 +12,7 @@
 @layer base {
   :root {
     /* ── Typography ─────────────────────────────────────────── */
-    --font-heading: 'Gloock', Georgia, serif;
+    --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
     --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
     --font-mono:    'DM Mono', 'Courier New', monospace;
 
