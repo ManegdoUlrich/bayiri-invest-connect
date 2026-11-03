@@ -237,10 +237,10 @@ export default function Landing() {
           position: "absolute", inset: 0,
           backgroundImage: `url('${HERO_IMG}')`,
           backgroundSize: "cover", backgroundPosition: "center",
-          opacity: 0.28,
+          opacity: 0.5,
         }} />
-        {/* Gradient directionnel — 50% gauche opaque, droite transparente */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, hsl(0,0%,2%) 0%, hsl(0,0%,2%) 45%, rgba(0,0,0,0.2) 100%)" }} />
+        {/* Overlay doux — laisse la photo respirer partout */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.25) 100%)" }} />
         {/* Gradient bas pour transition douce */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, hsl(0,0%,2%), transparent)" }} />
 
@@ -269,16 +269,16 @@ export default function Landing() {
 
             {/* Titre — 2 lignes */}
             <h1 style={{
-              fontFamily: "var(--font-heading)", fontWeight: 400,
-              fontSize: "clamp(2.6rem, 4vw, 4.2rem)",
-              lineHeight: 1.06, letterSpacing: "-0.025em", fontWeight: 700,
+              fontFamily: "var(--font-heading)",
+              fontSize: "clamp(3rem, 5vw, 5rem)",
+              lineHeight: 1.06, letterSpacing: "-0.03em", fontWeight: 700,
               margin: "0 0 22px 0", textAlign: "left",
             }}>
               {tx.hero.line1} <span style={{ color: "white" }}>{tx.hero.line2}</span><br />
               {tx.hero.line3}
             </h1>
 
-            <p style={{ fontSize: "clamp(14px, 1.25vw, 16px)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: "0 0 38px 0", textAlign: "left" }}>
+            <p style={{ fontSize: "clamp(15px, 1.3vw, 18px)", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 38px 0", textAlign: "left", maxWidth: 480 }}>
               {tx.hero.subtitle}
             </p>
 
@@ -360,7 +360,7 @@ export default function Landing() {
               </div>
               <div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[0].title}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0 }}>{tx.features[0].desc}</p>
+                <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: 0 }}>{tx.features[0].desc}</p>
               </div>
             </div>
 
@@ -371,7 +371,7 @@ export default function Landing() {
                   <Building2 style={{ width: 19, height: 19, color: "rgba(255,255,255,0.55)" }} />
                 </div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[1].title}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: "0 0 28px", maxWidth: 380 }}>{tx.features[1].desc}</p>
+                <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: "0 0 28px", maxWidth: 380 }}>{tx.features[1].desc}</p>
               </div>
               {/* Mini mockup chantier */}
               <div style={{ background: "hsl(0,0%,7%)", borderRadius: 14, padding: "18px 20px", border: "1px solid rgba(255,255,255,0.06)" }}>
@@ -409,7 +409,7 @@ export default function Landing() {
               </div>
               <div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[3].title}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0 }}>{tx.features[3].desc}</p>
+                <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: 0 }}>{tx.features[3].desc}</p>
               </div>
             </div>
 
@@ -422,7 +422,7 @@ export default function Landing() {
                 <TrendingUp style={{ width: 19, height: 19, color: "white" }} />
               </div>
               <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[2].title}</h3>
-              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0, maxWidth: 480 }}>{tx.features[2].desc}</p>
+              <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: 0, maxWidth: 480 }}>{tx.features[2].desc}</p>
             </div>
             {/* Stats visuelles */}
             <div style={{ display: "flex", gap: 12, flexShrink: 0 }}>
@@ -442,23 +442,23 @@ export default function Landing() {
       </section>
 
       {/* ── How it works ─────────────────────────────────────── */}
-      <section id="comment" style={{ background: "hsl(0,0%,6%)", paddingTop: 100, paddingBottom: 100 }}>
+      <section id="comment" style={{ background: "white", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 56, lineHeight: 1.15, whiteSpace: "pre-line", color: "white" }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 56, lineHeight: 1.15, whiteSpace: "pre-line", color: "rgb(5,5,5)" }}>
             {tx.howTitle}
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40 }}>
             {tx.steps.map((step, i) => (
               <div key={step.num}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "white", letterSpacing: "0.1em" }}>{step.num}</span>
-                  {i < tx.steps.length - 1 && <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />}
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "rgb(5,5,5)", letterSpacing: "0.1em" }}>{step.num}</span>
+                  {i < tx.steps.length - 1 && <div style={{ flex: 1, height: 1, background: "hsl(0,0%,88%)" }} />}
                 </div>
-                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "white", color: "hsl(0,0%,5%)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "rgb(5,5,5)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
                   <ChevronRight style={{ width: 18, height: 18 }} />
                 </div>
-                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.1rem", color: "white", marginBottom: 10 }}>{step.title}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(255,255,255,0.45)", margin: 0 }}>{step.desc}</p>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.1rem", color: "rgb(5,5,5)", marginBottom: 10 }}>{step.title}</h3>
+                <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgb(61,61,61)", margin: 0 }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -513,23 +513,23 @@ export default function Landing() {
       </section>
 
       {/* ── Platform ─────────────────────────────────────────── */}
-      <section style={{ background: "hsl(0,0%,2%)", paddingTop: 100, paddingBottom: 100 }}>
+      <section style={{ background: "white", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 72, alignItems: "center" }}>
           <div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 32, lineHeight: 1.15, whiteSpace: "pre-line", color: "white" }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 32, lineHeight: 1.15, whiteSpace: "pre-line", color: "rgb(5,5,5)" }}>
               {tx.platformTitle}
             </h2>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px 0", display: "flex", flexDirection: "column", gap: 14 }}>
               {tx.platformFeatures.map(f => (
-                <li key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15, color: "rgba(255,255,255,0.75)" }}>
-                  <CheckCircle style={{ width: 17, height: 17, color: "rgba(255,255,255,0.55)", flexShrink: 0 }} />
+                <li key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 16, color: "rgb(61,61,61)" }}>
+                  <CheckCircle style={{ width: 17, height: 17, color: "rgb(5,5,5)", flexShrink: 0 }} />
                   {f}
                 </li>
               ))}
             </ul>
             <Link to="/dashboard">
               <button
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 8, background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 8, background: "rgb(5,5,5)", color: "white", fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer" }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
                 onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
                 {tx.platformCta} <ArrowRight style={{ width: 15, height: 15 }} />
@@ -623,14 +623,14 @@ export default function Landing() {
       </section>
 
       {/* ── Contact ──────────────────────────────────────────── */}
-      <section id="contact" style={{ background: "hsl(0,0%,2%)", paddingTop: 100, paddingBottom: 100 }}>
+      <section id="contact" style={{ background: "white", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 64, alignItems: "start" }}>
           <div>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "white", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 18, lineHeight: 1.15, color: "white", whiteSpace: "pre-line" }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "rgb(5,5,5)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 18, lineHeight: 1.15, color: "rgb(5,5,5)", whiteSpace: "pre-line" }}>
               {lang === "fr" ? "Une question ?\nNous sommes là." : "A question?\nWe're here."}
             </h2>
-            <p style={{ fontSize: 16, lineHeight: 1.75, color: "rgba(255,255,255,0.45)", marginBottom: 32 }}>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(61,61,61)", marginBottom: 32 }}>
               {lang === "fr"
                 ? "Notre équipe est disponible pour répondre à toutes vos questions sur l'investissement au Burkina Faso."
                 : "Our team is available to answer all your questions about investing in Burkina Faso."}
@@ -644,14 +644,14 @@ export default function Landing() {
                 <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 14 }}>
                   <span style={{ fontSize: 20, flexShrink: 0 }}>{c.icon}</span>
                   <div>
-                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", margin: "0 0 2px", fontWeight: 500 }}>{c.label}</p>
-                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.85)", fontWeight: 600, margin: 0 }}>{c.val}</p>
+                    <p style={{ fontSize: 12, color: "rgb(120,120,120)", margin: "0 0 2px", fontWeight: 500 }}>{c.label}</p>
+                    <p style={{ fontSize: 14, color: "rgb(5,5,5)", fontWeight: 600, margin: 0 }}>{c.val}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div style={{ background: "hsl(0,0%,10%)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: 32 }}>
+          <div style={{ background: "hsl(0,0%,97%)", border: "1px solid hsl(0,0%,90%)", borderRadius: 20, padding: 32 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
               {[
                 { label: lang === "fr" ? "Nom complet" : "Full name", type: "text", placeholder: lang === "fr" ? "Votre nom" : "Your name" },
@@ -659,14 +659,14 @@ export default function Landing() {
                 { label: lang === "fr" ? "Votre message" : "Your message", type: "textarea", placeholder: lang === "fr" ? "Décrivez votre projet..." : "Describe your project..." },
               ].map(f => (
                 <div key={f.label}>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)", marginBottom: 8 }}>{f.label}</label>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "rgb(5,5,5)", marginBottom: 8 }}>{f.label}</label>
                   {f.type === "textarea"
-                    ? <textarea rows={4} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "white", background: "rgba(255,255,255,0.05)", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
-                    : <input type={f.type} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "white", background: "rgba(255,255,255,0.05)", outline: "none", boxSizing: "border-box" }} />
+                    ? <textarea rows={4} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid hsl(0,0%,86%)", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "rgb(5,5,5)", background: "white", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+                    : <input type={f.type} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid hsl(0,0%,86%)", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "rgb(5,5,5)", background: "white", outline: "none", boxSizing: "border-box" }} />
                   }
                 </div>
               ))}
-              <button style={{ padding: "12px 24px", borderRadius: 8, background: "white", color: "hsl(0,0%,5%)", fontSize: 14, fontWeight: 700, border: "none", cursor: "pointer" }}
+              <button style={{ padding: "12px 24px", borderRadius: 8, background: "rgb(5,5,5)", color: "white", fontSize: 14, fontWeight: 700, border: "none", cursor: "pointer" }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
                 onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
                 {lang === "fr" ? "Envoyer le message" : "Send message"}
