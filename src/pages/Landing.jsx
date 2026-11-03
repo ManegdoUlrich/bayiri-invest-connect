@@ -358,39 +358,38 @@ export default function Landing() {
               </div>
             </div>
 
-            {/* Carte 2 — Suivi chantier — col 2-3, rows 1-2 (grande carte avec mockup) */}
-            <div style={{ gridColumn: "2 / 4", gridRow: "1 / 3", background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "36px 32px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            {/* Carte 2 — Suivi chantier — col 2-3, rows 1-2 — carte CLAIRE comme Qonto */}
+            <div style={{ gridColumn: "2 / 4", gridRow: "1 / 3", backgroundImage: "radial-gradient(66% 50% at 65% 30%, rgb(218,218,218) 0%, rgb(246,246,246) 100%)", borderRadius: 20, border: "1px solid rgba(0,0,0,0.06)", padding: "36px 32px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
               <div style={{ marginBottom: "auto" }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                  <Building2 style={{ width: 18, height: 18, color: "rgba(255,255,255,0.6)" }} />
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(0,0,0,0.07)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                  <Building2 style={{ width: 18, height: 18, color: "rgba(0,0,0,0.55)" }} />
                 </div>
-                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.55rem", color: "white", margin: "0 0 12px", lineHeight: 1.15 }}>{tx.features[1].title}</h3>
-                <p style={{ fontSize: 15, color: "rgb(180,180,180)", lineHeight: 1.65, margin: "0 0 28px", maxWidth: 420 }}>{tx.features[1].desc}</p>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.55rem", color: "rgb(5,5,5)", margin: "0 0 12px", lineHeight: 1.15 }}>{tx.features[1].title}</h3>
+                <p style={{ fontSize: 15, color: "rgb(61,61,61)", lineHeight: 1.65, margin: "0 0 28px", maxWidth: 420 }}>{tx.features[1].desc}</p>
               </div>
-              {/* Mini mockup chantier */}
-              <div style={{ background: "hsl(0,0%,7%)", borderRadius: 14, padding: "18px 20px", border: "1px solid rgba(255,255,255,0.06)" }}>
+              {/* Mini mockup chantier — fond sombre sur carte claire */}
+              <div style={{ background: "rgb(26,26,26)", borderRadius: 14, padding: "18px 20px", border: "1px solid rgba(255,255,255,0.08)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
                   <div style={{ display: "flex", gap: 5 }}>
                     {["#ff5f57","#febc2e","#28c840"].map(c => <div key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />)}
                   </div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", fontFamily: "var(--font-mono)" }}>bayiri — suivi de chantier</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-mono)" }}>bayiri — suivi de chantier</div>
                 </div>
-                {/* Photo terrain simulée */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 12 }}>
-                  {["📸 Fondation", "📸 Murs R+1", "📸 Toiture"].map((label, i) => (
-                    <div key={i} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, padding: "10px 8px", textAlign: "center" }}>
+                  {["Fondation", "Murs R+1", "Toiture"].map((label, i) => (
+                    <div key={i} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 8, padding: "10px 8px", textAlign: "center" }}>
                       <p style={{ fontSize: 18, margin: "0 0 4px" }}>📷</p>
-                      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", margin: 0 }}>{label.split(" ")[1]}</p>
+                      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", margin: 0 }}>{label}</p>
                     </div>
                   ))}
                 </div>
-                <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, padding: "12px 14px" }}>
+                <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 8, padding: "12px 14px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", fontWeight: 500 }}>Villa Ouagadougou Nord</span>
-                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontWeight: 700 }}>68%</span>
+                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>Villa Ouagadougou Nord</span>
+                    <span style={{ fontSize: 12, color: "white", fontWeight: 700 }}>68%</span>
                   </div>
-                  <div style={{ height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, overflow: "hidden" }}>
-                    <div style={{ width: "68%", height: "100%", background: "linear-gradient(to right, rgba(255,255,255,0.3), white)", borderRadius: 2 }} />
+                  <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 2, overflow: "hidden" }}>
+                    <div style={{ width: "68%", height: "100%", background: "linear-gradient(to right, rgba(255,255,255,0.35), white)", borderRadius: 2 }} />
                   </div>
                 </div>
               </div>
