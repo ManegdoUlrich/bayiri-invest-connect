@@ -319,12 +319,14 @@ export default function Landing() {
                   paddingLeft: i > 0 ? 24 : 0,
                   borderRight: i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none",
                 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 9, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <Icon style={{ width: 17, height: 17, color: "rgba(255,255,255,0.55)" }} />
+                  <div style={{ width: 46, height: 46, borderRadius: 11, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    {i === 0
+                      ? <span style={{ fontSize: 24, lineHeight: 1 }}>🇧🇫</span>
+                      : <Icon style={{ width: 20, height: 20, color: "rgba(255,255,255,0.65)" }} />}
                   </div>
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.92)", margin: "0 0 2px 0", lineHeight: 1.3 }}>{item.label}</p>
-                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", margin: 0, lineHeight: 1.4 }}>{item.desc}</p>
+                    <p style={{ fontSize: 16, fontWeight: 700, color: "white", margin: "0 0 4px 0", lineHeight: 1.25 }}>{item.label}</p>
+                    <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: 0, lineHeight: 1.45 }}>{item.desc}</p>
                   </div>
                 </div>
               );
@@ -338,7 +340,7 @@ export default function Landing() {
         <div style={{ paddingLeft: G, paddingRight: G, maxWidth: 1200, margin: "0 auto" }}>
           {/* Header */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40 }}>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.6rem)", letterSpacing: "-0.02em", color: "white", lineHeight: 1.12, margin: 0, whiteSpace: "pre-line", maxWidth: 480 }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(1.8rem, 2.8vw, 2.6rem)", letterSpacing: "-0.025em", color: "white", lineHeight: 1.1, margin: 0, whiteSpace: "pre-line", maxWidth: 480 }}>
               {tx.featuresTitle}
             </h2>
             <Link to="/onboarding" style={{ textDecoration: "none", flexShrink: 0 }}>
@@ -354,9 +356,9 @@ export default function Landing() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "auto auto", gap: 12 }}>
 
             {/* Carte 1 — Agent local — col 1, row 1 */}
-            <div style={{ gridColumn: "1", gridRow: "1", background: "hsl(0,0%,10%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18, minHeight: 220 }}>
-              <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <MapPin style={{ width: 19, height: 19, color: "rgba(255,255,255,0.55)" }} />
+            <div style={{ gridColumn: "1", gridRow: "1", background: "linear-gradient(145deg, hsl(30,10%,14%) 0%, hsl(0,0%,8%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18, minHeight: 220 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(255,160,60,0.18) 0%, rgba(255,80,30,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <MapPin style={{ width: 20, height: 20, color: "rgba(255,180,100,0.9)" }} />
               </div>
               <div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[0].title}</h3>
@@ -365,10 +367,10 @@ export default function Landing() {
             </div>
 
             {/* Carte 2 — Suivi chantier — col 2-3, rows 1-2 (grande carte avec mockup) */}
-            <div style={{ gridColumn: "2 / 4", gridRow: "1 / 3", background: "hsl(0,0%,10%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "36px 32px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ gridColumn: "2 / 4", gridRow: "1 / 3", background: "linear-gradient(145deg, hsl(210,10%,14%) 0%, hsl(0,0%,8%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "36px 32px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
               <div style={{ marginBottom: "auto" }}>
-                <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                  <Building2 style={{ width: 19, height: 19, color: "rgba(255,255,255,0.55)" }} />
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(80,160,255,0.18) 0%, rgba(30,80,220,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                  <Building2 style={{ width: 20, height: 20, color: "rgba(120,190,255,0.9)" }} />
                 </div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[1].title}</h3>
                 <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: "0 0 28px", maxWidth: 380 }}>{tx.features[1].desc}</p>
@@ -403,9 +405,9 @@ export default function Landing() {
             </div>
 
             {/* Carte 3 — Sécurité juridique — col 1, row 2 */}
-            <div style={{ gridColumn: "1", gridRow: "2", background: "hsl(0,0%,10%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18 }}>
-              <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Shield style={{ width: 19, height: 19, color: "rgba(255,255,255,0.55)" }} />
+            <div style={{ gridColumn: "1", gridRow: "2", background: "linear-gradient(145deg, hsl(260,8%,14%) 0%, hsl(0,0%,8%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(160,100,255,0.18) 0%, rgba(80,40,200,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Shield style={{ width: 20, height: 20, color: "rgba(190,150,255,0.9)" }} />
               </div>
               <div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[3].title}</h3>
@@ -416,10 +418,10 @@ export default function Landing() {
           </div>
 
           {/* Carte large — Opportunités — pleine largeur en bas */}
-          <div style={{ marginTop: 12, background: "hsl(0,0%,9%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "36px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
+          <div style={{ marginTop: 12, background: "linear-gradient(160deg, hsl(150,8%,13%) 0%, hsl(0,0%,7%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "36px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
             <div style={{ flex: 1 }}>
-              <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                <TrendingUp style={{ width: 19, height: 19, color: "white" }} />
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(60,220,140,0.18) 0%, rgba(20,150,80,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                <TrendingUp style={{ width: 20, height: 20, color: "rgba(100,230,160,0.9)" }} />
               </div>
               <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[2].title}</h3>
               <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: 0, maxWidth: 480 }}>{tx.features[2].desc}</p>
