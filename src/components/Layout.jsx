@@ -76,13 +76,12 @@ export default function Layout() {
         {/* Logo */}
         <div className="px-5 pt-5 pb-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[hsl(var(--sidebar-ring))/0.15] border border-[hsl(var(--sidebar-ring))/0.30]">
-              <span className="text-base font-heading font-normal text-[hsl(var(--sidebar-ring))]">B</span>
-            </div>
-            <div>
-              <h1 className="text-base font-heading font-normal text-sidebar-foreground leading-none">Bayiri</h1>
-              <p className="text-[9px] uppercase tracking-[0.25em] text-[hsl(var(--sidebar-ring))/0.7] mt-0.5">Invest Connect</p>
-            </div>
+            <img
+              src="https://media.base44.com/images/public/69d849ec4fe9ac315bfd5840/9fa7d583d_Logo_transparent.png"
+              alt="Bayiri Invest"
+              className="h-8 object-contain"
+              style={{ filter: 'brightness(2)' }}
+            />
           </Link>
           <button className="lg:hidden text-sidebar-foreground/60 hover:text-sidebar-foreground transition-colors" onClick={() => setSidebarOpen(false)}>
             <X className="w-4 h-4" />

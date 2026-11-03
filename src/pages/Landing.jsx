@@ -215,7 +215,7 @@ export default function Landing() {
                 {tx.nav.login}
               </button>
             </Link>
-            <Link to="/onboarding">
+            <Link to="/register">
               <button style={{
                 fontSize: 14, fontWeight: 600, padding: "8px 20px", borderRadius: 8,
                 background: "white", color: "hsl(0,0%,5%)",
@@ -278,7 +278,7 @@ export default function Landing() {
             </p>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              <Link to="/onboarding">
+              <Link to="/register">
                 <button
                   style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 8, background: "white", color: "hsl(0,0%,5%)", fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer" }}
                   onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
@@ -335,7 +335,7 @@ export default function Landing() {
             <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(2rem, 3.5vw, 3.2rem)", letterSpacing: "-0.03em", color: "white", lineHeight: 1.1, margin: 0, whiteSpace: "pre-line", maxWidth: 560 }}>
               {tx.featuresTitle}
             </h2>
-            <Link to="/onboarding" style={{ textDecoration: "none", flexShrink: 0 }}>
+            <Link to="/register" style={{ textDecoration: "none", flexShrink: 0 }}>
               <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.18)", background: "transparent", color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}
                 onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)"; }}>
@@ -465,7 +465,7 @@ export default function Landing() {
             <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", color: "white", lineHeight: 1.15, margin: 0 }}>
               {lang === "fr" ? "Vos projets,\nconcrétisés." : "Your projects,\nrealized."}
             </h2>
-            <Link to="/onboarding" style={{ textDecoration: "none", flexShrink: 0 }}>
+            <Link to="/register" style={{ textDecoration: "none", flexShrink: 0 }}>
               <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}>
                 {lang === "fr" ? "Démarrer" : "Get started"} <ArrowRight style={{ width: 14, height: 14 }} />
               </button>
@@ -520,7 +520,7 @@ export default function Landing() {
                 </li>
               ))}
             </ul>
-            <Link to="/dashboard">
+            <Link to="/login">
               <button
                 style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 8, background: "rgb(5,5,5)", color: "white", fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer" }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
@@ -695,7 +695,7 @@ export default function Landing() {
           {/* CTA button avec glow */}
           <div style={{ position: "relative", display: "inline-block", marginBottom: 48 }}>
             <div style={{ position: "absolute", inset: -6, borderRadius: 16, background: "radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.18) 0%, transparent 70%)", filter: "blur(12px)" }} />
-            <Link to="/onboarding">
+            <Link to="/register">
               <button
                 style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 10, padding: "18px 52px", borderRadius: 10, background: "white", color: "hsl(0,0%,5%)", fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer", boxShadow: "0 8px 40px rgba(0,0,0,0.5)", transition: "transform 0.15s ease, box-shadow 0.15s ease" }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 50px rgba(0,0,0,0.6)"; }}
