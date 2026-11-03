@@ -670,21 +670,57 @@ export default function Landing() {
       </section>
 
       {/* ── CTA final ────────────────────────────────────────── */}
-      <section style={{ background: "hsl(15,22%,8%)", color: "white", paddingTop: 120, paddingBottom: 120, textAlign: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "relative", maxWidth: 600, margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(2rem, 3.5vw, 3.2rem)", letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.1 }}>
+      <section style={{ position: "relative", overflow: "hidden", color: "white", paddingTop: 130, paddingBottom: 130, textAlign: "center", background: "hsl(0,0%,3%)" }}>
+        {/* Photo background */}
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${HERO_IMG}')`, backgroundSize: "cover", backgroundPosition: "center 35%", opacity: 0.18 }} />
+        {/* Dot grid overlay */}
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        {/* Radial darkening at edges */}
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.75) 100%)" }} />
+        {/* Glow bloom behind button */}
+        <div style={{ position: "absolute", top: "55%", left: "50%", transform: "translate(-50%,-50%)", width: 480, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)", filter: "blur(30px)", pointerEvents: "none" }} />
+
+        <div style={{ position: "relative", maxWidth: 600, margin: "0 auto", paddingLeft: G, paddingRight: G }}>
+          {/* Social proof pill */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 100, padding: "8px 18px", marginBottom: 32 }}>
+            <span style={{ fontSize: 14 }}>🇧🇫</span>
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", fontWeight: 500, letterSpacing: "0.01em" }}>127 investisseurs de la diaspora nous font confiance</span>
+          </div>
+
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(2.5rem, 4.5vw, 3.8rem)", letterSpacing: "-0.03em", marginBottom: 18, lineHeight: 1.06 }}>
             {tx.finalCta}
           </h2>
-          <p style={{ fontSize: 17, color: "rgba(255,255,255,0.5)", marginBottom: 44, lineHeight: 1.65 }}>{tx.finalCtaSub}</p>
-          <Link to="/onboarding">
-            <button
-              style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 44px", borderRadius: 8, background: "white", color: "hsl(0,0%,5%)", fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer" }}
-              onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
-              onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
-              {tx.finalCtaBtn} <ArrowRight style={{ width: 18, height: 18 }} />
-            </button>
-          </Link>
+          <p style={{ fontSize: 18, color: "rgba(255,255,255,0.5)", marginBottom: 52, lineHeight: 1.7, maxWidth: 460, margin: "0 auto 52px" }}>{tx.finalCtaSub}</p>
+
+          {/* CTA button avec glow */}
+          <div style={{ position: "relative", display: "inline-block", marginBottom: 48 }}>
+            <div style={{ position: "absolute", inset: -6, borderRadius: 16, background: "radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.18) 0%, transparent 70%)", filter: "blur(12px)" }} />
+            <Link to="/onboarding">
+              <button
+                style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 10, padding: "18px 52px", borderRadius: 10, background: "white", color: "hsl(0,0%,5%)", fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer", boxShadow: "0 8px 40px rgba(0,0,0,0.5)", transition: "transform 0.15s ease, box-shadow 0.15s ease" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 14px 50px rgba(0,0,0,0.6)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,0,0,0.5)"; }}>
+                {tx.finalCtaBtn} <ArrowRight style={{ width: 18, height: 18 }} />
+              </button>
+            </Link>
+          </div>
+
+          {/* Mini stats de confiance */}
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: "0 0" }}>
+            {[
+              { value: "3×", label: "rendement moyen" },
+              { value: "XOF 2.4M+", label: "investis à ce jour" },
+              { value: "100%", label: "sécurisé juridiquement" },
+            ].map((s, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center" }}>
+                {i > 0 && <span style={{ color: "rgba(255,255,255,0.15)", margin: "0 22px", fontSize: 18 }}>·</span>}
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: "white", margin: 0, lineHeight: 1.2 }}>{s.value}</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.38)", margin: "2px 0 0", letterSpacing: "0.01em" }}>{s.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
