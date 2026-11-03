@@ -333,50 +333,132 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Features ─────────────────────────────────────────── */}
-      <section id="solutions" style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
-        <div style={{ ...WRAP }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 56, maxWidth: 520, lineHeight: 1.15, whiteSpace: "pre-line" }}>
-            {tx.featuresTitle}
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
-            {tx.features.map(f => {
-              const Icon = f.icon;
-              return (
-                <div key={f.title}
-                  style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 14, padding: "32px 28px", boxShadow: "var(--shadow-sm)", transition: "box-shadow 0.2s, transform 0.2s", cursor: "default" }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = "var(--shadow-md)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = "var(--shadow-sm)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 10, background: "hsl(var(--primary)/0.1)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                    <Icon style={{ width: 21, height: 21, color: "hsl(var(--primary))" }} />
-                  </div>
-                  <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.15rem", marginBottom: 10, color: "hsl(var(--foreground))", lineHeight: 1.2 }}>{f.title}</h3>
-                  <p style={{ fontSize: 14, lineHeight: 1.72, color: "hsl(var(--muted-foreground))", margin: 0 }}>{f.desc}</p>
+      {/* ── Features — bento sombre style Qonto ─────────────── */}
+      <section id="solutions" style={{ background: "hsl(15,20%,6%)", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ paddingLeft: G, paddingRight: G, maxWidth: 1200, margin: "0 auto" }}>
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40 }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.6rem)", letterSpacing: "-0.02em", color: "white", lineHeight: 1.12, margin: 0, whiteSpace: "pre-line", maxWidth: 480 }}>
+              {tx.featuresTitle}
+            </h2>
+            <Link to="/onboarding" style={{ textDecoration: "none", flexShrink: 0 }}>
+              <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 22px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.18)", background: "transparent", color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap" }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)"; }}>
+                {lang === "fr" ? "Démarrer" : "Get started"} <ArrowRight style={{ width: 14, height: 14 }} />
+              </button>
+            </Link>
+          </div>
+
+          {/* Bento grid — 3 colonnes */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "auto auto", gap: 12 }}>
+
+            {/* Carte 1 — Agent local — col 1, row 1 */}
+            <div style={{ gridColumn: "1", gridRow: "1", background: "hsl(15,18%,11%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18, minHeight: 220 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <MapPin style={{ width: 19, height: 19, color: "hsl(38,65%,58%)" }} />
+              </div>
+              <div>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.2rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[0].title}</h3>
+                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0 }}>{tx.features[0].desc}</p>
+              </div>
+            </div>
+
+            {/* Carte 2 — Suivi chantier — col 2-3, rows 1-2 (grande carte avec mockup) */}
+            <div style={{ gridColumn: "2 / 4", gridRow: "1 / 3", background: "hsl(153,50%,10%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "36px 32px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+              <div style={{ marginBottom: "auto" }}>
+                <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                  <Building2 style={{ width: 19, height: 19, color: "hsl(153,52%,48%)" }} />
                 </div>
-              );
-            })}
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.4rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[1].title}</h3>
+                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: "0 0 28px", maxWidth: 380 }}>{tx.features[1].desc}</p>
+              </div>
+              {/* Mini mockup chantier */}
+              <div style={{ background: "hsl(153,45%,8%)", borderRadius: 14, padding: "18px 20px", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                  <div style={{ display: "flex", gap: 5 }}>
+                    {["#ff5f57","#febc2e","#28c840"].map(c => <div key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />)}
+                  </div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", fontFamily: "var(--font-mono)" }}>bayiri — suivi de chantier</div>
+                </div>
+                {/* Photo terrain simulée */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 12 }}>
+                  {["📸 Fondation", "📸 Murs R+1", "📸 Toiture"].map((label, i) => (
+                    <div key={i} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, padding: "10px 8px", textAlign: "center" }}>
+                      <p style={{ fontSize: 18, margin: "0 0 4px" }}>📷</p>
+                      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", margin: 0 }}>{label.split(" ")[1]}</p>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, padding: "12px 14px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", fontWeight: 500 }}>Villa Ouagadougou Nord</span>
+                    <span style={{ fontSize: 12, color: "hsl(38,65%,58%)", fontWeight: 700 }}>68%</span>
+                  </div>
+                  <div style={{ height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, overflow: "hidden" }}>
+                    <div style={{ width: "68%", height: "100%", background: "linear-gradient(to right, hsl(38,60%,42%), hsl(38,70%,58%))", borderRadius: 2 }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Carte 3 — Sécurité juridique — col 1, row 2 */}
+            <div style={{ gridColumn: "1", gridRow: "2", background: "hsl(15,18%,11%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Shield style={{ width: 19, height: 19, color: "hsl(38,65%,58%)" }} />
+              </div>
+              <div>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.2rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[3].title}</h3>
+                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0 }}>{tx.features[3].desc}</p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Carte large — Opportunités — pleine largeur en bas */}
+          <div style={{ marginTop: 12, background: "linear-gradient(135deg, hsl(12,62%,18%) 0%, hsl(15,20%,10%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "36px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 11, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                <TrendingUp style={{ width: 19, height: 19, color: "hsl(12,68%,60%)" }} />
+              </div>
+              <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.4rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[2].title}</h3>
+              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0, maxWidth: 480 }}>{tx.features[2].desc}</p>
+            </div>
+            {/* Stats visuelles */}
+            <div style={{ display: "flex", gap: 12, flexShrink: 0 }}>
+              {[
+                { val: "3×", label: lang === "fr" ? "Rendement\nmoyen" : "Average\nyield" },
+                { val: "+120", label: lang === "fr" ? "Projets\nréalisés" : "Completed\nprojects" },
+                { val: "5 pays", label: lang === "fr" ? "Diaspora\nreprésentée" : "Diaspora\ncountries" },
+              ].map(s => (
+                <div key={s.val} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: "18px 20px", textAlign: "center", minWidth: 90 }}>
+                  <p style={{ fontFamily: "var(--font-heading)", fontSize: "1.7rem", color: "hsl(12,68%,62%)", margin: "0 0 6px", lineHeight: 1 }}>{s.val}</p>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", margin: 0, whiteSpace: "pre-line", lineHeight: 1.4 }}>{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── How it works ─────────────────────────────────────── */}
-      <section id="comment" style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
+      <section id="comment" style={{ background: "hsl(15,18%,9%)", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 56, lineHeight: 1.15, whiteSpace: "pre-line" }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 56, lineHeight: 1.15, whiteSpace: "pre-line", color: "white" }}>
             {tx.howTitle}
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40 }}>
             {tx.steps.map((step, i) => (
               <div key={step.num}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "hsl(var(--primary))", letterSpacing: "0.1em" }}>{step.num}</span>
-                  {i < tx.steps.length - 1 && <div style={{ flex: 1, height: 1, background: "hsl(var(--border))" }} />}
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "hsl(38,65%,52%)", letterSpacing: "0.1em" }}>{step.num}</span>
+                  {i < tx.steps.length - 1 && <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />}
                 </div>
-                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "hsl(38,65%,52%)", color: "hsl(15,25%,10%)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
                   <ChevronRight style={{ width: 18, height: 18 }} />
                 </div>
-                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.1rem", color: "hsl(var(--foreground))", marginBottom: 10 }}>{step.title}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.65, color: "hsl(var(--muted-foreground))", margin: 0 }}>{step.desc}</p>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "1.1rem", color: "white", marginBottom: 10 }}>{step.title}</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(255,255,255,0.45)", margin: 0 }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -431,16 +513,16 @@ export default function Landing() {
       </section>
 
       {/* ── Platform ─────────────────────────────────────────── */}
-      <section style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
+      <section style={{ background: "hsl(15,20%,6%)", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 72, alignItems: "center" }}>
           <div>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 32, lineHeight: 1.15, whiteSpace: "pre-line" }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 32, lineHeight: 1.15, whiteSpace: "pre-line", color: "white" }}>
               {tx.platformTitle}
             </h2>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px 0", display: "flex", flexDirection: "column", gap: 14 }}>
               {tx.platformFeatures.map(f => (
-                <li key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15, color: "hsl(var(--foreground))" }}>
-                  <CheckCircle style={{ width: 17, height: 17, color: "hsl(var(--secondary))", flexShrink: 0 }} />
+                <li key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15, color: "rgba(255,255,255,0.75)" }}>
+                  <CheckCircle style={{ width: 17, height: 17, color: "hsl(153,52%,48%)", flexShrink: 0 }} />
                   {f}
                 </li>
               ))}
@@ -513,25 +595,25 @@ export default function Landing() {
       </section>
 
       {/* ── Testimonials ─────────────────────────────────────── */}
-      <section id="avis" style={{ background: "hsl(var(--muted))", paddingTop: 100, paddingBottom: 100 }}>
+      <section id="avis" style={{ background: "hsl(15,18%,9%)", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP }}>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 48 }}>
+          <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 48, color: "white" }}>
             {tx.testimonialsTitle}
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
             {tx.testimonials.map(t => (
-              <div key={t.name} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 14, padding: "32px 28px", boxShadow: "var(--shadow-sm)", display: "flex", flexDirection: "column", gap: 18 }}>
+              <div key={t.name} style={{ background: "hsl(15,18%,11%)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18 }}>
                 <div style={{ display: "flex", gap: 3 }}>
                   {[...Array(t.stars)].map((_, i) => <Star key={i} style={{ width: 14, height: 14, fill: "hsl(38,72%,52%)", color: "hsl(38,72%,52%)" }} />)}
                 </div>
-                <p style={{ fontSize: 15, lineHeight: 1.72, color: "hsl(var(--foreground))", fontStyle: "italic", flex: 1, margin: 0 }}>"{t.text}"</p>
+                <p style={{ fontSize: 15, lineHeight: 1.72, color: "rgba(255,255,255,0.7)", fontStyle: "italic", flex: 1, margin: 0 }}>"{t.text}"</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: "50%", background: "hsl(var(--primary)/0.12)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 14, color: "hsl(var(--primary))", flexShrink: 0 }}>
+                  <div style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 14, color: "hsl(38,65%,58%)", flexShrink: 0 }}>
                     {t.name.charAt(0)}
                   </div>
                   <div>
-                    <p style={{ fontWeight: 600, fontSize: 14, color: "hsl(var(--foreground))", margin: "0 0 2px 0" }}>{t.name}</p>
-                    <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: 0 }}>{t.origin}</p>
+                    <p style={{ fontWeight: 600, fontSize: 14, color: "white", margin: "0 0 2px 0" }}>{t.name}</p>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", margin: 0 }}>{t.origin}</p>
                   </div>
                 </div>
               </div>
@@ -541,14 +623,14 @@ export default function Landing() {
       </section>
 
       {/* ── Contact ──────────────────────────────────────────── */}
-      <section id="contact" style={{ background: "hsl(var(--background))", paddingTop: 100, paddingBottom: 100 }}>
+      <section id="contact" style={{ background: "hsl(15,20%,6%)", paddingTop: 100, paddingBottom: 100 }}>
         <div style={{ ...WRAP, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 64, alignItems: "start" }}>
           <div>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "hsl(var(--primary))", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 18, lineHeight: 1.15 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: "hsl(38,65%,52%)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 400, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 18, lineHeight: 1.15, color: "white", whiteSpace: "pre-line" }}>
               {lang === "fr" ? "Une question ?\nNous sommes là." : "A question?\nWe're here."}
             </h2>
-            <p style={{ fontSize: 16, lineHeight: 1.75, color: "hsl(var(--muted-foreground))", marginBottom: 32 }}>
+            <p style={{ fontSize: 16, lineHeight: 1.75, color: "rgba(255,255,255,0.45)", marginBottom: 32 }}>
               {lang === "fr"
                 ? "Notre équipe est disponible pour répondre à toutes vos questions sur l'investissement au Burkina Faso."
                 : "Our team is available to answer all your questions about investing in Burkina Faso."}
@@ -562,14 +644,14 @@ export default function Landing() {
                 <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 14 }}>
                   <span style={{ fontSize: 20, flexShrink: 0 }}>{c.icon}</span>
                   <div>
-                    <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "0 0 2px", fontWeight: 500 }}>{c.label}</p>
-                    <p style={{ fontSize: 14, color: "hsl(var(--foreground))", fontWeight: 600, margin: 0 }}>{c.val}</p>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", margin: "0 0 2px", fontWeight: 500 }}>{c.label}</p>
+                    <p style={{ fontSize: 14, color: "rgba(255,255,255,0.85)", fontWeight: 600, margin: 0 }}>{c.val}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border)/0.5)", borderRadius: 16, padding: 32, boxShadow: "var(--shadow-md)" }}>
+          <div style={{ background: "hsl(15,18%,11%)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: 32 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
               {[
                 { label: lang === "fr" ? "Nom complet" : "Full name", type: "text", placeholder: lang === "fr" ? "Votre nom" : "Your name" },
@@ -577,14 +659,14 @@ export default function Landing() {
                 { label: lang === "fr" ? "Votre message" : "Your message", type: "textarea", placeholder: lang === "fr" ? "Décrivez votre projet..." : "Describe your project..." },
               ].map(f => (
                 <div key={f.label}>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "hsl(var(--foreground))", marginBottom: 8 }}>{f.label}</label>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)", marginBottom: 8 }}>{f.label}</label>
                   {f.type === "textarea"
-                    ? <textarea rows={4} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid hsl(var(--border))", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "hsl(var(--foreground))", background: "hsl(var(--background))", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
-                    : <input type={f.type} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid hsl(var(--border))", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "hsl(var(--foreground))", background: "hsl(var(--background))", outline: "none", boxSizing: "border-box" }} />
+                    ? <textarea rows={4} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "white", background: "rgba(255,255,255,0.05)", resize: "vertical", outline: "none", boxSizing: "border-box" }} />
+                    : <input type={f.type} placeholder={f.placeholder} style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", padding: "10px 14px", fontSize: 14, fontFamily: "var(--font-body)", color: "white", background: "rgba(255,255,255,0.05)", outline: "none", boxSizing: "border-box" }} />
                   }
                 </div>
               ))}
-              <button style={{ padding: "12px 24px", borderRadius: 8, background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", fontSize: 14, fontWeight: 600, border: "none", cursor: "pointer" }}
+              <button style={{ padding: "12px 24px", borderRadius: 8, background: "hsl(38,65%,52%)", color: "hsl(15,25%,10%)", fontSize: 14, fontWeight: 700, border: "none", cursor: "pointer" }}
                 onMouseEnter={e => e.currentTarget.style.opacity = "0.88"}
                 onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
                 {lang === "fr" ? "Envoyer le message" : "Send message"}
