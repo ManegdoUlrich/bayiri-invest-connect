@@ -672,11 +672,11 @@ export default function Landing() {
       {/* ── CTA final ────────────────────────────────────────── */}
       <section style={{ position: "relative", overflow: "hidden", color: "white", paddingTop: 130, paddingBottom: 130, textAlign: "center", background: "hsl(0,0%,3%)" }}>
         {/* Photo background */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${HERO_IMG}')`, backgroundSize: "cover", backgroundPosition: "center 35%", opacity: 0.18 }} />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${HERO_IMG}')`, backgroundSize: "cover", backgroundPosition: "center 35%", opacity: 0.38 }} />
         {/* Dot grid overlay */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
-        {/* Radial darkening at edges */}
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.75) 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        {/* Radial darkening at edges — léger */}
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.45) 100%)" }} />
         {/* Glow bloom behind button */}
         <div style={{ position: "absolute", top: "55%", left: "50%", transform: "translate(-50%,-50%)", width: 480, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)", filter: "blur(30px)", pointerEvents: "none" }} />
 
