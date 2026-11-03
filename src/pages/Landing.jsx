@@ -332,7 +332,7 @@ export default function Landing() {
         <div style={{ paddingLeft: G, paddingRight: G, maxWidth: 1200, margin: "0 auto" }}>
           {/* Header */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40 }}>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(1.8rem, 2.8vw, 2.6rem)", letterSpacing: "-0.025em", color: "white", lineHeight: 1.1, margin: 0, whiteSpace: "pre-line", maxWidth: 480 }}>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(2rem, 3.5vw, 3.2rem)", letterSpacing: "-0.03em", color: "white", lineHeight: 1.1, margin: 0, whiteSpace: "pre-line", maxWidth: 560 }}>
               {tx.featuresTitle}
             </h2>
             <Link to="/onboarding" style={{ textDecoration: "none", flexShrink: 0 }}>
@@ -348,24 +348,24 @@ export default function Landing() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "auto auto", gap: 12 }}>
 
             {/* Carte 1 — Agent local — col 1, row 1 */}
-            <div style={{ gridColumn: "1", gridRow: "1", background: "linear-gradient(145deg, hsl(30,10%,14%) 0%, hsl(0,0%,8%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18, minHeight: 220 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(255,160,60,0.18) 0%, rgba(255,80,30,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <MapPin style={{ width: 20, height: 20, color: "rgba(255,180,100,0.9)" }} />
+            <div style={{ gridColumn: "1", gridRow: "1", background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 20, minHeight: 220 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <MapPin style={{ width: 18, height: 18, color: "rgba(255,255,255,0.6)" }} />
               </div>
               <div>
-                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[0].title}</h3>
-                <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: 0 }}>{tx.features[0].desc}</p>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 12px", lineHeight: 1.2 }}>{tx.features[0].title}</h3>
+                <p style={{ fontSize: 15, color: "rgb(180,180,180)", lineHeight: 1.65, margin: 0 }}>{tx.features[0].desc}</p>
               </div>
             </div>
 
             {/* Carte 2 — Suivi chantier — col 2-3, rows 1-2 (grande carte avec mockup) */}
-            <div style={{ gridColumn: "2 / 4", gridRow: "1 / 3", background: "linear-gradient(145deg, hsl(210,10%,14%) 0%, hsl(0,0%,8%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "36px 32px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ gridColumn: "2 / 4", gridRow: "1 / 3", background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "36px 32px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
               <div style={{ marginBottom: "auto" }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(80,160,255,0.18) 0%, rgba(30,80,220,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                  <Building2 style={{ width: 20, height: 20, color: "rgba(120,190,255,0.9)" }} />
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                  <Building2 style={{ width: 18, height: 18, color: "rgba(255,255,255,0.6)" }} />
                 </div>
-                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[1].title}</h3>
-                <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: "0 0 28px", maxWidth: 380 }}>{tx.features[1].desc}</p>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.55rem", color: "white", margin: "0 0 12px", lineHeight: 1.15 }}>{tx.features[1].title}</h3>
+                <p style={{ fontSize: 15, color: "rgb(180,180,180)", lineHeight: 1.65, margin: "0 0 28px", maxWidth: 420 }}>{tx.features[1].desc}</p>
               </div>
               {/* Mini mockup chantier */}
               <div style={{ background: "hsl(0,0%,7%)", borderRadius: 14, padding: "18px 20px", border: "1px solid rgba(255,255,255,0.06)" }}>
@@ -397,26 +397,26 @@ export default function Landing() {
             </div>
 
             {/* Carte 3 — Sécurité juridique — col 1, row 2 */}
-            <div style={{ gridColumn: "1", gridRow: "2", background: "linear-gradient(145deg, hsl(260,8%,14%) 0%, hsl(0,0%,8%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(160,100,255,0.18) 0%, rgba(80,40,200,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Shield style={{ width: 20, height: 20, color: "rgba(190,150,255,0.9)" }} />
+            <div style={{ gridColumn: "1", gridRow: "2", background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 20 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Shield style={{ width: 18, height: 18, color: "rgba(255,255,255,0.6)" }} />
               </div>
               <div>
-                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.15rem", color: "white", margin: "0 0 10px", lineHeight: 1.2 }}>{tx.features[3].title}</h3>
-                <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: 0 }}>{tx.features[3].desc}</p>
+                <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 12px", lineHeight: 1.2 }}>{tx.features[3].title}</h3>
+                <p style={{ fontSize: 15, color: "rgb(180,180,180)", lineHeight: 1.65, margin: 0 }}>{tx.features[3].desc}</p>
               </div>
             </div>
 
           </div>
 
           {/* Carte large — Opportunités — pleine largeur en bas */}
-          <div style={{ marginTop: 12, background: "linear-gradient(160deg, hsl(150,8%,13%) 0%, hsl(0,0%,7%) 100%)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "36px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
+          <div style={{ marginTop: 12, background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "36px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
             <div style={{ flex: 1 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, rgba(60,220,140,0.18) 0%, rgba(20,150,80,0.08) 100%)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-                <TrendingUp style={{ width: 20, height: 20, color: "rgba(100,230,160,0.9)" }} />
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                <TrendingUp style={{ width: 18, height: 18, color: "rgba(255,255,255,0.6)" }} />
               </div>
-              <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.35rem", color: "white", margin: "0 0 10px", lineHeight: 1.15 }}>{tx.features[2].title}</h3>
-              <p style={{ fontSize: 14, color: "rgb(204,204,204)", lineHeight: 1.7, margin: 0, maxWidth: 480 }}>{tx.features[2].desc}</p>
+              <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.55rem", color: "white", margin: "0 0 12px", lineHeight: 1.15 }}>{tx.features[2].title}</h3>
+              <p style={{ fontSize: 15, color: "rgb(180,180,180)", lineHeight: 1.65, margin: 0, maxWidth: 520 }}>{tx.features[2].desc}</p>
             </div>
             {/* Stats visuelles */}
             <div style={{ display: "flex", gap: 12, flexShrink: 0 }}>
