@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, Navigate } from 'react-router-dom'
 import { useAuth } from '@/lib/AuthContext'
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 
@@ -17,8 +17,7 @@ export default function Login() {
     const dest = user.role === 'admin' ? '/admin'
                : user.role === 'agent' ? '/agent'
                : '/dashboard'
-    navigate(dest, { replace: true })
-    return null
+    return <Navigate to={dest} replace />
   }
 
   const handleSubmit = async (e) => {
