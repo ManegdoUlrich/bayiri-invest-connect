@@ -244,19 +244,14 @@ export default function Landing() {
         {/* Gradient bas pour transition douce */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 200, background: "linear-gradient(to top, hsl(0,0%,2%), transparent)" }} />
 
-        {/* Contenu — grille 2 colonnes : texte à gauche, visuel à droite */}
+        {/* Contenu — texte ancré à gauche, photo de fond sur toute la largeur */}
         <div style={{
           position: "relative",
           flex: 1,
           paddingLeft: G, paddingRight: G,
-          paddingTop: 140, paddingBottom: 80,
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          alignItems: "center",
-          gap: 40,
+          paddingTop: 160, paddingBottom: 80,
         }}>
-          {/* Colonne gauche — tout le contenu textuel */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", maxWidth: 660 }}>
             {/* Badge Trustpilot */}
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
               <div style={{ display: "flex", gap: 2 }}>
@@ -270,12 +265,12 @@ export default function Landing() {
             {/* Titre — 2 lignes */}
             <h1 style={{
               fontFamily: "var(--font-heading)",
-              fontSize: "clamp(3rem, 5vw, 5rem)",
+              fontSize: "clamp(3rem, 4.5vw, 4.8rem)",
               lineHeight: 1.06, letterSpacing: "-0.03em", fontWeight: 700,
               margin: "0 0 22px 0", textAlign: "left",
             }}>
-              {tx.hero.line1} <span style={{ color: "white" }}>{tx.hero.line2}</span><br />
-              {tx.hero.line3}
+              {tx.hero.line1}<br />
+              {tx.hero.line2} {tx.hero.line3}
             </h1>
 
             <p style={{ fontSize: "clamp(15px, 1.3vw, 18px)", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 38px 0", textAlign: "left", maxWidth: 480 }}>
@@ -301,9 +296,6 @@ export default function Landing() {
               </a>
             </div>
           </div>
-
-          {/* Colonne droite — vide, laisse le visuel de fond apparaître */}
-          <div />
         </div>
 
         {/* ── Barre de confiance — style Qonto ──────────────── */}
