@@ -123,7 +123,7 @@ export default function NosValeurs() {
           <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(2.2rem, 5vw, 4rem)", letterSpacing: "-0.03em", lineHeight: 1.1, color: "white", margin: "0 0 24px", maxWidth: 700 }}>
             {tx.hero}
           </h1>
-          <p style={{ fontSize: 18, lineHeight: 1.8, color: "rgba(255,255,255,0.55)", maxWidth: 640, margin: 0 }}>
+          <p style={{ fontSize: 18, lineHeight: 1.8, color: "rgba(255,255,255,0.55)", margin: 0 }}>
             {tx.heroSub}
           </p>
         </div>

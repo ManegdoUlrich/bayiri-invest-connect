@@ -256,7 +256,7 @@ export default function Equipe() {
           <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", lineHeight: 1.15, color: "white", margin: "0 0 20px" }}>
             {tx.hero}
           </h1>
-          <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgba(255,255,255,0.65)", maxWidth: 560, margin: 0 }}>
+          <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgba(255,255,255,0.65)", margin: 0 }}>
             {tx.heroSub}
           </p>
         </div>
@@ -267,7 +267,7 @@ export default function Equipe() {
         <div style={{ ...WRAP }}>
           <div style={{ marginBottom: 56 }}>
             <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", margin: "0 0 12px" }}>{tx.teamLabel}</p>
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", maxWidth: 560, margin: 0 }}>{tx.teamSub}</p>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", margin: 0 }}>{tx.teamSub}</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
             {tx.team.map(person => (
@@ -282,7 +282,7 @@ export default function Equipe() {
         <div style={{ ...WRAP }}>
           <div style={{ marginBottom: 48 }}>
             <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", margin: "0 0 12px" }}>{tx.fieldLabel}</p>
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", maxWidth: 560, margin: 0 }}>{tx.fieldSub}</p>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", margin: 0 }}>{tx.fieldSub}</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16 }}>
             {tx.field.map(f => (
@@ -306,7 +306,7 @@ export default function Equipe() {
         <div style={{ ...WRAP }}>
           <div style={{ marginBottom: 48 }}>
             <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", margin: "0 0 12px" }}>{tx.partnersLabel}</p>
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", maxWidth: 560, margin: 0 }}>{tx.partnersSub}</p>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", margin: 0 }}>{tx.partnersSub}</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 12 }}>
             {tx.partners.map(p => (
