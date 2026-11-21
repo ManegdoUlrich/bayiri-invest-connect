@@ -241,13 +241,22 @@ export default function Equipe() {
       </div>
 
       {/* Hero */}
-      <section style={{ background: "white", borderBottom: "1px solid hsl(0,0%,91%)", paddingTop: 60, paddingBottom: 60 }}>
-        <div style={{ ...WRAP }}>
-          <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", margin: "0 0 16px" }}>{tx.label}</p>
-          <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(2rem, 4vw, 3.2rem)", letterSpacing: "-0.03em", lineHeight: 1.1, color: "rgb(5,5,5)", margin: "0 0 20px", maxWidth: 640 }}>
+      <section style={{
+        position: "relative",
+        paddingTop: 80,
+        paddingBottom: 80,
+        backgroundImage: "url(https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261121_202615_2409aff1-df58-44bd-8485-ad9938d78b08.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
+        {/* Overlay */}
+        <div style={{ position: "absolute", inset: 0, background: "rgba(5,5,5,0.62)" }} />
+        <div style={{ ...WRAP, position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", margin: "0 0 16px" }}>{tx.label}</p>
+          <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", lineHeight: 1.15, color: "white", margin: "0 0 20px" }}>
             {tx.hero}
           </h1>
-          <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", maxWidth: 560, margin: 0 }}>
+          <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgba(255,255,255,0.65)", maxWidth: 560, margin: 0 }}>
             {tx.heroSub}
           </p>
         </div>
