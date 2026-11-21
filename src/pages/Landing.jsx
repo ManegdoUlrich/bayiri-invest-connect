@@ -60,13 +60,13 @@ const t = {
     platformCta: "Voir la plateforme",
     testimonialsTitle: "Ils nous font confiance.",
     testimonials: [
-      { name: "Kofi Mensah", origin: "🇬🇧 Londres → Ouagadougou", text: "J'ai pu construire ma villa sans jamais me déplacer. Les rapports photo hebdomadaires m'ont donné une tranquillité d'esprit totale.", stars: 5 },
+      { name: "Kofi Mensah", origin: "🇬🇧 Londres → Ouagadougou", text: "J'ai pu construire ma villa sans jamais me déplacer. Les rapports photo hebdomadaires m'ont donné une tranquillité d'esprit totale.", stars: 4 },
       { name: "Aminata Diallo", origin: "🇫🇷 Paris → Bobo-Dioulasso", text: "Professionnalisme et transparence à chaque étape. Leur équipe a géré l'achat de mon terrain et toutes les démarches administratives.", stars: 5 },
       { name: "Jean-Baptiste Nkomo", origin: "🇧🇪 Bruxelles → Koudougou", text: "Avec Bayiri Invest, j'ai enfin trouvé un partenaire de confiance. Mon commerce tourne très bien depuis 6 mois.", stars: 5 },
     ],
-    finalCta: "Prêt à investir ?",
-    finalCtaSub: "Rejoignez des centaines de membres de la diaspora qui font confiance à Bayiri Invest.",
-    finalCtaBtn: "Démarrer gratuitement",
+    finalCta: "Votre projet commence ici.",
+    finalCtaSub: "Un compte, un agent dédié, un suivi complet. La diaspora mérite mieux que les promesses.",
+    finalCtaBtn: "Ouvrir un compte",
     footer: "© 2026 Bayiri Invest — Tous droits réservés.",
   },
   en: {
@@ -121,9 +121,9 @@ const t = {
       { name: "Aminata Diallo", origin: "🇫🇷 Paris → Bobo-Dioulasso", text: "Professionalism and transparency at every step. Their team handled the land purchase and all admin.", stars: 5 },
       { name: "Jean-Baptiste Nkomo", origin: "🇧🇪 Brussels → Koudougou", text: "I finally found a trustworthy partner. My business has been running great for 6 months.", stars: 5 },
     ],
-    finalCta: "Ready to invest?",
-    finalCtaSub: "Join hundreds of diaspora members who trust Bayiri Invest.",
-    finalCtaBtn: "Get started for free",
+    finalCta: "Your project starts here.",
+    finalCtaSub: "One account, one dedicated agent, full tracking. The diaspora deserves better than promises.",
+    finalCtaBtn: "Open an account",
     footer: "© 2026 Bayiri Invest — All rights reserved.",
   },
 };
@@ -252,15 +252,10 @@ export default function Landing() {
           paddingTop: 160, paddingBottom: 80,
         }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", maxWidth: 660 }}>
-            {/* Badge Trustpilot */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
-              <div style={{ display: "flex", gap: 2 }}>
-                {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 13, height: 13, fill: "#00b67a", color: "#00b67a" }} />)}
-              </div>
-              <span style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", fontWeight: 500, letterSpacing: "0.01em" }}>
-                {tx.hero.trustpilot}
-              </span>
-            </div>
+            {/* Label editorial */}
+            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 28 }}>
+              {lang === "fr" ? "Investissement · Diaspora · Burkina Faso" : "Investment · Diaspora · Burkina Faso"}
+            </p>
 
             {/* Titre — 2 lignes */}
             <h1 style={{
@@ -498,7 +493,7 @@ export default function Landing() {
                   <p style={{ fontFamily: "var(--font-heading)", fontSize: "1.25rem", color: "white", margin: 0, lineHeight: 1.2 }}>{card.desc}</p>
                 </div>
                 {/* Overlay hover */}
-                <div className="card-overlay" style={{ position: "absolute", inset: 0, background: "rgba(38,65%,42%,0.08)", borderRadius: 16, border: "2px solid white", opacity: 0, transition: "opacity 0.25s" }} />
+                <div className="card-overlay" style={{ position: "absolute", inset: 0, borderRadius: 16, border: "2px solid rgba(255,255,255,0.6)", opacity: 0, transition: "opacity 0.25s" }} />
               </div>
             ))}
           </div>
@@ -537,7 +532,7 @@ export default function Landing() {
                 borderRadius: 16,
                 padding: 24,
                 boxShadow: "var(--shadow-xl)",
-                border: "1px solid hsl(153,30%,20%)",
+                border: "1px solid rgba(255,255,255,0.08)",
               }}>
                 {/* Barre de titre du dashboard */}
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
@@ -809,29 +804,18 @@ export default function Landing() {
       {/* ── CTA final ────────────────────────────────────────── */}
       <section style={{ position: "relative", overflow: "hidden", color: "white", paddingTop: 130, paddingBottom: 130, textAlign: "center", background: "hsl(0,0%,3%)" }}>
         {/* Photo background */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${HERO_IMG}')`, backgroundSize: "cover", backgroundPosition: "center 35%", opacity: 0.38 }} />
-        {/* Dot grid overlay */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
-        {/* Radial darkening at edges — léger */}
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.45) 100%)" }} />
-        {/* Glow bloom behind button */}
-        <div style={{ position: "absolute", top: "55%", left: "50%", transform: "translate(-50%,-50%)", width: 480, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)", filter: "blur(30px)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${HERO_IMG}')`, backgroundSize: "cover", backgroundPosition: "center 35%", opacity: 0.32 }} />
+        {/* Radial darkening at edges */}
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 100%)" }} />
 
         <div style={{ position: "relative", maxWidth: 600, margin: "0 auto", paddingLeft: G, paddingRight: G }}>
-          {/* Social proof pill */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 100, padding: "8px 18px", marginBottom: 32 }}>
-            <span style={{ fontSize: 14 }}>🇧🇫</span>
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", fontWeight: 500, letterSpacing: "0.01em" }}>127 investisseurs de la diaspora nous font confiance</span>
-          </div>
-
           <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "clamp(2.5rem, 4.5vw, 3.8rem)", letterSpacing: "-0.03em", marginBottom: 18, lineHeight: 1.06 }}>
             {tx.finalCta}
           </h2>
           <p style={{ fontSize: 18, color: "rgba(255,255,255,0.5)", marginBottom: 52, lineHeight: 1.7, maxWidth: 460, margin: "0 auto 52px" }}>{tx.finalCtaSub}</p>
 
-          {/* CTA button avec glow */}
-          <div style={{ position: "relative", display: "inline-block", marginBottom: 48 }}>
-            <div style={{ position: "absolute", inset: -6, borderRadius: 16, background: "radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.18) 0%, transparent 70%)", filter: "blur(12px)" }} />
+          {/* CTA button */}
+          <div style={{ display: "inline-block", marginBottom: 48 }}>
             <Link to="/register">
               <button
                 style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: 10, padding: "18px 52px", borderRadius: 10, background: "white", color: "hsl(0,0%,5%)", fontSize: 16, fontWeight: 700, border: "none", cursor: "pointer", boxShadow: "0 8px 40px rgba(0,0,0,0.5)", transition: "transform 0.15s ease, box-shadow 0.15s ease" }}
@@ -842,22 +826,9 @@ export default function Landing() {
             </Link>
           </div>
 
-          {/* Mini stats de confiance */}
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: "0 0" }}>
-            {[
-              { value: "3×", label: "rendement moyen" },
-              { value: "XOF 2.4M+", label: "investis à ce jour" },
-              { value: "100%", label: "sécurisé juridiquement" },
-            ].map((s, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center" }}>
-                {i > 0 && <span style={{ color: "rgba(255,255,255,0.15)", margin: "0 22px", fontSize: 18 }}>·</span>}
-                <div style={{ textAlign: "center" }}>
-                  <p style={{ fontSize: 15, fontWeight: 700, color: "white", margin: 0, lineHeight: 1.2 }}>{s.value}</p>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.38)", margin: "2px 0 0", letterSpacing: "0.01em" }}>{s.label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.3)", letterSpacing: "0.01em" }}>
+            {lang === "fr" ? "Inscription gratuite · Aucun engagement" : "Free sign-up · No commitment"}
+          </p>
         </div>
       </section>
 
