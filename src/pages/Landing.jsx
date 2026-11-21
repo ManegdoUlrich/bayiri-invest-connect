@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "@/lib/LangContext";
-import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, ChevronRight, Users, Handshake, Flag, Zap, Eye } from "lucide-react";
+import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, Users, Handshake, Flag, Zap, Eye } from "lucide-react";
 
 const HERO_IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261102_231909_7e626f56-7232-44de-b0c2-bcc0bc859ec0.png";
 
@@ -35,7 +35,7 @@ const t = {
       { label: "Burkina & Diaspora réunis", desc: "Une équipe jeune, locale et internationale" },
       { label: "Réseau de partenaires solide", desc: "Artisans, notaires, architectes et banques" },
     ],
-    featuresTitle: "Tout ce dont vous avez besoin,\nau même endroit.",
+    featuresTitle: "Le terrain, géré.\nVous, informé.",
     features: [
       { icon: MapPin, title: "Agent local dédié", desc: "Un représentant certifié sur le terrain pour défendre vos intérêts et coordonner chaque intervenant." },
       { icon: Building2, title: "Suivi de chantier", desc: "Photos géolocalisées, rapports hebdomadaires et mises à jour en temps réel directement sur votre tableau de bord." },
@@ -49,7 +49,7 @@ const t = {
       { num: "03", title: "Suivez en temps réel", desc: "Rapports, photos, documents — tout est dans votre espace." },
       { num: "04", title: "Investissement sécurisé", desc: "Contrats électroniques et paiements gérés en toute sécurité." },
     ],
-    platformTitle: "La plateforme qui\ntravaille pour vous.",
+    platformTitle: "Votre chantier,\nlisible depuis Paris.",
     platformFeatures: [
       "Tableau de bord par projet",
       "Photos terrain géolocalisées",
@@ -58,7 +58,7 @@ const t = {
       "Notifications instantanées",
     ],
     platformCta: "Voir la plateforme",
-    testimonialsTitle: "Ils nous font confiance.",
+    testimonialsTitle: "Ils l'ont fait.",
     testimonials: [
       { name: "Kofi Mensah", origin: "🇬🇧 Londres → Ouagadougou", text: "J'ai pu construire ma villa sans jamais me déplacer. Les rapports photo hebdomadaires m'ont donné une tranquillité d'esprit totale.", stars: 4 },
       { name: "Aminata Diallo", origin: "🇫🇷 Paris → Bobo-Dioulasso", text: "Professionnalisme et transparence à chaque étape. Leur équipe a géré l'achat de mon terrain et toutes les démarches administratives.", stars: 5 },
@@ -92,7 +92,7 @@ const t = {
       { label: "Burkina & Diaspora together", desc: "A young, local and international team" },
       { label: "Strong partner network", desc: "Builders, notaries, architects and banks" },
     ],
-    featuresTitle: "Everything you need,\nin one place.",
+    featuresTitle: "The ground, managed.\nYou, informed.",
     features: [
       { icon: MapPin, title: "Dedicated local agent", desc: "A certified representative on the ground to defend your interests and coordinate every party." },
       { icon: Building2, title: "Construction tracking", desc: "Geolocated photos, weekly reports and real-time updates directly on your dashboard." },
@@ -106,7 +106,7 @@ const t = {
       { num: "03", title: "Track in real time", desc: "Reports, photos, documents — all in your personal space." },
       { num: "04", title: "Secured investment", desc: "Electronic contracts and payments managed securely." },
     ],
-    platformTitle: "The platform that\nworks for you.",
+    platformTitle: "Your site,\nreadable from London.",
     platformFeatures: [
       "Per-project dashboard",
       "Geolocated field photos",
@@ -115,7 +115,7 @@ const t = {
       "Instant notifications",
     ],
     platformCta: "See the platform",
-    testimonialsTitle: "They trust us.",
+    testimonialsTitle: "They did it.",
     testimonials: [
       { name: "Kofi Mensah", origin: "🇬🇧 London → Ouagadougou", text: "I built my villa without ever traveling. The weekly photo reports gave me total peace of mind.", stars: 5 },
       { name: "Aminata Diallo", origin: "🇫🇷 Paris → Bobo-Dioulasso", text: "Professionalism and transparency at every step. Their team handled the land purchase and all admin.", stars: 5 },
@@ -412,16 +412,16 @@ export default function Landing() {
               <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.55rem", color: "white", margin: "0 0 12px", lineHeight: 1.15 }}>{tx.features[2].title}</h3>
               <p style={{ fontSize: 15, color: "rgb(180,180,180)", lineHeight: 1.65, margin: 0, maxWidth: 520 }}>{tx.features[2].desc}</p>
             </div>
-            {/* Stats visuelles */}
-            <div style={{ display: "flex", gap: 12, flexShrink: 0 }}>
+            {/* Types d'investissement */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
               {[
-                { val: "3×", label: lang === "fr" ? "Rendement\nmoyen" : "Average\nyield" },
-                { val: "+120", label: lang === "fr" ? "Projets\nréalisés" : "Completed\nprojects" },
-                { val: "5 pays", label: lang === "fr" ? "Diaspora\nreprésentée" : "Diaspora\ncountries" },
-              ].map(s => (
-                <div key={s.val} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 14, padding: "18px 20px", textAlign: "center", minWidth: 90 }}>
-                  <p style={{ fontFamily: "var(--font-heading)", fontSize: "1.7rem", color: "white", margin: "0 0 6px", lineHeight: 1 }}>{s.val}</p>
-                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", margin: 0, whiteSpace: "pre-line", lineHeight: 1.4 }}>{s.label}</p>
+                lang === "fr" ? "Résidentiel & villa" : "Residential & villa",
+                lang === "fr" ? "Commercial & PME" : "Commercial & SME",
+                lang === "fr" ? "Terrain & foncier" : "Land & property",
+              ].map(label => (
+                <div key={label} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 10, padding: "10px 18px", display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(255,255,255,0.3)", flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", whiteSpace: "nowrap" }}>{label}</span>
                 </div>
               ))}
             </div>
@@ -438,15 +438,12 @@ export default function Landing() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40 }}>
             {tx.steps.map((step, i) => (
               <div key={step.num}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "rgb(5,5,5)", letterSpacing: "0.1em" }}>{step.num}</span>
-                  {i < tx.steps.length - 1 && <div style={{ flex: 1, height: 1, background: "hsl(0,0%,88%)" }} />}
-                </div>
-                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "rgb(5,5,5)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
-                  <ChevronRight style={{ width: 18, height: 18 }} />
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500, color: "rgb(160,160,160)", letterSpacing: "0.1em" }}>{step.num}</span>
+                  {i < tx.steps.length - 1 && <div style={{ flex: 1, height: 1, background: "hsl(0,0%,91%)" }} />}
                 </div>
                 <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.1rem", color: "rgb(5,5,5)", marginBottom: 10 }}>{step.title}</h3>
-                <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgb(61,61,61)", margin: 0 }}>{step.desc}</p>
+                <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgb(100,100,100)", margin: 0 }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -507,10 +504,10 @@ export default function Landing() {
             <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", marginBottom: 32, lineHeight: 1.15, whiteSpace: "pre-line", color: "rgb(5,5,5)" }}>
               {tx.platformTitle}
             </h2>
-            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px 0", display: "flex", flexDirection: "column", gap: 14 }}>
-              {tx.platformFeatures.map(f => (
-                <li key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 16, color: "rgb(61,61,61)" }}>
-                  <CheckCircle style={{ width: 17, height: 17, color: "rgb(5,5,5)", flexShrink: 0 }} />
+            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 40px 0", display: "flex", flexDirection: "column", gap: 0 }}>
+              {tx.platformFeatures.map((f, i) => (
+                <li key={f} style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 15, color: "rgb(61,61,61)", padding: "13px 0", borderBottom: "1px solid hsl(0,0%,91%)" }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "rgb(180,180,180)", minWidth: 20 }}>0{i + 1}</span>
                   {f}
                 </li>
               ))}
@@ -594,7 +591,7 @@ export default function Landing() {
                 <div style={{ display: "flex", gap: 3 }}>
                   {[...Array(t.stars)].map((_, i) => <Star key={i} style={{ width: 14, height: 14, fill: "rgba(255,255,255,0.6)", color: "rgba(255,255,255,0.6)" }} />)}
                 </div>
-                <p style={{ fontSize: 15, lineHeight: 1.72, color: "rgba(255,255,255,0.7)", fontStyle: "italic", flex: 1, margin: 0 }}>"{t.text}"</p>
+                <p style={{ fontSize: 15, lineHeight: 1.72, color: "rgba(255,255,255,0.7)", flex: 1, margin: 0 }}>{t.text}</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 14, color: "rgba(255,255,255,0.55)", flexShrink: 0 }}>
                     {t.name.charAt(0)}
