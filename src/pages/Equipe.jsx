@@ -10,8 +10,8 @@ const t = {
   fr: {
     back: "Retour à l'accueil",
     label: "L'équipe",
-    hero: "Des personnes, pas une boîte noire.",
-    heroSub: "Derrière chaque rapport, chaque photo de chantier, chaque acte notarié, il y a une équipe humaine. Voici qui nous sommes, ce que nous faisons, et pourquoi nous le faisons.",
+    hero: "Une équipe ancrée sur le terrain.",
+    heroSub: "Voici qui nous sommes, ce que nous faisons, et les partenaires avec qui nous travaillons pour protéger vos investissements.",
     teamLabel: "Équipe dirigeante",
     teamSub: "Les fondateurs et responsables qui portent la vision Bayiri Invest au quotidien.",
     fieldLabel: "Équipe terrain",
@@ -102,8 +102,8 @@ const t = {
   en: {
     back: "Back to home",
     label: "The team",
-    hero: "People, not a black box.",
-    heroSub: "Behind every report, every construction photo, every notarial deed, there is a human team. Here is who we are, what we do, and why we do it.",
+    hero: "A team rooted on the ground.",
+    heroSub: "Here is who we are, what we do, and the partners we work with to protect your investments.",
     teamLabel: "Leadership team",
     teamSub: "The founders and managers who carry the Bayiri Invest vision every day.",
     fieldLabel: "Field team",
@@ -241,13 +241,13 @@ export default function Equipe() {
       </div>
 
       {/* Hero */}
-      <section style={{ background: "rgb(5,5,5)", paddingTop: 80, paddingBottom: 80 }}>
+      <section style={{ background: "white", borderBottom: "1px solid hsl(0,0%,91%)", paddingTop: 60, paddingBottom: 60 }}>
         <div style={{ ...WRAP }}>
-          <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", margin: "0 0 20px" }}>{tx.label}</p>
-          <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(2.2rem, 5vw, 4rem)", letterSpacing: "-0.03em", lineHeight: 1.1, color: "white", margin: "0 0 24px", maxWidth: 700 }}>
+          <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", margin: "0 0 16px" }}>{tx.label}</p>
+          <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(2rem, 4vw, 3.2rem)", letterSpacing: "-0.03em", lineHeight: 1.1, color: "rgb(5,5,5)", margin: "0 0 20px", maxWidth: 640 }}>
             {tx.hero}
           </h1>
-          <p style={{ fontSize: 18, lineHeight: 1.8, color: "rgba(255,255,255,0.55)", maxWidth: 640, margin: 0 }}>
+          <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", maxWidth: 560, margin: 0 }}>
             {tx.heroSub}
           </p>
         </div>
@@ -293,19 +293,19 @@ export default function Equipe() {
       </section>
 
       {/* Partenaires */}
-      <section style={{ paddingTop: 80, paddingBottom: 80, background: "rgb(5,5,5)" }}>
+      <section style={{ paddingTop: 80, paddingBottom: 80, background: "white" }}>
         <div style={{ ...WRAP }}>
           <div style={{ marginBottom: 48 }}>
-            <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", margin: "0 0 12px" }}>{tx.partnersLabel}</p>
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgba(255,255,255,0.5)", maxWidth: 560, margin: 0 }}>{tx.partnersSub}</p>
+            <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", margin: "0 0 12px" }}>{tx.partnersLabel}</p>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", maxWidth: 560, margin: 0 }}>{tx.partnersSub}</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 12 }}>
             {tx.partners.map(p => (
-              <div key={p.title} style={{ background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 16 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>{p.label}</span>
+              <div key={p.title} style={{ background: "rgb(248,248,248)", borderRadius: 20, border: "1px solid hsl(0,0%,91%)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 16 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgb(140,140,140)" }}>{p.label}</span>
                 <div>
-                  <h4 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.05rem", color: "white", margin: "0 0 12px" }}>{p.title}</h4>
-                  <p style={{ fontSize: 14, lineHeight: 1.75, color: "rgba(255,255,255,0.5)", margin: 0 }}>{p.desc}</p>
+                  <h4 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.05rem", color: "rgb(5,5,5)", margin: "0 0 12px" }}>{p.title}</h4>
+                  <p style={{ fontSize: 14, lineHeight: 1.75, color: "rgb(80,80,80)", margin: 0 }}>{p.desc}</p>
                 </div>
               </div>
             ))}
