@@ -624,6 +624,12 @@ export default function Landing() {
             </p>
           </div>
 
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 40, gap: 16, flexWrap: "wrap" }}>
+            <div />
+            <Link to="/nos-valeurs" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 14, fontWeight: 600, color: "rgb(5,5,5)", textDecoration: "none", border: "1px solid hsl(0,0%,85%)", borderRadius: 8, padding: "9px 16px" }}>
+              {lang === "fr" ? "Lire nos valeurs" : "Read our values"} <ArrowRight style={{ width: 14, height: 14 }} />
+            </Link>
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24 }}>
             {[
               {
@@ -671,11 +677,14 @@ export default function Landing() {
             <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", lineHeight: 1.15, color: "white", margin: "0 0 18px" }}>
               {lang === "fr" ? "Une équipe à votre service." : "A team at your service."}
             </h2>
-            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgba(255,255,255,0.5)", margin: "0 0 24px" }}>
               {lang === "fr"
                 ? "Derrière chaque projet suivi, il y a des personnes engagées, formées et ancrées dans la réalité du terrain burkinabè."
                 : "Behind every followed project, there are committed people, trained and rooted in the reality of the Burkinabè field."}
             </p>
+            <Link to="/equipe" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 14, fontWeight: 600, color: "white", textDecoration: "none", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 8, padding: "9px 16px" }}>
+              {lang === "fr" ? "Voir l'équipe" : "Meet the team"} <ArrowRight style={{ width: 14, height: 14 }} />
+            </Link>
           </div>
 
           {/* Équipe dirigeante */}

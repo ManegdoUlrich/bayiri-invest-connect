@@ -31,6 +31,8 @@ import Register from './pages/Register'
 import CGU from './pages/CGU'
 import MentionsLegales from './pages/MentionsLegales'
 import Settings from './pages/Settings'
+import NosValeurs from './pages/NosValeurs'
+import Equipe from './pages/Equipe'
 import CookieBanner from './components/CookieBanner'
 
 // Redirige vers /login si non authentifié
@@ -63,6 +65,8 @@ const AuthenticatedApp = () => {
       <Route path="/register"         element={<Register />} />
       <Route path="/cgu"              element={<CGU />} />
       <Route path="/mentions-legales" element={<MentionsLegales />} />
+      <Route path="/nos-valeurs"      element={<NosValeurs />} />
+      <Route path="/equipe"           element={<Equipe />} />
 
       {/* Onboarding (authentifié mais pas encore complet) */}
       <Route path="/onboarding" element={
