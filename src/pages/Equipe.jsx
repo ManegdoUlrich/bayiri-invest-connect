@@ -332,9 +332,9 @@ export default function Equipe() {
                 {tx.joinTitle}
               </h2>
               <p style={{ fontSize: 16, lineHeight: 1.75, color: "rgb(80,80,80)", margin: "0 0 32px" }}>{tx.joinDesc}</p>
-              <a href="mailto:recrutement@bayiri-invest.com" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgb(5,5,5)", color: "white", padding: "14px 24px", borderRadius: 10, textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
+              <Link to="/#contact" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgb(5,5,5)", color: "white", padding: "14px 24px", borderRadius: 10, textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
                 {tx.joinCta} <ArrowRight style={{ width: 16, height: 16 }} />
-              </a>
+              </Link>
             </div>
             <div style={{ background: "rgb(248,248,248)", borderRadius: 20, padding: "40px 36px", display: "flex", flexDirection: "column", gap: 12 }}>
               <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", margin: "0 0 4px" }}>{tx.valuesCta}</p>
