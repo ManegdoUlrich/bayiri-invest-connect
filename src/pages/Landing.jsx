@@ -17,6 +17,8 @@ const t = {
       solutions: "Solutions",
       howItWorks: "Comment ça marche",
       testimonials: "Témoignages",
+      values: "Nos valeurs",
+      team: "L'équipe",
       contact: "Nous contacter",
       login: "Se connecter",
       start: "Ouvrir un compte",
@@ -74,6 +76,8 @@ const t = {
       solutions: "Solutions",
       howItWorks: "How it works",
       testimonials: "Testimonials",
+      values: "Our values",
+      team: "The team",
       contact: "Contact us",
       login: "Log in",
       start: "Open an account",
@@ -188,6 +192,27 @@ export default function Landing() {
                 }}>
                 {link.label}
               </a>
+            ))}
+            {[
+              { label: tx.nav.values, to: "/nos-valeurs" },
+              { label: tx.nav.team, to: "/equipe" },
+            ].map(link => (
+              <Link key={link.to} to={link.to} style={{
+                fontSize: 14, fontWeight: 500, padding: "7px 14px", borderRadius: 6,
+                color: scrolled ? "hsl(var(--foreground)/0.8)" : "rgba(255,255,255,0.8)",
+                textDecoration: "none", transition: "color 0.2s, background 0.2s",
+                whiteSpace: "nowrap",
+              }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = scrolled ? "hsl(var(--foreground))" : "white";
+                  e.currentTarget.style.background = scrolled ? "hsl(var(--muted))" : "rgba(255,255,255,0.08)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = scrolled ? "hsl(var(--foreground)/0.8)" : "rgba(255,255,255,0.8)";
+                  e.currentTarget.style.background = "transparent";
+                }}>
+                {link.label}
+              </Link>
             ))}
           </nav>
 
