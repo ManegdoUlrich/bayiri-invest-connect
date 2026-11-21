@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "@/lib/LangContext";
-import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, ChevronRight, Users, Handshake, Flag } from "lucide-react";
+import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, ChevronRight, Users, Handshake, Flag, Zap, Eye } from "lucide-react";
 
 const HERO_IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261102_231909_7e626f56-7232-44de-b0c2-bcc0bc859ec0.png";
 
@@ -608,6 +608,143 @@ export default function Landing() {
                     <p style={{ fontWeight: 600, fontSize: 14, color: "white", margin: "0 0 2px 0" }}>{t.name}</p>
                     <p style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", margin: 0 }}>{t.origin}</p>
                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Missions & Valeurs ───────────────────────────────── */}
+      <section style={{ background: "white", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ ...WRAP }}>
+          <div style={{ maxWidth: 640, marginBottom: 56 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(100,100,100)", marginBottom: 14, margin: "0 0 14px" }}>
+              {lang === "fr" ? "Nos valeurs" : "Our values"}
+            </p>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", lineHeight: 1.15, color: "rgb(5,5,5)", margin: "0 0 18px" }}>
+              {lang === "fr" ? "Ce qui nous anime." : "What drives us."}
+            </h2>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgb(80,80,80)", margin: 0 }}>
+              {lang === "fr"
+                ? "Bayiri Invest est né d'une conviction simple : la diaspora mérite un partenaire de confiance pour concrétiser ses projets au pays. Chaque décision, chaque process, chaque interaction reflète ces valeurs fondamentales."
+                : "Bayiri Invest was born from a simple belief: the diaspora deserves a trusted partner to realize their projects back home. Every decision, every process, every interaction reflects these core values."}
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 24 }}>
+            {[
+              {
+                Icon: Shield,
+                title: lang === "fr" ? "Intégrité" : "Integrity",
+                desc: lang === "fr" ? "Chaque transaction, chaque rapport, chaque décision est guidée par l'honnêteté et la transparence — sans exception." : "Every transaction, every report, every decision is guided by honesty and transparency — no exceptions.",
+              },
+              {
+                Icon: Zap,
+                title: lang === "fr" ? "Efficacité" : "Efficiency",
+                desc: lang === "fr" ? "Vos projets avancent. Nos agents terrain sont réactifs, nos rapports ponctuels, nos délais tenus." : "Your projects move forward. Our field agents are responsive, our reports timely, our deadlines met.",
+              },
+              {
+                Icon: CheckCircle,
+                title: lang === "fr" ? "Confiance" : "Trust",
+                desc: lang === "fr" ? "Contrats sécurisés, fonds protégés, partenaires vérifiés. Vous investissez, nous veillons." : "Secure contracts, protected funds, verified partners. You invest, we watch over it.",
+              },
+              {
+                Icon: Eye,
+                title: lang === "fr" ? "Transparence" : "Transparency",
+                desc: lang === "fr" ? "Accès en temps réel à l'état de votre projet. Aucune surprise, aucun frais caché." : "Real-time access to your project status. No surprises, no hidden fees.",
+              },
+            ].map(({ Icon, title, desc }) => (
+              <div key={title} style={{ background: "rgb(248,248,248)", borderRadius: 20, border: "1px solid hsl(0,0%,91%)", padding: "32px 28px", display: "flex", flexDirection: "column", gap: 18 }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgb(5,5,5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <Icon style={{ width: 20, height: 20, color: "white" }} />
+                </div>
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.25rem", color: "rgb(5,5,5)", margin: "0 0 10px", lineHeight: 1.2 }}>{title}</h3>
+                  <p style={{ fontSize: 15, color: "rgb(80,80,80)", lineHeight: 1.65, margin: 0 }}>{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Équipe & Partenaires ─────────────────────────────── */}
+      <section id="equipe" style={{ background: "hsl(0,0%,2%)", paddingTop: 100, paddingBottom: 100 }}>
+        <div style={{ ...WRAP }}>
+          <div style={{ maxWidth: 640, marginBottom: 64 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", margin: "0 0 14px" }}>
+              {lang === "fr" ? "L'équipe" : "The team"}
+            </p>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "clamp(1.8rem, 2.8vw, 2.4rem)", letterSpacing: "-0.02em", lineHeight: 1.15, color: "white", margin: "0 0 18px" }}>
+              {lang === "fr" ? "Une équipe à votre service." : "A team at your service."}
+            </h2>
+            <p style={{ fontSize: 17, lineHeight: 1.75, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+              {lang === "fr"
+                ? "Derrière chaque projet suivi, il y a des personnes engagées, formées et ancrées dans la réalité du terrain burkinabè."
+                : "Behind every followed project, there are committed people, trained and rooted in the reality of the Burkinabè field."}
+            </p>
+          </div>
+
+          {/* Équipe dirigeante */}
+          <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", margin: "0 0 20px" }}>
+            {lang === "fr" ? "Équipe dirigeante" : "Leadership team"}
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16, marginBottom: 64 }}>
+            {[
+              {
+                initials: "MU",
+                name: "Manegdo Ulrich Doamba",
+                role: lang === "fr" ? "Co-fondateur & Directeur Général" : "Co-founder & CEO",
+                desc: lang === "fr" ? "Expert en développement commercial et investissement immobilier au Burkina Faso. Vision stratégique, relations internationales." : "Expert in business development and real estate investment in Burkina Faso. Strategic vision, international relations.",
+              },
+              {
+                initials: "OA",
+                name: "Ouattara Abdoul Razack",
+                role: lang === "fr" ? "Co-fondateur & Directeur des Opérations" : "Co-founder & COO",
+                desc: lang === "fr" ? "Spécialiste en gestion de projets et coordination terrain. Coordination des agents certifiés et suivi de qualité." : "Specialist in project management and field coordination. Coordination of certified agents and quality tracking.",
+              },
+            ].map(person => (
+              <div key={person.name} style={{ background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "32px 28px", display: "flex", gap: 20, alignItems: "flex-start" }}>
+                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: 18, color: "white", flexShrink: 0 }}>
+                  {person.initials}
+                </div>
+                <div>
+                  <h3 style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.1rem", color: "white", margin: "0 0 4px" }}>{person.name}</h3>
+                  <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: "0 0 12px", fontWeight: 500 }}>{person.role}</p>
+                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.65, margin: 0 }}>{person.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Partenaires */}
+          <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", margin: "0 0 20px" }}>
+            {lang === "fr" ? "Nos partenaires" : "Our partners"}
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
+            {[
+              {
+                emoji: "⚖️",
+                title: lang === "fr" ? "Cabinet juridique" : "Legal firm",
+                desc: lang === "fr" ? "Conseil en droit immobilier et commercial. Protection de vos intérêts à chaque étape de la transaction." : "Counsel in real estate and commercial law. Protection of your interests at every stage of the transaction.",
+              },
+              {
+                emoji: "📜",
+                title: lang === "fr" ? "Étude notariale" : "Notarial office",
+                desc: lang === "fr" ? "Authentification des actes fonciers et sécurisation de vos transactions. Conformité avec le droit burkinabè." : "Authentication of land deeds and securing your transactions. Compliance with Burkinabè law.",
+              },
+              {
+                emoji: "🏗️",
+                title: lang === "fr" ? "Bureaux d'études BTP" : "Construction firms",
+                desc: lang === "fr" ? "Suivi technique, contrôle qualité et réalisation de vos projets de construction. Experts certifiés sur le terrain." : "Technical monitoring, quality control and completion of your construction projects. Certified field experts.",
+              },
+            ].map(partner => (
+              <div key={partner.title} style={{ background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "28px 24px", display: "flex", flexDirection: "column", gap: 14 }}>
+                <div style={{ fontSize: 28, lineHeight: 1 }}>{partner.emoji}</div>
+                <div>
+                  <h4 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.1rem", color: "white", margin: "0 0 10px" }}>{partner.title}</h4>
+                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.65, margin: 0 }}>{partner.desc}</p>
                 </div>
               </div>
             ))}

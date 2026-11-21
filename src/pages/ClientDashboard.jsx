@@ -11,14 +11,24 @@ import ProjectCard from "../components/ProjectCard";
 import { Button } from "@/components/ui/button";
 
 const PIPELINE_LABEL = {
-  soumis:           { text: "En cours d'analyse",   color: "text-blue-600 bg-blue-500/10"   },
-  accepte:          { text: "Accepté",               color: "text-indigo-600 bg-indigo-500/10" },
-  prise_de_contact: { text: "En contact",            color: "text-violet-600 bg-violet-500/10" },
-  contrat:          { text: "Contrat en préparation",color: "text-purple-600 bg-purple-500/10" },
-  paiement:         { text: "En attente de paiement",color: "text-amber-600 bg-amber-500/10"  },
-  reporting:        { text: "Suivi terrain actif",   color: "text-cyan-600 bg-cyan-500/10"   },
-  termine:          { text: "Terminé",               color: "text-emerald-600 bg-emerald-500/10" },
-  annule:           { text: "Annulé",                color: "text-rose-600 bg-rose-500/10"   },
+  // Statuts communs
+  soumis:            { text: "Dossier soumis",           color: "text-blue-600 bg-blue-500/10"      },
+  accepte:           { text: "Accepté",                   color: "text-indigo-600 bg-indigo-500/10"  },
+  prise_de_contact:  { text: "En contact",                color: "text-violet-600 bg-violet-500/10"  },
+  en_discussion:     { text: "Discussion en cours",       color: "text-purple-600 bg-purple-500/10"  },
+  contrat:           { text: "Contrat en préparation",    color: "text-orange-600 bg-orange-500/10"  },
+  paiement:          { text: "En attente de paiement",    color: "text-amber-600 bg-amber-500/10"    },
+  reporting:         { text: "Suivi terrain actif",       color: "text-cyan-600 bg-cyan-500/10"      },
+  termine:           { text: "Terminé",                   color: "text-emerald-600 bg-emerald-500/10"},
+  annule:            { text: "Annulé",                    color: "text-rose-600 bg-rose-500/10"      },
+  // Achat immobilier
+  recherche_bien:    { text: "Recherche de bien",         color: "text-sky-600 bg-sky-500/10"        },
+  selection_bien:    { text: "Sélection du bien",         color: "text-teal-600 bg-teal-500/10"      },
+  procuration:       { text: "Procuration en cours",      color: "text-amber-700 bg-amber-500/10"    },
+  notaire:           { text: "Chez le notaire",           color: "text-indigo-700 bg-indigo-500/10"  },
+  // Construction
+  choix_partenaire:  { text: "Choix du partenaire",       color: "text-teal-600 bg-teal-500/10"      },
+  reunion_cadrage:   { text: "Réunion de cadrage",        color: "text-green-600 bg-green-500/10"    },
 };
 
 function PipelineStatusBadge({ status }) {
@@ -32,7 +42,7 @@ function PipelineStatusBadge({ status }) {
 }
 
 function ProjectPipelineCard({ project }) {
-  const isActive = ["soumis","accepte","prise_de_contact","contrat","paiement","reporting"].includes(project.status);
+  const isActive = ["soumis","accepte","prise_de_contact","en_discussion","contrat","paiement","reporting","recherche_bien","selection_bien","procuration","notaire","choix_partenaire","reunion_cadrage"].includes(project.status);
   return (
     <div className={`bg-card rounded-2xl border p-5 space-y-3 transition-shadow hover:shadow-md ${isActive ? "border-primary/20" : "border-border/50"}`}>
       <div className="flex items-start justify-between gap-2">
@@ -78,7 +88,7 @@ export default function ClientDashboard() {
     </div>
   );
 
-  const activeProjects  = projects.filter(p => ["soumis","accepte","prise_de_contact","contrat","paiement","reporting"].includes(p.status));
+  const activeProjects  = projects.filter(p => ["soumis","accepte","prise_de_contact","en_discussion","contrat","paiement","reporting","recherche_bien","selection_bien","procuration","notaire","choix_partenaire","reunion_cadrage"].includes(p.status));
   const completedCount  = projects.filter(p => p.status === "termine").length;
   const totalPaid       = payments.filter(p => p.status === "a_jour").reduce((s, p) => s + (p.amount || 0), 0);
   const pendingPayments = payments.filter(p => p.status === "en_attente_validation" || p.status === "en_retard");

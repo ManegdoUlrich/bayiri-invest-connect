@@ -43,10 +43,11 @@ const PONCTUEL_TYPES = [
 ];
 
 const LONG_TERME_TYPES = [
-  { v: "construction",   label: "Construction",               icon: Building2 },
-  { v: "logistique",     label: "Logistique de long terme",   icon: Truck },
-  { v: "commerce",       label: "Commerce",                   icon: TrendingUp },
-  { v: "autre",          label: "Autre prestation de long terme", icon: HelpCircle },
+  { v: "achat_immobilier", label: "Achat immobilier",          icon: MapPin },
+  { v: "construction",     label: "Construction",              icon: Building2 },
+  { v: "logistique",       label: "Logistique de long terme",  icon: Truck },
+  { v: "commerce",         label: "Commerce",                  icon: TrendingUp },
+  { v: "autre",            label: "Autre prestation de long terme", icon: HelpCircle },
 ];
 
 const STEPS = ["Type de projet", "Abonnement", "Détails", "Récapitulatif"];
