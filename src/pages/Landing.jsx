@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "@/lib/LangContext";
-import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, Users, Handshake, Flag, Zap, Eye } from "lucide-react";
+import { Shield, MapPin, TrendingUp, Building2, ArrowRight, CheckCircle, Star, Users, Handshake, Flag, Zap, Eye, Mail, Phone } from "lucide-react";
 
 const HERO_IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3Ecsq627sStwKzm5HgcVNMBPKAy/hf_20261102_231909_7e626f56-7232-44de-b0c2-bcc0bc859ec0.png";
 
@@ -46,7 +46,7 @@ const t = {
     steps: [
       { num: "01", title: "Créez votre compte", desc: "Inscription en 2 minutes. Décrivez votre projet et votre budget." },
       { num: "02", title: "Un agent vous est assigné", desc: "Nous sélectionnons un agent certifié dans votre ville cible." },
-      { num: "03", title: "Suivez en temps réel", desc: "Rapports, photos, documents — tout est dans votre espace." },
+      { num: "03", title: "Suivez en temps réel", desc: "Rapports, photos, documents : tout est dans votre espace." },
       { num: "04", title: "Investissement sécurisé", desc: "Contrats électroniques et paiements gérés en toute sécurité." },
     ],
     platformTitle: "Votre chantier,\nlisible depuis Paris.",
@@ -60,14 +60,14 @@ const t = {
     platformCta: "Voir la plateforme",
     testimonialsTitle: "Ils l'ont fait.",
     testimonials: [
-      { name: "Kofi Mensah", origin: "🇬🇧 Londres → Ouagadougou", text: "J'ai pu construire ma villa sans jamais me déplacer. Les rapports photo hebdomadaires m'ont donné une tranquillité d'esprit totale.", stars: 4 },
-      { name: "Aminata Diallo", origin: "🇫🇷 Paris → Bobo-Dioulasso", text: "Professionnalisme et transparence à chaque étape. Leur équipe a géré l'achat de mon terrain et toutes les démarches administratives.", stars: 5 },
-      { name: "Jean-Baptiste Nkomo", origin: "🇧🇪 Bruxelles → Koudougou", text: "Avec Bayiri Invest, j'ai enfin trouvé un partenaire de confiance. Mon commerce tourne très bien depuis 6 mois.", stars: 5 },
+      { name: "Kofi Mensah", origin: "Londres, UK", text: "J'ai pu construire ma villa sans jamais me déplacer. Les rapports photo hebdomadaires m'ont donné une tranquillité d'esprit totale.", stars: 4 },
+      { name: "Aminata Diallo", origin: "Paris, France", text: "Professionnalisme et transparence à chaque étape. Leur équipe a géré l'achat de mon terrain et toutes les démarches administratives.", stars: 5 },
+      { name: "Jean-Baptiste Nkomo", origin: "Bruxelles, Belgique", text: "Avec Bayiri Invest, j'ai enfin trouvé un partenaire de confiance. Mon commerce tourne très bien depuis 6 mois.", stars: 5 },
     ],
     finalCta: "Votre projet commence ici.",
     finalCtaSub: "Un compte, un agent dédié, un suivi complet. La diaspora mérite mieux que les promesses.",
     finalCtaBtn: "Ouvrir un compte",
-    footer: "© 2026 Bayiri Invest — Tous droits réservés.",
+    footer: "© 2026 Bayiri Invest. Tous droits réservés.",
   },
   en: {
     nav: {
@@ -103,7 +103,7 @@ const t = {
     steps: [
       { num: "01", title: "Create your account", desc: "Sign up in 2 minutes. Describe your project and budget." },
       { num: "02", title: "Agent assigned", desc: "We select a certified agent in your target city." },
-      { num: "03", title: "Track in real time", desc: "Reports, photos, documents — all in your personal space." },
+      { num: "03", title: "Track in real time", desc: "Reports, photos, documents: all in your personal space." },
       { num: "04", title: "Secured investment", desc: "Electronic contracts and payments managed securely." },
     ],
     platformTitle: "Your site,\nreadable from London.",
@@ -117,14 +117,14 @@ const t = {
     platformCta: "See the platform",
     testimonialsTitle: "They did it.",
     testimonials: [
-      { name: "Kofi Mensah", origin: "🇬🇧 London → Ouagadougou", text: "I built my villa without ever traveling. The weekly photo reports gave me total peace of mind.", stars: 5 },
-      { name: "Aminata Diallo", origin: "🇫🇷 Paris → Bobo-Dioulasso", text: "Professionalism and transparency at every step. Their team handled the land purchase and all admin.", stars: 5 },
-      { name: "Jean-Baptiste Nkomo", origin: "🇧🇪 Brussels → Koudougou", text: "I finally found a trustworthy partner. My business has been running great for 6 months.", stars: 5 },
+      { name: "Kofi Mensah", origin: "London, UK", text: "I built my villa without ever traveling. The weekly photo reports gave me total peace of mind.", stars: 5 },
+      { name: "Aminata Diallo", origin: "Paris, France", text: "Professionalism and transparency at every step. Their team handled the land purchase and all admin.", stars: 5 },
+      { name: "Jean-Baptiste Nkomo", origin: "Brussels, Belgium", text: "I finally found a trustworthy partner. My business has been running great for 6 months.", stars: 5 },
     ],
     finalCta: "Your project starts here.",
     finalCtaSub: "One account, one dedicated agent, full tracking. The diaspora deserves better than promises.",
     finalCtaBtn: "Open an account",
-    footer: "© 2026 Bayiri Invest — All rights reserved.",
+    footer: "© 2026 Bayiri Invest. All rights reserved.",
   },
 };
 
@@ -308,7 +308,7 @@ export default function Landing() {
                 }}>
                   <div style={{ width: 46, height: 46, borderRadius: 11, background: "rgba(255,255,255,0.07)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     {i === 0
-                      ? <span style={{ fontSize: 24, lineHeight: 1 }}>🇧🇫</span>
+                      ? <Flag style={{ width: 20, height: 20, color: "rgba(255,255,255,0.65)" }} />
                       : <Icon style={{ width: 20, height: 20, color: "rgba(255,255,255,0.65)" }} />}
                   </div>
                   <div>
@@ -368,13 +368,13 @@ export default function Landing() {
                   <div style={{ display: "flex", gap: 5 }}>
                     {["#ff5f57","#febc2e","#28c840"].map(c => <div key={c} style={{ width: 9, height: 9, borderRadius: "50%", background: c }} />)}
                   </div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-mono)" }}>bayiri — suivi de chantier</div>
+                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-mono)" }}>bayiri · suivi de chantier</div>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 12 }}>
-                  {["Fondation", "Murs R+1", "Toiture"].map((label, i) => (
+                  {[{ label: "Fondation", n: "14 photos" }, { label: "Murs R+1", n: "9 photos" }, { label: "Toiture", n: "6 photos" }].map((item, i) => (
                     <div key={i} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 8, padding: "10px 8px", textAlign: "center" }}>
-                      <p style={{ fontSize: 18, margin: "0 0 4px" }}>📷</p>
-                      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", margin: 0 }}>{label}</p>
+                      <p style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.65)", margin: "0 0 3px" }}>{item.n}</p>
+                      <p style={{ fontSize: 10, color: "rgba(255,255,255,0.35)", margin: 0 }}>{item.label}</p>
                     </div>
                   ))}
                 </div>
@@ -554,7 +554,7 @@ export default function Landing() {
                 {/* Progress bar suivi de chantier */}
                 <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: "16px 18px", marginBottom: 12 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Villa — Ouagadougou Nord</span>
+                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>Villa, Ouagadougou Nord</span>
                     <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", fontWeight: 700 }}>68%</span>
                   </div>
                   <div style={{ height: 6, background: "rgba(255,255,255,0.08)", borderRadius: 3, overflow: "hidden" }}>
@@ -564,11 +564,11 @@ export default function Landing() {
                 </div>
                 {/* Liste notifications */}
                 {[
-                  { icon: "📸", text: "3 nouvelles photos — Fondation coulée", time: "14h32" },
-                  { icon: "📋", text: "Rapport hebdomadaire disponible", time: "Hier" },
+                  { dot: true, text: "3 nouvelles photos · Fondation coulée", time: "14h32" },
+                  { dot: false, text: "Rapport hebdomadaire disponible", time: "Hier" },
                 ].map(n => (
                   <div key={n.text} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                    <span style={{ fontSize: 16 }}>{n.icon}</span>
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: n.dot ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.15)", flexShrink: 0 }} />
                     <p style={{ fontSize: 12, color: "rgba(255,255,255,0.6)", margin: 0, flex: 1 }}>{n.text}</p>
                     <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>{n.time}</span>
                   </div>
@@ -629,7 +629,7 @@ export default function Landing() {
               {
                 Icon: Shield,
                 title: lang === "fr" ? "Intégrité" : "Integrity",
-                desc: lang === "fr" ? "Chaque transaction, chaque rapport, chaque décision est guidée par l'honnêteté et la transparence — sans exception." : "Every transaction, every report, every decision is guided by honesty and transparency — no exceptions.",
+                desc: lang === "fr" ? "Chaque transaction, chaque rapport, chaque décision est guidée par l'honnêteté et la transparence, sans exception." : "Every transaction, every report, every decision is guided by honesty and transparency, without exception.",
               },
               {
                 Icon: Zap,
@@ -717,23 +717,23 @@ export default function Landing() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
             {[
               {
-                emoji: "⚖️",
+                label: lang === "fr" ? "Juridique" : "Legal",
                 title: lang === "fr" ? "Cabinet juridique" : "Legal firm",
                 desc: lang === "fr" ? "Conseil en droit immobilier et commercial. Protection de vos intérêts à chaque étape de la transaction." : "Counsel in real estate and commercial law. Protection of your interests at every stage of the transaction.",
               },
               {
-                emoji: "📜",
+                label: lang === "fr" ? "Notarial" : "Notarial",
                 title: lang === "fr" ? "Étude notariale" : "Notarial office",
                 desc: lang === "fr" ? "Authentification des actes fonciers et sécurisation de vos transactions. Conformité avec le droit burkinabè." : "Authentication of land deeds and securing your transactions. Compliance with Burkinabè law.",
               },
               {
-                emoji: "🏗️",
+                label: "BTP",
                 title: lang === "fr" ? "Bureaux d'études BTP" : "Construction firms",
                 desc: lang === "fr" ? "Suivi technique, contrôle qualité et réalisation de vos projets de construction. Experts certifiés sur le terrain." : "Technical monitoring, quality control and completion of your construction projects. Certified field experts.",
               },
             ].map(partner => (
               <div key={partner.title} style={{ background: "rgb(26,26,26)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.07)", padding: "28px 24px", display: "flex", flexDirection: "column", gap: 14 }}>
-                <div style={{ fontSize: 28, lineHeight: 1 }}>{partner.emoji}</div>
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>{partner.label}</span>
                 <div>
                   <h4 style={{ fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "1.1rem", color: "white", margin: "0 0 10px" }}>{partner.title}</h4>
                   <p style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.65, margin: 0 }}>{partner.desc}</p>
@@ -759,12 +759,12 @@ export default function Landing() {
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {[
-                { icon: "✉️", label: lang === "fr" ? "Email" : "Email", val: "contact@bayiri-invest.com" },
-                { icon: "📱", label: "WhatsApp", val: "+226 XX XX XX XX" },
-                { icon: "🏢", label: lang === "fr" ? "Bureau" : "Office", val: "Ouagadougou, Burkina Faso" },
+                { Icon: Mail, label: lang === "fr" ? "Email" : "Email", val: "contact@bayiri-invest.com" },
+                { Icon: Phone, label: "WhatsApp", val: "+226 XX XX XX XX" },
+                { Icon: MapPin, label: lang === "fr" ? "Bureau" : "Office", val: "Ouagadougou, Burkina Faso" },
               ].map(c => (
                 <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                  <span style={{ fontSize: 20, flexShrink: 0 }}>{c.icon}</span>
+                  <c.Icon style={{ width: 18, height: 18, color: "rgb(5,5,5)", flexShrink: 0 }} />
                   <div>
                     <p style={{ fontSize: 12, color: "rgb(120,120,120)", margin: "0 0 2px", fontWeight: 500 }}>{c.label}</p>
                     <p style={{ fontSize: 14, color: "rgb(5,5,5)", fontWeight: 600, margin: 0 }}>{c.val}</p>
