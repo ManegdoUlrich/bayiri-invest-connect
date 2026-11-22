@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { partnersApi } from "@/api/partners";
-import { Search, Plus, Pencil, Trash2, Building2, Scale, FileText, Home, HelpCircle } from "lucide-react";
+import { Search, Plus, Pencil, Trash2, Building2, Scale, FileText, Home, HelpCircle, Image, X, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,15 +18,25 @@ const SPECIALTY_LABEL = {
 };
 
 const EMPTY_FORM = { name: "", specialty: "btp", description: "", photoUrl: "", city: "", country: "Burkina Faso", phone: "", email: "", website: "", active: true };
+const EMPTY_REAL = { title: "", description: "", year: "", city: "", photoUrls: [] };
 
 export default function AdminPartners() {
-  const [partners, setPartners] = useState([]);
-  const [loading, setLoading]   = useState(true);
-  const [search, setSearch]     = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [editing, setEditing]   = useState(null);
-  const [form, setForm]         = useState(EMPTY_FORM);
-  const [saving, setSaving]     = useState(false);
+  const navigate = useNavigate();
+  const [partners, setPartners]     = useState([]);
+  const [loading, setLoading]       = useState(true);
+  const [search, setSearch]         = useState("");
+  const [showForm, setShowForm]     = useState(false);
+  const [editing, setEditing]       = useState(null);
+  const [form, setForm]             = useState(EMPTY_FORM);
+  const [saving, setSaving]         = useState(false);
+  // Réalisations
+  const [realTab, setRealTab]       = useState(false); // true = on est sur l'onglet réalisations
+  const [detailPartner, setDetailPartner] = useState(null); // partenaire chargé avec ses réalisations
+  const [showRealForm, setShowRealForm]   = useState(false);
+  const [editingReal, setEditingReal]     = useState(null);
+  const [realForm, setRealForm]           = useState(EMPTY_REAL);
+  const [savingReal, setSavingReal]       = useState(false);
+  const [newPhotoUrl, setNewPhotoUrl]     = useState("");
 
   useEffect(() => {
     partnersApi.list({ active: "all" })
@@ -35,6 +46,48 @@ export default function AdminPartners() {
 
   const openCreate = () => { setEditing(null); setForm(EMPTY_FORM); setShowForm(true); };
   const openEdit   = (p) => { setEditing(p); setForm({ ...EMPTY_FORM, ...p, photoUrl: p.photoUrl || "" }); setShowForm(true); };
+
+  const openRealizations = async (p) => {
+    const full = await partnersApi.get(p.id);
+    setDetailPartner(full);
+  };
+  const closeRealizations = () => setDetailPartner(null);
+
+  const openRealCreate = () => { setEditingReal(null); setRealForm(EMPTY_REAL); setNewPhotoUrl(""); setShowRealForm(true); };
+  const openRealEdit   = (r) => { setEditingReal(r); setRealForm({ ...r, year: r.year || "", photoUrls: r.photoUrls || [] }); setNewPhotoUrl(""); setShowRealForm(true); };
+
+  const saveReal = async () => {
+    if (!realForm.title) return;
+    setSavingReal(true);
+    try {
+      const payload = { ...realForm, year: realForm.year ? Number(realForm.year) : null };
+      if (editingReal) {
+        const updated = await partnersApi.updateRealization(detailPartner.id, editingReal.id, payload);
+        setDetailPartner(d => ({ ...d, realizations: d.realizations.map(r => r.id === updated.id ? updated : r) }));
+      } else {
+        const created = await partnersApi.addRealization(detailPartner.id, payload);
+        setDetailPartner(d => ({ ...d, realizations: [created, ...(d.realizations || [])] }));
+      }
+      setShowRealForm(false);
+    } catch (e) {
+      alert(e.message || "Erreur");
+    } finally {
+      setSavingReal(false);
+    }
+  };
+
+  const removeReal = async (rid) => {
+    if (!confirm("Supprimer cette réalisation ?")) return;
+    await partnersApi.deleteRealization(detailPartner.id, rid);
+    setDetailPartner(d => ({ ...d, realizations: d.realizations.filter(r => r.id !== rid) }));
+  };
+
+  const addPhoto = () => {
+    if (!newPhotoUrl.trim()) return;
+    setRealForm(f => ({ ...f, photoUrls: [...(f.photoUrls || []), newPhotoUrl.trim()] }));
+    setNewPhotoUrl("");
+  };
+  const removePhoto = (idx) => setRealForm(f => ({ ...f, photoUrls: f.photoUrls.filter((_, i) => i !== idx) }));
 
   const save = async () => {
     if (!form.name || !form.specialty) return;
@@ -128,9 +181,15 @@ export default function AdminPartners() {
                 {p._count?.projects > 0 && <p className="font-medium text-foreground">{p._count.projects} projet{p._count.projects > 1 ? "s" : ""}</p>}
               </div>
 
-              <div className="flex items-center gap-2 pt-2 border-t border-border/40">
+              <div className="flex items-center gap-2 pt-2 border-t border-border/40 flex-wrap">
                 <Button size="sm" variant="outline" className="flex-1" onClick={() => openEdit(p)}>
                   <Pencil className="w-3.5 h-3.5 mr-1" />Modifier
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => openRealizations(p)} title="Gérer les réalisations">
+                  <Image className="w-3.5 h-3.5" />
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => navigate(`/partners/${p.id}`)} title="Voir le profil">
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => toggleActive(p)} className="text-xs">
                   {p.active ? "Désactiver" : "Activer"}
@@ -149,6 +208,103 @@ export default function AdminPartners() {
           </div>
         )}
       </div>
+
+      {/* Réalisations dialog */}
+      <Dialog open={!!detailPartner} onOpenChange={v => { if (!v) closeRealizations(); }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Réalisations — {detailPartner?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <Button size="sm" onClick={openRealCreate}><Plus className="w-3.5 h-3.5 mr-1.5" />Ajouter une réalisation</Button>
+            {detailPartner?.realizations?.length === 0 && (
+              <p className="text-sm text-muted-foreground text-center py-8">Aucune réalisation.</p>
+            )}
+            {detailPartner?.realizations?.map(r => (
+              <div key={r.id} className="border border-border/50 rounded-xl p-4 space-y-2">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-sm">{r.title}</p>
+                    <p className="text-xs text-muted-foreground">{[r.year, r.city].filter(Boolean).join(" · ")}</p>
+                    {r.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{r.description}</p>}
+                  </div>
+                  <div className="flex gap-1 shrink-0">
+                    <Button size="sm" variant="ghost" onClick={() => openRealEdit(r)}><Pencil className="w-3.5 h-3.5" /></Button>
+                    <Button size="sm" variant="ghost" className="text-destructive" onClick={() => removeReal(r.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
+                  </div>
+                </div>
+                {r.photoUrls?.length > 0 && (
+                  <div className="flex gap-1.5 flex-wrap">
+                    {r.photoUrls.slice(0, 5).map((url, i) => (
+                      <img key={i} src={url} alt="" className="w-14 h-14 rounded-lg object-cover" />
+                    ))}
+                    {r.photoUrls.length > 5 && <div className="w-14 h-14 rounded-lg bg-muted flex items-center justify-center text-xs font-medium">+{r.photoUrls.length - 5}</div>}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Réalisation form dialog */}
+      <Dialog open={showRealForm} onOpenChange={setShowRealForm}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{editingReal ? "Modifier la réalisation" : "Nouvelle réalisation"}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <Label>Titre *</Label>
+              <Input className="mt-1" value={realForm.title} onChange={e => setRealForm(f => ({ ...f, title: e.target.value }))} placeholder="Construction villa Ouaga 2000" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label>Année</Label>
+                <Input className="mt-1" type="number" value={realForm.year} onChange={e => setRealForm(f => ({ ...f, year: e.target.value }))} placeholder="2023" />
+              </div>
+              <div>
+                <Label>Ville</Label>
+                <Input className="mt-1" value={realForm.city || ""} onChange={e => setRealForm(f => ({ ...f, city: e.target.value }))} placeholder="Ouagadougou" />
+              </div>
+            </div>
+            <div>
+              <Label>Description</Label>
+              <textarea
+                className="mt-1 w-full border border-input rounded-md px-3 py-2 text-sm bg-background resize-none focus:outline-none focus:ring-1 focus:ring-ring"
+                rows={3}
+                value={realForm.description || ""}
+                onChange={e => setRealForm(f => ({ ...f, description: e.target.value }))}
+                placeholder="Détails du projet réalisé..."
+              />
+            </div>
+            <div>
+              <Label>Photos (URLs)</Label>
+              <div className="flex gap-2 mt-1">
+                <Input value={newPhotoUrl} onChange={e => setNewPhotoUrl(e.target.value)} placeholder="https://..." onKeyDown={e => e.key === "Enter" && addPhoto()} />
+                <Button size="sm" type="button" onClick={addPhoto}>Ajouter</Button>
+              </div>
+              {realForm.photoUrls?.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  {realForm.photoUrls.map((url, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs">
+                      <img src={url} alt="" className="w-10 h-10 rounded object-cover" onError={e => { e.target.style.display = "none"; }} />
+                      <span className="flex-1 truncate text-muted-foreground">{url}</span>
+                      <button className="text-destructive hover:opacity-70" onClick={() => removePhoto(i)}><X className="w-3.5 h-3.5" /></button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex justify-end gap-3 pt-2">
+              <Button variant="outline" onClick={() => setShowRealForm(false)}>Annuler</Button>
+              <Button onClick={saveReal} disabled={savingReal || !realForm.title}>
+                {savingReal ? "Enregistrement..." : editingReal ? "Enregistrer" : "Créer"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Form dialog */}
       <Dialog open={showForm} onOpenChange={setShowForm}>

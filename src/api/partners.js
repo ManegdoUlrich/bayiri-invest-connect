@@ -12,4 +12,9 @@ export const partnersApi = {
 
   selectForProject: (projectId, partnerId) =>
     api.post(`/partners/projects/${projectId}/select`, { partnerId }),
+
+  // Réalisations
+  addRealization:    (partnerId, data)      => api.post(`/partners/${partnerId}/realizations`, data),
+  updateRealization: (partnerId, rid, data) => api.patch(`/partners/${partnerId}/realizations/${rid}`, data),
+  deleteRealization: (partnerId, rid)       => api.delete(`/partners/${partnerId}/realizations/${rid}`),
 }

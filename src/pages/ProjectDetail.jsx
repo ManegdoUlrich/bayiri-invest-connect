@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { projectsApi } from "@/api/projects";
 import { reportsApi } from "@/api/reports";
 import { paymentsApi } from "@/api/payments";
@@ -72,6 +72,7 @@ const PARTNER_SPECIALTY_LABEL = {
 export default function ProjectDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [reports, setReports] = useState([]);
   const [payments, setPayments] = useState([]);
@@ -250,8 +251,11 @@ export default function ProjectDetail() {
                                       const spec = PARTNER_SPECIALTY_LABEL[partner.specialty] || PARTNER_SPECIALTY_LABEL.autre;
                                       const SpecIcon = spec.Icon;
                                       return (
-                                        <div key={partner.id} className="bg-background rounded-xl border border-border/60 p-4 flex gap-3 hover:border-primary/50 transition-colors">
-                                          <div className="shrink-0">
+                                        <div key={partner.id} className="bg-background rounded-xl border border-border/60 p-4 flex gap-3 hover:border-primary/50 transition-colors group">
+                                          <div
+                                            className="shrink-0 cursor-pointer"
+                                            onClick={() => navigate(`/partners/${partner.id}`)}
+                                          >
                                             {partner.photoUrl ? (
                                               <img src={partner.photoUrl} alt={partner.name} className="w-12 h-12 rounded-xl object-cover" />
                                             ) : (
@@ -261,28 +265,43 @@ export default function ProjectDetail() {
                                             )}
                                           </div>
                                           <div className="flex-1 min-w-0">
-                                            <p className="font-semibold text-sm truncate">{partner.name}</p>
+                                            <button
+                                              className="font-semibold text-sm truncate block hover:text-primary transition-colors text-left w-full"
+                                              onClick={() => navigate(`/partners/${partner.id}`)}
+                                            >
+                                              {partner.name}
+                                            </button>
                                             <p className="text-xs text-muted-foreground">{spec.label}</p>
                                             {partner.city && <p className="text-xs text-muted-foreground">{partner.city}</p>}
                                             {partner.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{partner.description}</p>}
-                                            <Button
-                                              size="sm"
-                                              className="mt-3 w-full"
-                                              disabled={selectingPartner}
-                                              onClick={async () => {
-                                                setSelectingPartner(true);
-                                                try {
-                                                  const updated = await partnersApi.selectForProject(project.id, partner.id);
-                                                  setProject(updated);
-                                                } catch (e) {
-                                                  alert(e.message || "Erreur lors de la sélection");
-                                                } finally {
-                                                  setSelectingPartner(false);
-                                                }
-                                              }}
-                                            >
-                                              {selectingPartner ? "Sélection..." : "Choisir ce partenaire"}
-                                            </Button>
+                                            <div className="flex gap-2 mt-3">
+                                              <Button
+                                                size="sm"
+                                                variant="outline"
+                                                className="text-xs"
+                                                onClick={() => navigate(`/partners/${partner.id}`)}
+                                              >
+                                                Voir le profil
+                                              </Button>
+                                              <Button
+                                                size="sm"
+                                                className="flex-1"
+                                                disabled={selectingPartner}
+                                                onClick={async () => {
+                                                  setSelectingPartner(true);
+                                                  try {
+                                                    const updated = await partnersApi.selectForProject(project.id, partner.id);
+                                                    setProject(updated);
+                                                  } catch (e) {
+                                                    alert(e.message || "Erreur lors de la sélection");
+                                                  } finally {
+                                                    setSelectingPartner(false);
+                                                  }
+                                                }}
+                                              >
+                                                {selectingPartner ? "Sélection..." : "Choisir"}
+                                              </Button>
+                                            </div>
                                           </div>
                                         </div>
                                       );
@@ -311,20 +330,38 @@ export default function ProjectDetail() {
                   const SpecIcon = spec.Icon;
                   return (
                     <div className="flex gap-4 items-start">
-                      {p.photoUrl ? (
-                        <img src={p.photoUrl} alt={p.name} className="w-16 h-16 rounded-xl object-cover shrink-0" />
-                      ) : (
-                        <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center shrink-0">
-                          <SpecIcon className="w-8 h-8 text-muted-foreground" />
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-heading font-bold">{p.name}</p>
+                      <button
+                        className="shrink-0"
+                        onClick={() => navigate(`/partners/${p.id}`)}
+                      >
+                        {p.photoUrl ? (
+                          <img src={p.photoUrl} alt={p.name} className="w-16 h-16 rounded-xl object-cover hover:opacity-90 transition-opacity" />
+                        ) : (
+                          <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center hover:bg-muted/70 transition-colors">
+                            <SpecIcon className="w-8 h-8 text-muted-foreground" />
+                          </div>
+                        )}
+                      </button>
+                      <div className="flex-1">
+                        <button
+                          className="font-heading font-bold hover:text-primary transition-colors text-left"
+                          onClick={() => navigate(`/partners/${p.id}`)}
+                        >
+                          {p.name}
+                        </button>
                         <p className="text-sm text-muted-foreground">{spec.label}</p>
                         {p.city && <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5" />{p.city}{p.country ? `, ${p.country}` : ""}</p>}
                         {p.email && <p className="text-sm text-muted-foreground mt-1">{p.email}</p>}
                         {p.phone && <p className="text-sm text-muted-foreground">{p.phone}</p>}
-                        {p.description && <p className="text-sm text-muted-foreground mt-2">{p.description}</p>}
+                        {p.description && <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{p.description}</p>}
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="mt-3"
+                          onClick={() => navigate(`/partners/${p.id}`)}
+                        >
+                          Voir le profil complet →
+                        </Button>
                       </div>
                     </div>
                   );
