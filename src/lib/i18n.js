@@ -18,6 +18,7 @@ export const translations = {
       admin_reports: "Rapports",
       admin_contracts: "Contrats",
       admin_tasks: "Tâches",
+      admin_partners: "Partenaires",
       client: "Client",
       agent: "Agent terrain",
       admin: "Administrateur",

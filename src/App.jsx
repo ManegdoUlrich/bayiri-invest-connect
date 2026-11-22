@@ -22,6 +22,7 @@ import AdminPayments from './pages/admin/AdminPayments'
 import AdminReports from './pages/admin/AdminReports'
 import AdminContractManager from './pages/admin/AdminContractManager'
 import AdminTasks from './pages/admin/AdminTasks'
+import AdminPartners from './pages/admin/AdminPartners'
 import AgentTasks from './pages/agent/AgentTasks'
 import AgentPhotos from './pages/agent/AgentPhotos'
 import Onboarding from './pages/Onboarding'
@@ -99,6 +100,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin/reports"   element={<PrivateRoute roles={['admin']}><AdminReports /></PrivateRoute>} />
         <Route path="/admin/contracts" element={<PrivateRoute roles={['admin']}><AdminContractManager /></PrivateRoute>} />
         <Route path="/admin/tasks"     element={<PrivateRoute roles={['admin']}><AdminTasks /></PrivateRoute>} />
+        <Route path="/admin/partners"  element={<PrivateRoute roles={['admin']}><AdminPartners /></PrivateRoute>} />
 
         <Route path="*" element={<PageNotFound />} />
       </Route>

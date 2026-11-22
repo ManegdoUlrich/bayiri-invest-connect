@@ -5,7 +5,7 @@ import { translations } from "@/lib/i18n";
 import { useAuth } from "@/lib/AuthContext";
 import {
   LayoutDashboard, FolderOpen, Users, MapPin, FileText, CreditCard,
-  Settings, LogOut, Menu, X, ChevronRight, Shield, CheckSquare, Camera
+  Settings, LogOut, Menu, X, ChevronRight, Shield, CheckSquare, Camera, Handshake
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,6 +36,7 @@ function getNavItems(txNav) {
       { path: "/admin/reports",   icon: FileText,        label: txNav.admin_reports },
       { path: "/admin/contracts", icon: Shield,          label: txNav.admin_contracts },
       { path: "/admin/tasks",     icon: CheckSquare,     label: txNav.admin_tasks },
+      { path: "/admin/partners",  icon: Handshake,       label: txNav.admin_partners },
     ],
   };
 }

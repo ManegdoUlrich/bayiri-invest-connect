@@ -3,8 +3,9 @@ import { useParams, Link } from "react-router-dom";
 import { projectsApi } from "@/api/projects";
 import { reportsApi } from "@/api/reports";
 import { paymentsApi } from "@/api/payments";
+import { partnersApi } from "@/api/partners";
 import { useAuth } from "@/lib/AuthContext";
-import { ArrowLeft, MapPin, Calendar, CreditCard, Image, MessageCircle, FileText, PenLine, CheckCircle, Shield, Globe, Hash, User, Camera, Mic, CheckSquare } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, CreditCard, Image, MessageCircle, FileText, PenLine, CheckCircle, Shield, Globe, Hash, User, Camera, Mic, CheckSquare, Building2, Scale, Home, HelpCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -17,7 +18,55 @@ import ContractTab from "../components/ContractTab";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const statusLabels = {
-  en_attente: "En attente", en_cours: "En cours", pause: "En pause", termine: "Terminé", annule: "Annulé",
+  brouillon: "Brouillon", soumis: "Soumis", accepte: "Accepté",
+  prise_de_contact: "En contact", en_discussion: "Discussion",
+  contrat: "Contrat", paiement: "Paiement", reporting: "Suivi terrain",
+  en_attente: "En attente", en_cours: "En cours", pause: "En pause",
+  termine: "Terminé", annule: "Annulé",
+  recherche_bien: "Recherche", selection_bien: "Sélection", procuration: "Procuration", notaire: "Notaire",
+  choix_partenaire: "Choix partenaire", reunion_cadrage: "Cadrage",
+};
+
+const PIPELINES = {
+  achat_immobilier: [
+    { status: "soumis",           label: "Dossier soumis",         desc: "Votre demande a été envoyée à l'équipe." },
+    { status: "accepte",          label: "Dossier accepté",         desc: "L'équipe a validé votre projet." },
+    { status: "prise_de_contact", label: "Premier contact",         desc: "Un agent prend contact avec vous." },
+    { status: "en_discussion",    label: "Discussion",              desc: "Échanges sur votre projet et vos critères." },
+    { status: "recherche_bien",   label: "Recherche de bien",       desc: "L'agent recherche des biens correspondants." },
+    { status: "selection_bien",   label: "Sélection du bien",       desc: "Un bien a été identifié et présenté." },
+    { status: "procuration",      label: "Procuration",             desc: "Établissement de la procuration pour acte." },
+    { status: "notaire",          label: "Chez le notaire",         desc: "Signature de l'acte authentique." },
+    { status: "termine",          label: "Terminé",                 desc: "Votre bien vous appartient." },
+  ],
+  construction: [
+    { status: "soumis",           label: "Dossier soumis",          desc: "Votre demande a été envoyée à l'équipe." },
+    { status: "accepte",          label: "Dossier accepté",         desc: "L'équipe a validé votre projet." },
+    { status: "choix_partenaire", label: "Choix du partenaire",     desc: "Sélectionnez l'expert BTP pour votre projet." },
+    { status: "reunion_cadrage",  label: "Réunion de cadrage",      desc: "Réunion avec le partenaire pour définir le projet." },
+    { status: "contrat",          label: "Contrat",                 desc: "Signature du contrat de prestation." },
+    { status: "paiement",         label: "Paiement",                desc: "Mise en place du plan de financement." },
+    { status: "reporting",        label: "Suivi chantier",          desc: "Rapports hebdomadaires et photos terrain." },
+    { status: "termine",          label: "Terminé",                 desc: "Votre projet est livré." },
+  ],
+  default: [
+    { status: "soumis",           label: "Dossier soumis",          desc: "Votre demande a été envoyée à l'équipe." },
+    { status: "accepte",          label: "Dossier accepté",         desc: "L'équipe a validé votre projet." },
+    { status: "prise_de_contact", label: "Premier contact",         desc: "Un agent prend contact avec vous." },
+    { status: "en_discussion",    label: "Discussion",              desc: "Échanges sur les modalités." },
+    { status: "contrat",          label: "Contrat",                 desc: "Signature du contrat." },
+    { status: "paiement",         label: "Paiement",                desc: "Mise en place du financement." },
+    { status: "reporting",        label: "Suivi",                   desc: "Suivi actif du projet." },
+    { status: "termine",          label: "Terminé",                 desc: "Projet livré." },
+  ],
+};
+
+const PARTNER_SPECIALTY_LABEL = {
+  btp:        { label: "Bureau BTP",       Icon: Building2 },
+  juridique:  { label: "Cabinet juridique", Icon: Scale },
+  notarial:   { label: "Étude notariale",  Icon: FileText },
+  immobilier: { label: "Agence immobilière",Icon: Home },
+  autre:      { label: "Autre",            Icon: HelpCircle },
 };
 
 export default function ProjectDetail() {
@@ -26,7 +75,9 @@ export default function ProjectDetail() {
   const [project, setProject] = useState(null);
   const [reports, setReports] = useState([]);
   const [payments, setPayments] = useState([]);
+  const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectingPartner, setSelectingPartner] = useState(false);
   const [showContract, setShowContract] = useState(false);
   const [reportDetail, setReportDetail] = useState(null);
 
@@ -35,12 +86,18 @@ export default function ProjectDetail() {
       const proj = await projectsApi.get(id);
       setProject(proj);
       if (proj) {
-        const [reps, pays] = await Promise.all([
+        const fetches = [
           reportsApi.list({ projectId: proj.id }),
           paymentsApi.list(),
-        ]);
-        setReports(reps);
-        setPayments(pays);
+        ];
+        if (proj.status === "choix_partenaire") {
+          const specialty = proj.type === "construction" ? "btp" : undefined;
+          fetches.push(partnersApi.list(specialty ? { specialty } : {}));
+        }
+        const results = await Promise.all(fetches);
+        setReports(results[0]);
+        setPayments(results[1]);
+        if (results[2]) setPartners(results[2]);
       }
       setLoading(false);
     }
@@ -141,7 +198,144 @@ export default function ProjectDetail() {
         </TabsList>
 
         <TabsContent value="timeline">
-          <ProjectTimeline milestones={project.milestones} />
+          <div className="space-y-6">
+            <div className="bg-card rounded-2xl border border-border/50 p-6">
+              <h3 className="font-heading font-semibold mb-6">Avancement du projet</h3>
+              {(() => {
+                const pipeline = PIPELINES[project.type] || PIPELINES.default;
+                const currentIdx = project.status === "termine"
+                  ? pipeline.length
+                  : pipeline.findIndex(s => s.status === project.status);
+                const effectiveIdx = currentIdx === -1 ? 0 : currentIdx;
+                return (
+                  <div>
+                    {pipeline.map((step, idx) => {
+                      const isDone = idx < effectiveIdx || project.status === "termine";
+                      const isCurrent = idx === effectiveIdx && project.status !== "termine";
+                      return (
+                        <div key={step.status} className="flex gap-4">
+                          <div className="flex flex-col items-center">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 transition-all ${
+                              isDone ? "bg-primary border-primary" : isCurrent ? "bg-primary/10 border-primary" : "bg-muted border-border"
+                            }`}>
+                              {isDone ? (
+                                <CheckCircle className="w-4 h-4 text-primary-foreground" />
+                              ) : (
+                                <span className={`text-xs font-bold ${isCurrent ? "text-primary" : "text-muted-foreground"}`}>{idx + 1}</span>
+                              )}
+                            </div>
+                            {idx < pipeline.length - 1 && (
+                              <div className={`w-0.5 mt-1 ${isCurrent ? "h-12" : "h-8"} ${isDone ? "bg-primary" : "bg-border"}`} />
+                            )}
+                          </div>
+                          <div className={`pb-6 flex-1 pt-1 ${idx === pipeline.length - 1 ? "pb-0" : ""}`}>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <p className={`font-semibold text-sm ${isCurrent ? "text-primary" : isDone ? "text-foreground" : "text-muted-foreground"}`}>
+                                {step.label}
+                              </p>
+                              {isCurrent && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">En cours</span>
+                              )}
+                            </div>
+                            <p className={`text-xs mt-0.5 ${isCurrent || isDone ? "text-muted-foreground" : "text-muted-foreground/40"}`}>{step.desc}</p>
+
+                            {isCurrent && step.status === "choix_partenaire" && (
+                              <div className="mt-4 space-y-3">
+                                <p className="text-sm font-medium">Choisissez votre partenaire :</p>
+                                {partners.length === 0 ? (
+                                  <p className="text-sm text-muted-foreground">Aucun partenaire disponible pour le moment.</p>
+                                ) : (
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    {partners.map(partner => {
+                                      const spec = PARTNER_SPECIALTY_LABEL[partner.specialty] || PARTNER_SPECIALTY_LABEL.autre;
+                                      const SpecIcon = spec.Icon;
+                                      return (
+                                        <div key={partner.id} className="bg-background rounded-xl border border-border/60 p-4 flex gap-3 hover:border-primary/50 transition-colors">
+                                          <div className="shrink-0">
+                                            {partner.photoUrl ? (
+                                              <img src={partner.photoUrl} alt={partner.name} className="w-12 h-12 rounded-xl object-cover" />
+                                            ) : (
+                                              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                                                <SpecIcon className="w-6 h-6 text-muted-foreground" />
+                                              </div>
+                                            )}
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <p className="font-semibold text-sm truncate">{partner.name}</p>
+                                            <p className="text-xs text-muted-foreground">{spec.label}</p>
+                                            {partner.city && <p className="text-xs text-muted-foreground">{partner.city}</p>}
+                                            {partner.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{partner.description}</p>}
+                                            <Button
+                                              size="sm"
+                                              className="mt-3 w-full"
+                                              disabled={selectingPartner}
+                                              onClick={async () => {
+                                                setSelectingPartner(true);
+                                                try {
+                                                  const updated = await partnersApi.selectForProject(project.id, partner.id);
+                                                  setProject(updated);
+                                                } catch (e) {
+                                                  alert(e.message || "Erreur lors de la sélection");
+                                                } finally {
+                                                  setSelectingPartner(false);
+                                                }
+                                              }}
+                                            >
+                                              {selectingPartner ? "Sélection..." : "Choisir ce partenaire"}
+                                            </Button>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+            </div>
+
+            {project.partner && (
+              <div className="bg-card rounded-2xl border border-border/50 p-5">
+                <h3 className="font-heading font-semibold mb-4 flex items-center gap-2">
+                  <User className="w-5 h-5 text-primary" /> Partenaire assigné
+                </h3>
+                {(() => {
+                  const p = project.partner;
+                  const spec = PARTNER_SPECIALTY_LABEL[p.specialty] || PARTNER_SPECIALTY_LABEL.autre;
+                  const SpecIcon = spec.Icon;
+                  return (
+                    <div className="flex gap-4 items-start">
+                      {p.photoUrl ? (
+                        <img src={p.photoUrl} alt={p.name} className="w-16 h-16 rounded-xl object-cover shrink-0" />
+                      ) : (
+                        <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center shrink-0">
+                          <SpecIcon className="w-8 h-8 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-heading font-bold">{p.name}</p>
+                        <p className="text-sm text-muted-foreground">{spec.label}</p>
+                        {p.city && <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1"><MapPin className="w-3.5 h-3.5" />{p.city}{p.country ? `, ${p.country}` : ""}</p>}
+                        {p.email && <p className="text-sm text-muted-foreground mt-1">{p.email}</p>}
+                        {p.phone && <p className="text-sm text-muted-foreground">{p.phone}</p>}
+                        {p.description && <p className="text-sm text-muted-foreground mt-2">{p.description}</p>}
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
+            {project.milestones?.length > 0 && (
+              <ProjectTimeline milestones={project.milestones} />
+            )}
+          </div>
         </TabsContent>
 
         <TabsContent value="photos">

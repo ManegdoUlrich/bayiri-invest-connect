@@ -47,7 +47,7 @@ const t = {
     howTitle: "Investir depuis l'étranger,\nsimple comme bonjour.",
     steps: [
       { num: "01", title: "Créez votre compte", desc: "Inscription en 2 minutes. Décrivez votre projet et votre budget." },
-      { num: "02", title: "Un agent vous est assigné", desc: "Nous sélectionnons un agent certifié dans votre ville cible." },
+      { num: "02", title: "Vous choisissez votre partenaire", desc: "Sélectionnez l'expert certifié qui prendra en charge votre projet." },
       { num: "03", title: "Suivez en temps réel", desc: "Rapports, photos, documents : tout est dans votre espace." },
       { num: "04", title: "Investissement sécurisé", desc: "Contrats électroniques et paiements gérés en toute sécurité." },
     ],
@@ -106,7 +106,7 @@ const t = {
     howTitle: "Investing from abroad,\nmade simple.",
     steps: [
       { num: "01", title: "Create your account", desc: "Sign up in 2 minutes. Describe your project and budget." },
-      { num: "02", title: "Agent assigned", desc: "We select a certified agent in your target city." },
+      { num: "02", title: "You choose your partner", desc: "Select the certified expert who will take charge of your project." },
       { num: "03", title: "Track in real time", desc: "Reports, photos, documents: all in your personal space." },
       { num: "04", title: "Secured investment", desc: "Electronic contracts and payments managed securely." },
     ],
